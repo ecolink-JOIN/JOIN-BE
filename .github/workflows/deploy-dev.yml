@@ -28,7 +28,7 @@ jobs:
       #          dev-db-secret: ${{ secrets.DEV_DB_SECRET }}
 
       - name: Run MySQL image for test
-        run: docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=map2zero mysql:8.0.31
+        run: docker run -d -p localhost:3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=join_db mysql:8.0.31
 
       - name: Build with Gradle
         uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25

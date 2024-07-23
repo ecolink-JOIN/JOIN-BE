@@ -74,6 +74,6 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             cd ${{ env.APP_PATH }}
-            docker compose down --volumes
+            docker-compose down --volumes
             docker image prune -f
-            docker compose up --build -d
+            docker-compose up --build -d

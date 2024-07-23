@@ -2,7 +2,7 @@ name: Deploy to Development Server
 
 on:
   push:
-    branches: [ "develop" , "feature/cd/deploy" ]
+    branches: [ "develop", "feature/cd/deploy" ]
   workflow_dispatch:
 
 jobs:
@@ -23,9 +23,9 @@ jobs:
         uses: ./.github/actions/copy_secret
         with:
           profile: dev
-#          oauth-secret: ${{ secrets.OAUTH_SECRET }}
-#          s3-secret: ${{ secrets.S3_SECRET }}
-#          dev-db-secret: ${{ secrets.DEV_DB_SECRET }}
+      #          oauth-secret: ${{ secrets.OAUTH_SECRET }}
+      #          s3-secret: ${{ secrets.S3_SECRET }}
+      #          dev-db-secret: ${{ secrets.DEV_DB_SECRET }}
 
       - name: Run MySQL image for test
         run: docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=map2zero mysql:8.0.31
@@ -63,7 +63,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
-          source: "build/libs/*.jar, ./Dockerfile, ./docker-compose.yml"
+          source: "build/libs/*.jar, Dockerfile, docker-compose.yml"
           target: ${{ env.APP_PATH }}
 
       - name: SSH Execute command on EC2
@@ -74,6 +74,6 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             cd ${{ env.APP_PATH }}
-            docker compose down --rmi local
+            docker compose down --volumes
             docker image prune -f
             docker compose up --build -d

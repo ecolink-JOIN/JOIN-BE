@@ -25,7 +25,7 @@ jobs:
           profile: dev
       #          oauth-secret: ${{ secrets.OAUTH_SECRET }}
       #          s3-secret: ${{ secrets.S3_SECRET }}
-      #          dev-db-secret: ${{ secrets.DEV_DB_SECRET }}
+          dev-db-secret: ${{ secrets.DEV_DB_SECRET }}
 
       - name: Run MySQL image for test
         run: docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=join_db mysql:8.0.31

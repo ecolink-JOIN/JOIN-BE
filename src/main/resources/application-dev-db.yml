@@ -1,6 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:mysql://join-dev-db.ctyu840ak95m.ap-northeast-2.rds.amazonaws.com:3306/join_db
-    username: root
-    password: joinpassword12
-    driver-class-name: com.mysql.cj.jdbc.Driver

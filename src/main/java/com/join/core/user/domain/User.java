@@ -2,6 +2,7 @@ package com.join.core.user.domain;
 
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.domain.BaseTimeEntity;
+import com.join.core.user.constant.UserStatus;
 import com.join.core.user.constant.UserType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -26,17 +27,15 @@ public class User extends BaseTimeEntity {
     @NotNull
     private String email;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
-
     private LocalDateTime singUpDate;
 
     @NotNull
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
 
     @NotNull
-    private String platform;
+    @Enumerated(EnumType.STRING)
+    private UserType platform;
 
     @OneToMany(mappedBy = "user")
     private List<Avatar> avatars = new ArrayList<>();

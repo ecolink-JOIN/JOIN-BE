@@ -1,14 +1,16 @@
 package com.join.core.study.domain;
 
 import com.join.core.enrollment.domain.Enrollment;
-import com.join.core.study.constant.Address;
-import com.join.core.study.constant.Category;
+import com.join.core.address.domain.Address;
+import com.join.core.category.domain.Category;
+import com.join.core.study.constant.StudyEndReason;
+import com.join.core.study.constant.StudyStatus;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -52,20 +54,23 @@ public class Study {
     private LocalDate actualEndDate;
 
     @NotNull
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private StudyStatus status;
 
     @NotNull
     private int viewCnt;
 
-    private String endReason;
+    @Enumerated(EnumType.STRING)
+    private StudyEndReason endReason;
 
-    @Valid
     @NotNull
-    @Embedded
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)

@@ -1,7 +1,5 @@
 package com.join.core.address.domain;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,22 +13,21 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Entity
 public class Address {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Schema(description = "시/도 주소(1차)", example = "서울특별시")
-    @NotBlank
-    @NotNull
-    private String province;
+	@Schema(description = "시/도 주소(1차)", example = "서울특별시")
+	@NotBlank
+	@NotNull
+	private String province;
 
-    @Schema(description = "시/군/구 주소(2차)", example = "동작구")
-    @NotBlank
-    @NotNull
-    private String city;
+	@Schema(description = "시/군/구 주소(2차)", example = "동작구")
+	@NotBlank
+	@NotNull
+	private String city;
 
 }

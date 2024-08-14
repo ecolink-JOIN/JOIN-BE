@@ -1,10 +1,12 @@
-package com.join.core.study.constant;
+package com.join.core.address.domain;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -14,8 +16,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-@Embeddable
+@Entity
 public class Address {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Schema(description = "시/도 주소(1차)", example = "서울특별시")
     @NotBlank
@@ -26,13 +32,5 @@ public class Address {
     @NotBlank
     @NotNull
     private String city;
-
-    @Schema(description = "도로명 주소", example = "서달로12나길 2 1층")
-    @NotBlank
-    @NotNull
-    private String roadName;
-
-    @Schema(description = "지번 주소", example = "흑석동 54-149 1층")
-    private String lotNumber;
 
 }

@@ -1,6 +1,9 @@
 package com.join.core.enrollment.domain;
 
 import com.join.core.avatar.domain.Avatar;
+import com.join.core.enrollment.constant.EnrollmentEndReason;
+import com.join.core.enrollment.constant.EnrollmentStatus;
+import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.study.domain.Study;
 import com.join.core.common.domain.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -21,10 +24,12 @@ public class Enrollment extends BaseTimeEntity {
     private Long id;
 
     @NotNull
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private EnrollmentStatus status;
 
     @NotNull
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private StudyRole role;
 
     @NotNull
     private LocalDateTime enrolledDate;
@@ -33,7 +38,8 @@ public class Enrollment extends BaseTimeEntity {
     private LocalDateTime endDate;
 
     @NotNull
-    private String endReason;
+    @Enumerated(EnumType.STRING)
+    private EnrollmentEndReason endReason;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

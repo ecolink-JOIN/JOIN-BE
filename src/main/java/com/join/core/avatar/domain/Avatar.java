@@ -1,6 +1,7 @@
 package com.join.core.avatar.domain;
 
 import com.join.core.common.domain.BaseTimeEntity;
+import com.join.core.file.domain.SinglePhotoContainer;
 import com.join.core.user.domain.User;
 
 import jakarta.persistence.CascadeType;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Avatar extends BaseTimeEntity {
+public class Avatar extends BaseTimeEntity implements SinglePhotoContainer<ProfilePhoto> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,5 +50,10 @@ public class Avatar extends BaseTimeEntity {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "photo_id")
 	private ProfilePhoto photo;
+
+	@Override
+	public void changePhoto(ProfilePhoto singlePhoto) {
+		this.photo = singlePhoto;
+	}
 
 }

@@ -38,3 +38,4 @@ out/
 
 ### secret ###
 application-dev-db.yml
+application-s3.yml

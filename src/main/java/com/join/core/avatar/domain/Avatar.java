@@ -45,4 +45,9 @@ public class Avatar extends BaseTimeEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	private User user;
 
+	@NotNull
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "photo_id")
+	private ProfilePhoto photo;
+
 }

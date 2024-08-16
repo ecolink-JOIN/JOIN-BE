@@ -1,6 +1,7 @@
 package com.join.core.avatar.domain;
 
 import com.join.core.file.domain.ImageFile;
+import com.join.core.file.domain.SinglePhoto;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class ProfilePhoto {
+public class ProfilePhoto implements SinglePhoto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

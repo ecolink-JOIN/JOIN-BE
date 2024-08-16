@@ -1,43 +1,44 @@
 package com.join.core.user.domain;
 
-import com.join.core.avatar.domain.Avatar;
+import java.time.LocalDateTime;
+
 import com.join.core.common.domain.BaseTimeEntity;
 import com.join.core.user.constant.UserStatus;
 import com.join.core.user.constant.UserType;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class User extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(unique = true)
-    @NotNull
-    private String email;
+	@Column(unique = true)
+	@NotNull
+	private String email;
 
-    private LocalDateTime singUpDate;
+	private LocalDateTime singUpDate;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private UserStatus status;
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private UserStatus status;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private UserType platform;
-
-    @OneToMany(mappedBy = "user")
-    private List<Avatar> avatars = new ArrayList<>();
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private UserType platform;
 
 }

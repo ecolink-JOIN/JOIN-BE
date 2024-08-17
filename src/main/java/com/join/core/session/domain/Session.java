@@ -21,7 +21,7 @@ public class Session {
     private Long id;
 
     @NotNull
-    private int sessionNumber;
+    private int sessionNo;
 
     @NotNull
     private LocalDate studyDate;

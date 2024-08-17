@@ -3,6 +3,7 @@ package com.join.core.study.domain;
 import com.join.core.enrollment.domain.Enrollment;
 import com.join.core.address.domain.Address;
 import com.join.core.category.domain.Category;
+import com.join.core.rule.domain.Rule;
 import com.join.core.study.constant.StudyEndReason;
 import com.join.core.study.constant.StudyStatus;
 import jakarta.persistence.*;
@@ -60,6 +61,9 @@ public class Study {
     @NotNull
     private int viewCnt;
 
+    @NotNull
+    private int bookmarkCnt;
+
     @Enumerated(EnumType.STRING)
     private StudyEndReason endReason;
 
@@ -75,5 +79,16 @@ public class Study {
 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     private List<Enrollment> enrollments;
+
+    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Rule> rules;
+
+    public void addViewCount() {
+        this.viewCnt++;
+    }
+
+    public void addBookmarkCount() {
+        this.bookmarkCnt++;
+    }
 
 }

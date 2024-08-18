@@ -23,7 +23,7 @@ jobs:
         uses: ./.github/actions/copy_secret
         with:
           profile: dev
-      #          oauth-secret: ${{ secrets.OAUTH_SECRET }}
+          oauth-secret: ${{ secrets.OAUTH_SECRET }}
           s3-secret: ${{ secrets.S3_SECRET }}
           dev-db-secret: ${{ secrets.DEV_DB_SECRET }}
 

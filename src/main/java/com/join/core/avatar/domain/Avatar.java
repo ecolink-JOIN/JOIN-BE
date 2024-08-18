@@ -28,6 +28,8 @@ public class Avatar extends BaseTimeEntity implements SinglePhotoContainer<Profi
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	private String avatarToken;
+
 	@Column(unique = true)
 	@NotNull
 	@Size(min = 2, max = 7)

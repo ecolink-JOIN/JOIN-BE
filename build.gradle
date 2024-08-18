@@ -55,6 +55,11 @@ dependencies {
 	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
 	implementation 'com.amazonaws:aws-java-sdk-s3'
 
+	// Utils
+	implementation 'com.google.guava:guava:28.2-jre'
+	implementation 'org.apache.commons:commons-lang3:3.9'
+
+
 	//QueryDSL
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"

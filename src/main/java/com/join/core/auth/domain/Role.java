@@ -1,12 +1,7 @@
-package com.join.core.user.domain;
+package com.join.core.auth.domain;
 
-import java.time.LocalDateTime;
+import com.join.core.auth.constant.RoleType;
 
-import com.join.core.common.domain.BaseTimeEntity;
-import com.join.core.user.constant.UserStatus;
-import com.join.core.user.constant.UserType;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,26 +16,18 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class User extends BaseTimeEntity {
+public class Role {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String userToken;
-
-	@Column(unique = true)
-	@NotNull
-	private String email;
-
-	private LocalDateTime singUpDate;
-
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private UserStatus status;
+	private RoleType roleType;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private UserType platform;
+	public Role(RoleType roleType) {
+		this.roleType = roleType;
+	}
 
 }

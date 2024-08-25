@@ -1,4 +1,4 @@
-package com.join.core.user.constant;
+package com.join.core.auth.constant;
 
 import lombok.Getter;
 

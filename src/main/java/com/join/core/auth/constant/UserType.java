@@ -1,4 +1,4 @@
-package com.join.core.user.constant;
+package com.join.core.auth.constant;
 
 import static java.util.stream.Collectors.*;
 
@@ -19,13 +19,14 @@ public enum UserType {
 	KAKAO("kakao") {
 		@Override
 		public OAuth2Attributes extract(String attributeKey, Map<String, Object> attributes) {
+			String keyAttribute = (String)attributes.get(attributeKey);
 			Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
 			Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
 
 			var builder = OAuth2Attributes.builder()
 				.attributes(attributes)
-				.userType(this)
-				.attributeKey(attributeKey)
+				.platform(this)
+				.attributeKey(keyAttribute)
 				.email((String)kakaoAccount.get("email"))
 				.name((String)kakaoProfile.get("nickname"));
 
@@ -43,7 +44,7 @@ public enum UserType {
 		public OAuth2Attributes extract(String attributeKey, Map<String, Object> attributes) {
 			return OAuth2Attributes.builder()
 				.attributes(attributes)
-				.userType(this)
+				.platform(this)
 				.attributeKey(attributeKey)
 				.build();
 		}

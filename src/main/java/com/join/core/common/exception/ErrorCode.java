@@ -15,6 +15,11 @@ public enum ErrorCode {
 	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "E-001", "잘못된 요청입니다."),
 
 	/**
+	 * 공통
+	 */
+	INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "C-001", "잘못된 매개변수가 입력되었습니다."),
+
+	/**
 	 * 아바타 관련 오류
 	 */
 	AVATAR_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "A-001", "주어진 식별자로 아바타를 찾을 수 없습니다."),

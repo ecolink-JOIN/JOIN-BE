@@ -1,8 +1,17 @@
 package com.join.core.avatar.domain;
 
+import static com.join.core.common.exception.ErrorCode.*;
+
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.join.core.auth.domain.User;
 import com.join.core.common.domain.BaseTimeEntity;
+import com.join.core.common.exception.ErrorCode;
+import com.join.core.common.exception.impl.InvalidParamException;
+import com.join.core.common.util.TokenGenerator;
 import com.join.core.file.domain.SinglePhotoContainer;
-import com.join.core.user.domain.User;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -24,6 +33,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Avatar extends BaseTimeEntity implements SinglePhotoContainer<ProfilePhoto> {
 
+	private static final String AVATAR_PREFIX = "avt_";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -31,7 +42,7 @@ public class Avatar extends BaseTimeEntity implements SinglePhotoContainer<Profi
 	private String avatarToken;
 
 	@Column(unique = true)
-	@NotNull
+	@Nullable
 	@Size(min = 2, max = 7)
 	private String nickname;
 
@@ -58,4 +69,19 @@ public class Avatar extends BaseTimeEntity implements SinglePhotoContainer<Profi
 		this.photo = singlePhoto;
 	}
 
+	public Avatar(User user, ProfilePhoto photo) {
+		if (user == null) throw new InvalidParamException(INVALID_PARAMETER, "Avatar.user");
+		if (photo == null) throw new InvalidParamException(INVALID_PARAMETER, "Avatar.photo");
+
+		this.avatarToken = TokenGenerator.randomCharacterWithPrefix(AVATAR_PREFIX);
+		this.nickname = "TEMP";
+		this.totalRating = 0;
+		this.ratingCnt = 0;
+		this.user = user;
+		this.photo = photo;
+	}
+
+	public boolean isNicknameSet() {
+		return StringUtils.isNoneEmpty(nickname);
+	}
 }

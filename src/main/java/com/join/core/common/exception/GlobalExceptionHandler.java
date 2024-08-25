@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.join.core.common.exception.impl.DuplicatedEmailException;
 import com.join.core.common.response.ErrorResponse;
 import com.join.core.security.service.SecurityContextService;
-import com.join.core.user.constant.UserType;
+import com.join.core.auth.constant.UserType;
 
 import lombok.RequiredArgsConstructor;
 

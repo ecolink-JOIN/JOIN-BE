@@ -44,6 +44,20 @@ jobs:
             Dockerfile
             docker-compose.yml
 
+      - name: Deployment Fail Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: 'Deployment Fail Notification'
+          text: '서버 배포에 실패했습니다.'
+          fields: repo,message,commit,author,ref,workflow,job,took,pullRequest
+          mention: 'U067CTV6REE,U06BYPA2RGR'
+          if_mention: failure
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BACKEND_WEBHOOK_URL }} # required
+        if: failure()
+
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -77,3 +91,27 @@ jobs:
             docker-compose down --volumes
             docker image prune -f
             docker-compose up --build -d
+
+      - name: Deployment Success Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: 'Deployment Success Notification'
+          text: '서버가 성공적으로 배포되었습니다.'
+          fields: repo,message,commit,author,ref,workflow,job,took,pullRequest
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: success()
+
+      - name: Deployment Fail Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: 'Deployment Fail Notification'
+          text: '서버 배포에 실패했습니다.'
+          fields: repo,message,commit,author,ref,workflow,job,took,pullRequest
+          mention: 'U067CTV6REE,U06BYPA2RGR'
+          if_mention: failure
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BACKEND_WEBHOOK_URL }} # required
+        if: failure()

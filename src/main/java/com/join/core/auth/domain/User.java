@@ -64,6 +64,9 @@ public class User extends BaseTimeEntity {
 	private UserType platform;
 
 	@NotNull
+	private boolean termsAgreed;
+
+	@NotNull
 	@OneToOne(mappedBy = "user")
 	private Avatar avatar;
 
@@ -83,19 +86,15 @@ public class User extends BaseTimeEntity {
 		this.userToken = TokenGenerator.randomCharacterWithPrefix(USER_PREFIX);
 		this.singUpDate = LocalDateTime.now();
 		this.status = Status.PENDING;
+		this.termsAgreed = false;
 	}
 
 	public void addRole(Role role) {
 		userRoles.add(new UserRole(this, role));
 	}
 
-	// TODO 약관 동의 여부 확인 메서드 개발
-	public boolean isTermsAgreed() {
-		return false;
-	}
-
 	public Set<SimpleGrantedAuthority> getAuthorities() {
-		return userRoles.stream().map(UserRole::getAuthority).collect(Collectors.toUnmodifiableSet());
+		return this.userRoles.stream().map(UserRole::getAuthority).collect(Collectors.toUnmodifiableSet());
 	}
 
 }

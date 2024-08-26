@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.join.core.auth.constant.UserStatus;
 import com.join.core.auth.constant.UserType;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.domain.BaseTimeEntity;
@@ -53,7 +52,12 @@ public class User extends BaseTimeEntity {
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private UserStatus status;
+	private Status status;
+
+	@Getter
+	public enum Status {
+		PENDING, ACTIVE, INACTIVE, DELETED
+	}
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
@@ -65,10 +69,6 @@ public class User extends BaseTimeEntity {
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserRole> userRoles;
-
-	public Boolean isPending() {
-		return UserStatus.PENDING.equals(status);
-	}
 
 	public boolean isUserOf(UserType providerType) {
 		return providerType.equals(this.platform);
@@ -82,7 +82,7 @@ public class User extends BaseTimeEntity {
 		this.platform = platform;
 		this.userToken = TokenGenerator.randomCharacterWithPrefix(USER_PREFIX);
 		this.singUpDate = LocalDateTime.now();
-		this.status = UserStatus.PENDING;
+		this.status = Status.PENDING;
 	}
 
 	public void addRole(Role role) {

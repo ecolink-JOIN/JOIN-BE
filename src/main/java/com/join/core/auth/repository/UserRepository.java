@@ -11,7 +11,7 @@ import com.join.core.auth.domain.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 	@Query("select u "
 		   + "from User u "
-		   + "join fetch Avatar a "
+		   + "join fetch u.avatar a "
 		   + "join fetch a.photo p "
 		   + "join fetch u.userRoles ur "
 		   + "join fetch ur.role "

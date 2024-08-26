@@ -1,5 +1,7 @@
 package com.join.core.auth.domain;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import com.join.core.auth.constant.RoleType;
 
 import jakarta.persistence.Entity;
@@ -28,6 +30,10 @@ public class Role {
 
 	public Role(RoleType roleType) {
 		this.roleType = roleType;
+	}
+
+	SimpleGrantedAuthority toGrantedAuthority() {
+		return new SimpleGrantedAuthority(this.roleType.getAuthority());
 	}
 
 }

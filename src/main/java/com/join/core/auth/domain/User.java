@@ -5,6 +5,7 @@ import static com.join.core.common.exception.ErrorCode.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -88,12 +89,13 @@ public class User extends BaseTimeEntity {
 		userRoles.add(new UserRole(this, role));
 	}
 
+	// TODO 약관 동의 여부 확인 메서드 개발
 	public boolean isTermsAgreed() {
 		return false;
 	}
 
 	public Set<SimpleGrantedAuthority> getAuthorities() {
-		return Set.of();
+		return userRoles.stream().map(UserRole::getAuthority).collect(Collectors.toUnmodifiableSet());
 	}
 
 }

@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.join.core.auth.domain.User;
 import com.join.core.common.domain.BaseTimeEntity;
-import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.common.util.TokenGenerator;
 import com.join.core.file.domain.SinglePhotoContainer;
@@ -70,11 +69,13 @@ public class Avatar extends BaseTimeEntity implements SinglePhotoContainer<Profi
 	}
 
 	public Avatar(User user, ProfilePhoto photo) {
-		if (user == null) throw new InvalidParamException(INVALID_PARAMETER, "Avatar.user");
-		if (photo == null) throw new InvalidParamException(INVALID_PARAMETER, "Avatar.photo");
+		if (user == null)
+			throw new InvalidParamException(INVALID_PARAMETER, "Avatar.user");
+		if (photo == null)
+			throw new InvalidParamException(INVALID_PARAMETER, "Avatar.photo");
 
 		this.avatarToken = TokenGenerator.randomCharacterWithPrefix(AVATAR_PREFIX);
-		this.nickname = "TEMP";
+		this.nickname = null;
 		this.totalRating = 0;
 		this.ratingCnt = 0;
 		this.user = user;
@@ -82,6 +83,7 @@ public class Avatar extends BaseTimeEntity implements SinglePhotoContainer<Profi
 	}
 
 	public boolean isNicknameSet() {
-		return StringUtils.isNoneEmpty(nickname);
+		return StringUtils.isNotEmpty(nickname);
 	}
+
 }

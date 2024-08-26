@@ -23,7 +23,7 @@ public class UserReaderImpl implements UserReader {
 	@Override
 	public UserInfo.SigIn getSignInInfo(String email) {
 		return userRepository.findByEmail(email)
-			.map(u -> userInfoMapper.of(u, false))
+			.map(user -> userInfoMapper.of(user, false))
 			.orElseGet(UserInfo.SigIn::unregistered);
 	}
 

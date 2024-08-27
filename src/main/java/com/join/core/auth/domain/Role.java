@@ -1,6 +1,6 @@
-package com.join.core.user.domain;
+package com.join.core.auth.domain;
 
-import com.join.core.user.constant.RoleType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,10 +24,29 @@ public class Role {
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private RoleType roleType;
+	private Type type;
 
-	public Role(RoleType roleType) {
-		this.roleType = roleType;
+	@Getter
+	public enum Type {
+		NO_PROFILE("NO_PROFILE"),
+		USER("ROLE_USER"),
+		ADMIN("ROLE_ADMIN"),
+		GUEST("ROLE_GUEST");
+
+		private final String authority;
+
+		Type(String authority) {
+			this.authority = authority;
+		}
+
+	}
+
+	public Role(Type type) {
+		this.type = type;
+	}
+
+	SimpleGrantedAuthority toGrantedAuthority() {
+		return new SimpleGrantedAuthority(this.type.getAuthority());
 	}
 
 }

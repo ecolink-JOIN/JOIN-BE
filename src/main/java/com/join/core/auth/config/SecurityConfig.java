@@ -1,4 +1,4 @@
-package com.join.core.common.config.security;
+package com.join.core.auth.config;
 
 import java.util.List;
 
@@ -21,15 +21,26 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.join.core.auth.handler.JsonLogoutSuccessHandler;
+import com.join.core.auth.handler.OAuth2SuccessHandler;
+import com.join.core.auth.service.OAuth2UserLoadingService;
+
 @Configuration
 @EnableMethodSecurity
 @EnableWebSecurity
 public class SecurityConfig {
 
 	private static final String AUTHORIZATION_HEADER = "Authorization";
+	private final OAuth2SuccessHandler oauth2SuccessHandler;
+	private final OAuth2UserLoadingService oauth2UserLoadingService;
+	private final JsonLogoutSuccessHandler logoutSuccessHandler;
 	private final String apiPrefix;
 
-	public SecurityConfig(@Value("${api.prefix}") String apiPrefix) {
+	public SecurityConfig(OAuth2SuccessHandler oauth2SuccessHandler, OAuth2UserLoadingService oauth2UserLoadingService,
+		JsonLogoutSuccessHandler logoutSuccessHandler, @Value("${api.prefix}") String apiPrefix) {
+		this.oauth2SuccessHandler = oauth2SuccessHandler;
+		this.oauth2UserLoadingService = oauth2UserLoadingService;
+		this.logoutSuccessHandler = logoutSuccessHandler;
 		this.apiPrefix = apiPrefix;
 	}
 
@@ -38,10 +49,13 @@ public class SecurityConfig {
 		http.cors(cors -> cors.configurationSource(websiteConfigurationSource()))
 			.csrf(AbstractHttpConfigurer::disable)
 			.formLogin(AbstractHttpConfigurer::disable)
-			//                .oauth2Login(oauth ->
-			//                        oauth.authorizationEndpoint(authorization -> authorization.baseUri(apiPrefix + "/oauth2/authorization"))
-			//                                .redirectionEndpoint(redirection -> redirection.baseUri(apiPrefix + "/oauth2/code")))
-			.logout(logout -> logout.logoutUrl(apiPrefix + "/logout"))
+			.oauth2Login(oauth ->
+				oauth.authorizationEndpoint(authorization -> authorization.baseUri(apiPrefix + "/oauth2/authorization"))
+					.redirectionEndpoint(redirection -> redirection.baseUri(apiPrefix + "/oauth2/code"))
+					.userInfoEndpoint(userInfo -> userInfo.userService(oauth2UserLoadingService))
+					.successHandler(oauth2SuccessHandler))
+			.logout(logout -> logout.logoutUrl(apiPrefix + "/logout")
+				.logoutSuccessHandler(logoutSuccessHandler))
 			.headers(headers ->
 				headers.addHeaderWriter(
 					new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)));
@@ -70,8 +84,8 @@ public class SecurityConfig {
 	static RoleHierarchy roleHierarchy() {
 		RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
 		hierarchy.setHierarchy("""
-			ROLE_ADMIN > ROLE_MANAGER
-			ROLE_MANAGER > ROLE_USER
+			ROLE_ADMIN > ROLE_USER
+			ROLE_USER > ROLE_GUEST
 			""");
 		return hierarchy;
 	}

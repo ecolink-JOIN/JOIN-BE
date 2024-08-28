@@ -45,9 +45,20 @@ public enum ErrorCode {
 	FAIL_TO_ANALYZE_FILE(HttpStatus.INTERNAL_SERVER_ERROR, "F-003", "이미지 파일을 분석하는데 실패했습니다."),
 	FAIL_TO_UPLOAD_FILE(HttpStatus.INTERNAL_SERVER_ERROR, "F-004", "파일 업로드에 실패했습니다."),
 	IMAGE_FILE_IS_NULL(HttpStatus.BAD_REQUEST, "F-005", "요청된 파일이 null입니다."),
-	IMAGE_EXTENSION_IS_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "F-006", "요청된 파일의 확장자는 지원되지 않습니다.");
+	IMAGE_EXTENSION_IS_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "F-006", "요청된 파일의 확장자는 지원되지 않습니다."),
+
+	/**
+	 * 주소 선택 관련 오류
+	 */
+	ADDRESS_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "AD-001", "주소 선택이 누락되었습니다."),
+
+	/**
+	 * 카테고리 선택 관련 오류
+	 */
+	CATEGORY_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "C-001", "카테고리 선택이 누락되었습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;
+
 }

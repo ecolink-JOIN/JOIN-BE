@@ -1,9 +1,9 @@
 package com.join.core.auth.model;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import com.join.core.user.constant.UserType;
+import com.join.core.auth.constant.UserType;
+import com.join.core.auth.domain.User;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import lombok.Getter;
 public class OAuth2Attributes {
 
 	private Map<String, Object> attributes;
-	private UserType userType;
+	private UserType platform;
 	private String attributeKey;
 	private String email;
 	private String name;
@@ -22,7 +22,7 @@ public class OAuth2Attributes {
 
 	public static OAuth2Attributes of(Map<String, Object> attributes) {
 		return OAuth2Attributes.builder()
-			.userType((UserType)attributes.get("userType"))
+			.platform((UserType)attributes.get("platform"))
 			.attributeKey((String)attributes.get("key"))
 			.email((String)attributes.get("email"))
 			.name((String)attributes.get("name"))
@@ -31,16 +31,18 @@ public class OAuth2Attributes {
 			.build();
 	}
 
-	public Map<String, Object> convertToMap() {
-		Map<String, Object> map = new HashMap<>();
-		map.put("userType", userType);
-		map.put("id", attributeKey);
-		map.put("key", attributeKey);
-		map.put("email", email);
-		map.put("name", name);
-		map.put("hasImage", hasImage);
-		map.put("profileImage", profileImage);
-		return map;
+	public Map<String, Object> toMap() {
+		return Map.of(
+			"platform", platform,
+			"key", attributeKey,
+			"email", email,
+			"name", name,
+			"hasImage", hasImage,
+			"profileImage", profileImage);
+	}
+
+	public User toEntity() {
+		return new User(email, platform);
 	}
 
 	public boolean hasImage() {

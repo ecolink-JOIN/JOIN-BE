@@ -93,6 +93,8 @@ public class Study {
         this.stDate = infoRequest.getStDate();
         this.endDate = infoRequest.getEndDate();
         this.writer = writer;
+        this.viewCnt = 0;
+        this.bookmarkCnt = 0;
         this.address = address;
         this.category = category;
         this.status = StudyStatus.RECRUITING;

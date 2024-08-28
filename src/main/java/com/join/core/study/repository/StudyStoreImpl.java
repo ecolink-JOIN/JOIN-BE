@@ -12,8 +12,8 @@ public class StudyStoreImpl implements StudyStore {
     private final StudyRepository studyRepository;
 
     @Override
-    public Study store(Study study) {
-        return studyRepository.save(study);
+    public void store(Study study) {
+        studyRepository.save(study);
     }
 
 }

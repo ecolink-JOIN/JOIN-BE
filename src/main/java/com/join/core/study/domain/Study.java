@@ -3,10 +3,10 @@ package com.join.core.study.domain;
 import com.join.core.address.domain.Address;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.category.domain.Category;
+import com.join.core.schedule.domain.StudySchedule;
 import com.join.core.study.constant.StudyEndReason;
 import com.join.core.study.constant.StudyStatus;
-import com.join.core.study.dto.request.StudyDescriptionRequest;
-import com.join.core.study.dto.request.StudyInfoRequest;
+import com.join.core.study.dto.request.StudyRecruitRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Entity
@@ -86,26 +87,33 @@ public class Study {
     @ManyToOne(fetch = FetchType.LAZY)
     private Avatar writer;
 
-    public Study(StudyInfoRequest infoRequest, Avatar writer, Address address, Category category) {
-        this.capacity = infoRequest.getCapacity();
-        this.isRegular = infoRequest.isRegular();
-        this.recruitEndDate = infoRequest.getRecruitEndDate();
-        this.stDate = infoRequest.getStDate();
-        this.endDate = infoRequest.getEndDate();
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StudySchedule> schedules;
+
+    public Study(StudyRecruitRequest recruitRequest, Avatar writer, Address address, Category category) {
+        this.capacity = recruitRequest.getCapacity();
+        this.isRegular = recruitRequest.isRegular();
+        this.recruitEndDate = recruitRequest.getRecruitEndDate();
+        this.stDate = recruitRequest.getStDate();
+        this.endDate = recruitRequest.getEndDate();
         this.writer = writer;
         this.viewCnt = 0;
         this.bookmarkCnt = 0;
         this.address = address;
         this.category = category;
         this.status = StudyStatus.RECRUITING;
+        this.studyName = recruitRequest.getStudyName();
+        this.introduction = recruitRequest.getIntroduction();
+        this.content = recruitRequest.getContent();
+        this.ruleExp = recruitRequest.getRuleExp();
+        this.qualificationExp = recruitRequest.getQualificationExp();
     }
 
-    public void addStudyDescription(StudyDescriptionRequest descriptionRequest) {
-        this.studyName = descriptionRequest.getStudyName();
-        this.introduction = descriptionRequest.getIntroduction();
-        this.content = descriptionRequest.getContent();
-        this.ruleExp = descriptionRequest.getRuleExp();
-        this.qualificationExp = descriptionRequest.getQualificationExp();
+    public void addSchedules(List<StudySchedule> schedules) {
+        this.schedules = schedules;
+        for (StudySchedule schedule : schedules) {
+            schedule.setStudy(this);
+        }
     }
 
     public void addViewCount() {

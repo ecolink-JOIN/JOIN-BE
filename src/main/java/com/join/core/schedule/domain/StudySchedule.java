@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalTime;
 
@@ -30,9 +31,16 @@ public class StudySchedule extends BaseTimeEntity {
     @NotNull
     private LocalTime endTime;
 
+    @Setter
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "study_id", nullable = false)
+    @JoinColumn(name = "study_id", nullable = false)  // 외래 키 설정
     private Study study;
+
+    public StudySchedule(DayType weekOfDay, LocalTime stTime, LocalTime endTime) {
+        this.weekOfDay = weekOfDay;
+        this.stTime = stTime;
+        this.endTime = endTime;
+    }
 
 }

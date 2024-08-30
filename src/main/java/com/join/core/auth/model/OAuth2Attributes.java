@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.join.core.auth.constant.UserType;
 import com.join.core.auth.domain.User;
+import com.join.core.avatar.domain.ProfilePhoto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -41,8 +42,8 @@ public class OAuth2Attributes {
 			"profileImage", profileImage);
 	}
 
-	public User toEntity() {
-		return new User(email, platform);
+	public User toEntity(ProfilePhoto photo) {
+		return new User(email, platform, photo);
 	}
 
 	public boolean hasImage() {

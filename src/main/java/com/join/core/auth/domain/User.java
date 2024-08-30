@@ -3,6 +3,7 @@ package com.join.core.auth.domain;
 import static com.join.core.common.exception.ErrorCode.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.join.core.auth.constant.UserType;
 import com.join.core.avatar.domain.Avatar;
+import com.join.core.avatar.domain.ProfilePhoto;
 import com.join.core.common.domain.BaseTimeEntity;
 import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.common.util.TokenGenerator;
@@ -67,17 +69,17 @@ public class User extends BaseTimeEntity {
 	private boolean termsAgreed;
 
 	@NotNull
-	@OneToOne(mappedBy = "user")
+	@OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
 	private Avatar avatar;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<UserRole> userRoles;
+	private List<UserRole> userRoles = new ArrayList<>();
 
 	public boolean isUserOf(UserType providerType) {
 		return providerType.equals(this.platform);
 	}
 
-	public User(String email, UserType platform) {
+	public User(String email, UserType platform, ProfilePhoto photo) {
 		if (StringUtils.isEmpty(email)) throw new InvalidParamException(INVALID_PARAMETER, "User.email");
 		if (platform == null) throw new InvalidParamException(INVALID_PARAMETER, "User.platform");
 
@@ -87,6 +89,7 @@ public class User extends BaseTimeEntity {
 		this.singUpDate = LocalDateTime.now();
 		this.status = Status.PENDING;
 		this.termsAgreed = false;
+		this.avatar = new Avatar(this, photo);
 	}
 
 	public void addRole(Role role) {

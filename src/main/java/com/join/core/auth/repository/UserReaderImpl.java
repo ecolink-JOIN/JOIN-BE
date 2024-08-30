@@ -11,6 +11,7 @@ import com.join.core.auth.service.UserReader;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Component
 public class UserReaderImpl implements UserReader {
 
@@ -18,7 +19,6 @@ public class UserReaderImpl implements UserReader {
 	private final RoleRepository roleRepository;
 	private final UserInfoMapper userInfoMapper;
 
-	@Transactional(readOnly = true)
 	@Override
 	public UserInfo.SigIn getSignInInfo(String email) {
 		return userRepository.findByEmail(email)
@@ -26,13 +26,13 @@ public class UserReaderImpl implements UserReader {
 			.orElseGet(UserInfo.SigIn::unregistered);
 	}
 
-	@Transactional(readOnly = true)
+	@Transactional
 	@Override
 	public Role getGuestRole() {
 		return getRole(Role.Type.GUEST);
 	}
 
-	@Transactional(readOnly = true)
+	@Transactional
 	@Override
 	public Role getUserRole() {
 		return getRole(Role.Type.USER);

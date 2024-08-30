@@ -32,7 +32,7 @@ public class OAuth2UserLoadingService implements OAuth2UserService<OAuth2UserReq
 
 		OAuth2Attributes attributes = type.extract(userNameAttributeName, oAuth2User.getAttributes());
 
-		return new DefaultOAuth2User(List.of(), attributes.toMap(), oAuth2User.getName());
+		return new DefaultOAuth2User(List.of(), attributes.toMap(), "key");
 	}
 
 }

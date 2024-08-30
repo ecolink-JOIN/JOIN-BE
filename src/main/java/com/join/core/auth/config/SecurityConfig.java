@@ -2,6 +2,7 @@ package com.join.core.auth.config;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +16,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
-import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -24,6 +24,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.join.core.auth.handler.JsonLogoutSuccessHandler;
 import com.join.core.auth.handler.OAuth2SuccessHandler;
 import com.join.core.auth.service.OAuth2UserLoadingService;
+import com.join.core.common.exception.ErrorCode;
+import com.join.core.common.exception.impl.InvalidParamException;
 
 @Configuration
 @EnableMethodSecurity
@@ -31,17 +33,26 @@ import com.join.core.auth.service.OAuth2UserLoadingService;
 public class SecurityConfig {
 
 	private static final String AUTHORIZATION_HEADER = "Authorization";
+	private static final String OAUTH2_AUTHORIZATION_URI_POSTFIX = "/oauth2/authorization";
+	private static final String OAUTH2_REDIRECT_URI_POSTFIX = "/oauth2/code";
 	private final OAuth2SuccessHandler oauth2SuccessHandler;
 	private final OAuth2UserLoadingService oauth2UserLoadingService;
 	private final JsonLogoutSuccessHandler logoutSuccessHandler;
 	private final String apiPrefix;
+	private final String oauth2AuthorizationURI;
+	private final String oauth2RedirectURI;
 
 	public SecurityConfig(OAuth2SuccessHandler oauth2SuccessHandler, OAuth2UserLoadingService oauth2UserLoadingService,
 		JsonLogoutSuccessHandler logoutSuccessHandler, @Value("${api.prefix}") String apiPrefix) {
+		if (StringUtils.isBlank(apiPrefix))
+			throw new InvalidParamException(ErrorCode.INVALID_PARAMETER, "유효하지 않은 API prefix");
+
 		this.oauth2SuccessHandler = oauth2SuccessHandler;
 		this.oauth2UserLoadingService = oauth2UserLoadingService;
 		this.logoutSuccessHandler = logoutSuccessHandler;
 		this.apiPrefix = apiPrefix;
+		this.oauth2AuthorizationURI = apiPrefix + OAUTH2_AUTHORIZATION_URI_POSTFIX;
+		this.oauth2RedirectURI = apiPrefix + OAUTH2_REDIRECT_URI_POSTFIX;
 	}
 
 	@Bean
@@ -50,8 +61,8 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.formLogin(AbstractHttpConfigurer::disable)
 			.oauth2Login(oauth ->
-				oauth.authorizationEndpoint(authorization -> authorization.baseUri(apiPrefix + "/oauth2/authorization"))
-					.redirectionEndpoint(redirection -> redirection.baseUri(apiPrefix + "/oauth2/code"))
+				oauth.authorizationEndpoint(authorization -> authorization.baseUri(oauth2AuthorizationURI))
+					.redirectionEndpoint(redirection -> redirection.baseUri(oauth2RedirectURI))
 					.userInfoEndpoint(userInfo -> userInfo.userService(oauth2UserLoadingService))
 					.successHandler(oauth2SuccessHandler))
 			.logout(logout -> logout.logoutUrl(apiPrefix + "/logout")
@@ -76,8 +87,8 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	static HttpSessionIdResolver httpSessionIdResolver() {
-		return new HeaderHttpSessionIdResolver(AUTHORIZATION_HEADER);
+	HttpSessionIdResolver httpSessionIdResolver() {
+		return new CompositeSessionIdResolver(AUTHORIZATION_HEADER, oauth2AuthorizationURI, oauth2RedirectURI);
 	}
 
 	@Bean

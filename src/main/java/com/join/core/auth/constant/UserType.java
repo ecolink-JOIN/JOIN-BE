@@ -19,7 +19,7 @@ public enum UserType {
 	KAKAO("kakao") {
 		@Override
 		public OAuth2Attributes extract(String attributeKey, Map<String, Object> attributes) {
-			String keyAttribute = (String)attributes.get(attributeKey);
+			String keyAttribute = attributes.get(attributeKey).toString();
 			Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
 			Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
 

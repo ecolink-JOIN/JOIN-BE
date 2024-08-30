@@ -34,7 +34,7 @@ public class StudySchedule extends BaseTimeEntity {
     @Setter
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "study_id", nullable = false)  // 외래 키 설정
+    @JoinColumn(name = "study_id", nullable = false)
     private Study study;
 
     public StudySchedule(DayType weekOfDay, LocalTime stTime, LocalTime endTime) {

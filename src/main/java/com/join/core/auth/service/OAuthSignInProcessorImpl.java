@@ -3,7 +3,6 @@ package com.join.core.auth.service;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.join.core.auth.domain.User;
 import com.join.core.auth.domain.UserInfo;
 import com.join.core.auth.model.OAuth2Attributes;
 
@@ -15,7 +14,6 @@ public class OAuthSignInProcessorImpl implements OAuthSignInProcessor {
 
 	private final UserReader userReader;
 	private final UserStore userStore;
-	private final UserSeriesFactory userSeriesFactory;
 	private final OAuthSignInValidator oAuthSignInValidator;
 
 	@Transactional
@@ -34,8 +32,7 @@ public class OAuthSignInProcessorImpl implements OAuthSignInProcessor {
 		if (signInInfo.isRegistered()) {
 			return signInInfo;
 		}
-		User user = userStore.store(attributes.toEntity());
-		return userSeriesFactory.store(user, attributes);
+		return userStore.store(attributes);
 	}
 
 }

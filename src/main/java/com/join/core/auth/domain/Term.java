@@ -45,7 +45,7 @@ public class Term extends BaseTimeEntity {
 	@Getter
 	@RequiredArgsConstructor
 	public enum Type {
-		REQUIRED("필수"), OPTIONAL("선택"), INACTIVE("종료");
+		REQUIRED("필수"), OPTIONAL("선택");
 
 		private final String description;
 	}

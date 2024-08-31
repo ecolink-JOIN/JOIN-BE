@@ -5,7 +5,6 @@ import java.util.Set;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.join.core.auth.constant.UserType;
-import com.join.core.avatar.domain.Avatar;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +14,6 @@ public class UserInfo {
 
 	private UserInfo() {
 	}
-
 
 	@Builder
 	@Getter

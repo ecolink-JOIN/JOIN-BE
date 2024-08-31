@@ -1,7 +1,7 @@
 package com.join.core.auth.domain;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.join.core.common.domain.BaseTimeEntity;
 
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class Term extends BaseTimeEntity {
 
 	@EmbeddedId
-	private Key id;
+	private Key key;
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -59,9 +59,9 @@ public class Term extends BaseTimeEntity {
 	private String content;
 
 	@NotNull
-	private LocalDateTime startDate;
+	private LocalDate startDate;
 
 	@NotNull
-	private LocalDateTime endDate;
+	private LocalDate endDate;
 
 }

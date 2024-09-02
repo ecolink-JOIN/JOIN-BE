@@ -1,13 +1,15 @@
 package com.join.core.study.domain;
 
-import com.join.core.enrollment.domain.Enrollment;
 import com.join.core.address.domain.Address;
+import com.join.core.avatar.domain.Avatar;
 import com.join.core.category.domain.Category;
-import com.join.core.rule.domain.Rule;
+import com.join.core.schedule.domain.StudySchedule;
 import com.join.core.study.constant.StudyEndReason;
 import com.join.core.study.constant.StudyStatus;
+import com.join.core.study.dto.request.StudyRecruitRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,7 @@ public class Study {
     private Long id;
 
     @NotNull
+    @Size(min = 5, max = 25)
     private String studyName;
 
     @NotNull
@@ -46,12 +49,14 @@ public class Study {
     private boolean isRegular;
 
     @NotNull
+    private LocalDate recruitEndDate;
+
+    @NotNull
     private LocalDate stDate;
 
     @NotNull
     private LocalDate endDate;
 
-    @NotNull
     private LocalDate actualEndDate;
 
     @NotNull
@@ -77,11 +82,39 @@ public class Study {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
-    private List<Enrollment> enrollments;
+    @NotNull
+    @JoinColumn(name = "writer_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Avatar writer;
 
-    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Rule> rules;
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StudySchedule> schedules;
+
+    public Study(StudyRecruitRequest recruitRequest, Avatar writer, Address address, Category category) {
+        this.capacity = recruitRequest.getCapacity();
+        this.isRegular = recruitRequest.isRegular();
+        this.recruitEndDate = recruitRequest.getRecruitEndDate();
+        this.stDate = recruitRequest.getStDate();
+        this.endDate = recruitRequest.getEndDate();
+        this.writer = writer;
+        this.viewCnt = 0;
+        this.bookmarkCnt = 0;
+        this.address = address;
+        this.category = category;
+        this.status = StudyStatus.RECRUITING;
+        this.studyName = recruitRequest.getStudyName();
+        this.introduction = recruitRequest.getIntroduction();
+        this.content = recruitRequest.getContent();
+        this.ruleExp = recruitRequest.getRuleExp();
+        this.qualificationExp = recruitRequest.getQualificationExp();
+    }
+
+    public void addSchedules(List<StudySchedule> schedules) {
+        this.schedules = schedules;
+        for (StudySchedule schedule : schedules) {
+            schedule.setStudy(this);
+        }
+    }
 
     public void addViewCount() {
         this.viewCnt++;

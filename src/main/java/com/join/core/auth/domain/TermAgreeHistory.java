@@ -53,4 +53,11 @@ public class TermAgreeHistory {
 	@NotNull
 	private LocalDateTime agreeDate;
 
+	TermAgreeHistory(User user, Term term, AcceptStatus status) {
+		this.user = user;
+		this.term = term;
+		this.status = status;
+		this.agreeDate = LocalDateTime.now();
+	}
+
 }

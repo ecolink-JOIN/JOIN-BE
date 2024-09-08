@@ -13,6 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class Term extends BaseTimeEntity {
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	@EqualsAndHashCode
 	@Embeddable
 	public static class Key implements Serializable {
 		@NotNull
@@ -35,6 +37,11 @@ public class Term extends BaseTimeEntity {
 		@NotNull
 		@NotBlank
 		private String version;
+
+		public Key(Long id, String version) {
+			this.id = id;
+			this.version = version;
+		}
 	}
 
 	// 약관 종류

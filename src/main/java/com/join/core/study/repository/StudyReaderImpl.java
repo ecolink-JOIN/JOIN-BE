@@ -14,8 +14,8 @@ public class StudyReaderImpl implements StudyReader {
     private final StudyRepository studyRepository;
 
     @Override
-    public Study getStudyById(Long studyId) {
-        return studyRepository.findById(studyId)
+    public Study getStudyByToken(String studyToken) {
+        return studyRepository.findByStudyToken(studyToken)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.STUDY_NOT_FOUND));
     }
 

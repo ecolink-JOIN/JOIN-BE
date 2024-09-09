@@ -20,12 +20,8 @@ public class ApplicationCreateRequest {
     @NotNull
     private LocalDate appDate;
 
-    @Schema(description = "스터디 ID", example = "1")
-    @NotNull
-    private Long studyId;
-
-    @Schema(description = "지원자 아바타 ID", example = "1")
-    @NotNull
-    private Long avatarId;
+    @Schema(description = "스터디 토큰", example = "std_abc123")
+    @NotBlank
+    private String studyToken;
 
 }

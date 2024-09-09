@@ -20,7 +20,7 @@ public class ApplicationService {
 
     @Transactional
     public void apply(String avatarToken, ApplicationCreateRequest request) {
-        Study study = studyReader.getStudyById(request.getStudyId());
+        Study study = studyReader.getStudyByToken(request.getStudyToken());
         Avatar avatar = avatarReader.getAvatarByToken(avatarToken);
 
         Application application = new Application(study, avatar, request.getAppDate(), request.getIntroduction());

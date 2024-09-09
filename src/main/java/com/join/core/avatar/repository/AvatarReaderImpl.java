@@ -1,6 +1,6 @@
-package com.join.core.auth.repository;
+package com.join.core.avatar.repository;
 
-import com.join.core.auth.service.AvatarReader;
+import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.EntityNotFoundException;

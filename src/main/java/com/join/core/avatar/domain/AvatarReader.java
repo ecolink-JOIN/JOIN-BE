@@ -1,6 +1,4 @@
-package com.join.core.auth.service;
-
-import com.join.core.avatar.domain.Avatar;
+package com.join.core.avatar.domain;
 
 public interface AvatarReader {
     Avatar getAvatarByToken(String avatarToken);

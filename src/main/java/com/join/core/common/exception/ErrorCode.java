@@ -65,7 +65,12 @@ public enum ErrorCode {
 	/**
 	 * 카테고리 선택 관련 오류
 	 */
-	CATEGORY_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "C-001", "카테고리 선택이 누락되었습니다.");
+	CATEGORY_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "C-001", "카테고리 선택이 누락되었습니다."),
+
+	/**
+	 * 스터디 관련 오류
+	 */
+	STUDY_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "S-001", "주어진 식별자로 스터디를 찾을 수 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

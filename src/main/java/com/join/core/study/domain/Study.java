@@ -3,6 +3,8 @@ package com.join.core.study.domain;
 import com.join.core.address.domain.Address;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.category.domain.Category;
+import com.join.core.common.exception.impl.InvalidParamException;
+import com.join.core.common.util.TokenGenerator;
 import com.join.core.schedule.domain.StudySchedule;
 import com.join.core.study.constant.StudyEndReason;
 import com.join.core.study.constant.StudyStatus;
@@ -17,14 +19,20 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.join.core.common.exception.ErrorCode.INVALID_PARAMETER;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Study {
 
+    private static final String STUDY_PREFIX = "std_";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String studyToken;
 
     @NotNull
     @Size(min = 5, max = 25)
@@ -91,6 +99,14 @@ public class Study {
     private List<StudySchedule> schedules;
 
     public Study(StudyRecruitRequest recruitRequest, Avatar writer, Address address, Category category) {
+        if (writer == null)
+            throw new InvalidParamException(INVALID_PARAMETER, "Study.writer");
+        if (address == null)
+            throw new InvalidParamException(INVALID_PARAMETER, "Study.address");
+        if (category == null)
+            throw new InvalidParamException(INVALID_PARAMETER, "Study.category");
+
+        this.studyToken = TokenGenerator.randomCharacterWithPrefix(STUDY_PREFIX);
         this.capacity = recruitRequest.getCapacity();
         this.isRegular = recruitRequest.isRegular();
         this.recruitEndDate = recruitRequest.getRecruitEndDate();

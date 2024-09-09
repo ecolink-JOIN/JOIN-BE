@@ -6,6 +6,7 @@ import com.join.core.common.domain.BaseTimeEntity;
 import com.join.core.study.domain.Study;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class Application extends BaseTimeEntity {
     private LocalDate appDate;
 
     @NotNull
+    @Size(min = 10)
     private String introduction;
 
     @NotNull
@@ -40,5 +42,13 @@ public class Application extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "avatar_id", nullable = false)
     private Avatar avatar;
+
+    public Application(Study study, Avatar avatar, LocalDate appDate, String introduction) {
+        this.study = study;
+        this.avatar = avatar;
+        this.appDate = appDate;
+        this.introduction = introduction;
+        this.status = ApplicationStatus.PENDING;
+    }
 
 }

@@ -4,9 +4,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.join.core.auth.domain.Role;
+import com.join.core.auth.domain.User;
 import com.join.core.auth.domain.UserInfo;
 import com.join.core.auth.domain.UserInfoMapper;
 import com.join.core.auth.service.UserReader;
+import com.join.core.common.exception.ErrorCode;
+import com.join.core.common.exception.impl.EntityNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +39,12 @@ public class UserReaderImpl implements UserReader {
 	@Override
 	public Role getUserRole() {
 		return getRole(Role.Type.USER);
+	}
+
+	@Override
+	public User getUser(Long userId) {
+		return userRepository.findById(userId)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND));
 	}
 
 	private Role getRole(Role.Type type) {

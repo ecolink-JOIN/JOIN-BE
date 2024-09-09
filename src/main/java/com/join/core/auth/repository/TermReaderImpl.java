@@ -1,5 +1,6 @@
 package com.join.core.auth.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -25,4 +26,10 @@ public class TermReaderImpl implements TermReader {
 		List<Term> terms = termRepository.findRequiredConsentWith(userId);
 		return terms.stream().map(termInfoMapper::of).toList();
 	}
+
+	@Override
+	public List<Term> getTerms(Collection<Term.Key> keys) {
+		return termRepository.findAllById(keys);
+	}
+
 }

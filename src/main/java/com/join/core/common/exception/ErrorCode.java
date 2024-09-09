@@ -53,6 +53,11 @@ public enum ErrorCode {
 	IMAGE_EXTENSION_IS_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "F-006", "요청된 파일의 확장자는 지원되지 않습니다."),
 
 	/**
+	 * 약관 관련 오류
+	 */
+	TERM_NOT_EXIST(HttpStatus.BAD_REQUEST, "T-001", "요청된 약관은 존재하지 않습니다."),
+
+	/**
 	 * 주소 선택 관련 오류
 	 */
 	ADDRESS_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "AD-001", "주소 선택이 누락되었습니다."),

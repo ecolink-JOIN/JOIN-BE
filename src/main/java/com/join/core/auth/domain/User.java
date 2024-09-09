@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -75,6 +76,10 @@ public class User extends BaseTimeEntity {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserRole> userRoles = new ArrayList<>();
 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
+	private List<TermAgreeHistory> termAgreeHistoryList = new ArrayList<>();
+
+
 	public boolean isUserOf(UserType providerType) {
 		return providerType.equals(this.platform);
 	}
@@ -98,6 +103,12 @@ public class User extends BaseTimeEntity {
 
 	public Set<SimpleGrantedAuthority> getAuthorities() {
 		return this.userRoles.stream().map(UserRole::getAuthority).collect(Collectors.toUnmodifiableSet());
+	}
+
+	public void agree(Term term, TermAgreeHistory.AcceptStatus status) {
+		if(ObjectUtils.isEmpty(term))
+			throw new InvalidParamException(INVALID_PARAMETER, "agree.term");
+		this.termAgreeHistoryList.add(new TermAgreeHistory(this, term, status));
 	}
 
 }

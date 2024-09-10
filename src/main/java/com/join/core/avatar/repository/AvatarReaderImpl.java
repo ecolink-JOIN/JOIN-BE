@@ -1,6 +1,6 @@
-package com.join.core.auth.repository;
+package com.join.core.avatar.repository;
 
-import com.join.core.auth.service.AvatarReader;
+import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.EntityNotFoundException;
@@ -19,6 +19,12 @@ public class AvatarReaderImpl implements AvatarReader {
     public Avatar getAvatarByToken(String avatarToken) {
         return avatarRepository.findByAvatarToken(avatarToken)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_FOUND));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean existsByNickname(String nickname) {
+        return avatarRepository.existsByNickname(nickname);
     }
 
 }

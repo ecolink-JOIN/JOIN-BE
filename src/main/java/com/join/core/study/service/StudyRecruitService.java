@@ -1,6 +1,6 @@
 package com.join.core.study.service;
 
-import com.join.core.auth.service.AvatarReader;
+import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.address.service.AddressReader;
 import com.join.core.category.service.CategoryReader;
 import com.join.core.avatar.domain.Avatar;

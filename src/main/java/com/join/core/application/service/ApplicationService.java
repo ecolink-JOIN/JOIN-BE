@@ -5,7 +5,7 @@ import com.join.core.application.dto.request.ApplicationCreateRequest;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
-import com.join.core.auth.service.AvatarReader;
+import com.join.core.avatar.domain.AvatarReader;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

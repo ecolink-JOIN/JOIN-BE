@@ -21,4 +21,10 @@ public class AvatarReaderImpl implements AvatarReader {
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public boolean existsByNickname(String nickname) {
+        return avatarRepository.existsByNickname(nickname);
+    }
+
 }

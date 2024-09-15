@@ -20,4 +20,9 @@ public class AuthenticationResult {
 		this.token = new AuthenticationToken(sigIn);
 		this.response = new AuthenticationResponse(sigIn);
 	}
+
+	public void addSessionId(String sessionId) {
+		response.setSessionId(sessionId);
+	}
+
 }

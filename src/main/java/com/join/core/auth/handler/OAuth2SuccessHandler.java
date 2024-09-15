@@ -35,6 +35,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
 		AuthenticationResult result = authenticationService.oauthSignIn(attributes);
 		log.info("User signed in: {}", result.getResponse());
+		result.addSessionId(request.getSession(false).getId());
 
 		securityContextService.saveToSecurityContext(result.getToken());
 		jsonResponseMaker.mapToJson(response, result.getResponse());

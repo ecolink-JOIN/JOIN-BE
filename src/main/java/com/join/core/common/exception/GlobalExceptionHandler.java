@@ -12,10 +12,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.join.core.auth.constant.UserType;
 import com.join.core.common.exception.impl.DuplicatedEmailException;
 import com.join.core.common.response.ErrorResponse;
 import com.join.core.security.service.SecurityContextService;
-import com.join.core.auth.constant.UserType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -78,7 +78,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse<Object>> handleCustomException(GeneralException e) {
 		ErrorCode errorCode = e.getErrorCode();
 		return ResponseEntity.status(errorCode.getHttpStatus())
-			.body(ErrorResponse.error(errorCode.getCode(), errorCode.getMessage()));
+			.body(ErrorResponse.error(errorCode.getCode(), e.getMessage()));
 	}
 
 	/**

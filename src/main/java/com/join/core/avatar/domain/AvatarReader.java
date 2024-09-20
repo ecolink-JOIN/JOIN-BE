@@ -5,4 +5,6 @@ public interface AvatarReader {
 
 	boolean existsByNickname(String nickname);
 
+	Avatar getById(Long id);
+
 }

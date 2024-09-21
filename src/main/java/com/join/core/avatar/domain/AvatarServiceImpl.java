@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.join.core.common.exception.impl.InvalidNicknameException;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class AvatarServiceImpl implements AvatarService {
 
 	private final List<NicknameValidator> nicknameValidatorList;
+	private final AvatarReader avatarReader;
 
 	@Override
 	public AvatarInfo.ValidNickname isValid(AvatarCommand.ChangeNickname command) {
@@ -24,6 +27,18 @@ public class AvatarServiceImpl implements AvatarService {
 		}
 
 		return AvatarInfo.ValidNickname.valid();
+	}
+
+	@Transactional
+	@Override
+	public AvatarInfo.ValidNickname changeNickname(Long avatarId, AvatarCommand.ChangeNickname command) {
+		AvatarInfo.ValidNickname result = isValid(command);
+		if (!result.isValid())
+			throw new InvalidNicknameException(result.getErrorCode(), result.getMessage());
+
+		Avatar avatar = avatarReader.getById(avatarId);
+		avatar.changeNickname(command.getNickname());
+		return result;
 	}
 
 }

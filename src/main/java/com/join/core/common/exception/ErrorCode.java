@@ -39,8 +39,8 @@ public enum ErrorCode {
 	/**
 	 * 닉네임 관련 오류
 	 */
-	FAIL_TO_FIND_UNIQUE_NICKNAME(HttpStatus.INTERNAL_SERVER_ERROR, "N-001", "유일한 닉네임을 찾는데 실패했습니다."),
-	DUPLICATED_NICKNAME(HttpStatus.BAD_REQUEST, "N-002", "이미 사용중인 닉네임 입니다."),
+	DUPLICATED_NICKNAME(HttpStatus.BAD_REQUEST, "N-001", "이미 사용 중인 닉네임입니다."),
+	INVALID_NICKNAME_FORMAT(HttpStatus.BAD_REQUEST, "N-002", "닉네임 포맷이 적절하지 않습니다."),
 
 	/**
 	 * 파일 업로드 관련 오류

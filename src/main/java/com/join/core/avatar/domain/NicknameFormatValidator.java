@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import com.join.core.common.exception.ErrorCode;
+
 @Order(1)
 @Component
 public class NicknameFormatValidator implements NicknameValidator {
@@ -16,7 +18,7 @@ public class NicknameFormatValidator implements NicknameValidator {
 	public AvatarInfo.ValidNickname validate(AvatarCommand.ChangeNickname command) {
 		Matcher matcher = pattern.matcher(command.getNickname());
 		if (!matcher.matches())
-			return new AvatarInfo.ValidNickname(false, "2-7자리 한글/영문/숫자로 입력해주세요.");
+			return new AvatarInfo.ValidNickname(false, "2-7자리 한글/영문/숫자로 입력해주세요.", ErrorCode.INVALID_NICKNAME_FORMAT);
 
 		return AvatarInfo.ValidNickname.valid();
 	}

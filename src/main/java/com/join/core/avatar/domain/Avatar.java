@@ -86,4 +86,9 @@ public class Avatar extends BaseTimeEntity implements SinglePhotoContainer<Profi
 		return StringUtils.isNotEmpty(nickname);
 	}
 
+	public void changeNickname(String nickname) {
+		if(StringUtils.isBlank(nickname))
+			throw new InvalidParamException(INVALID_PARAMETER, "Avatar.nickname");
+		this.nickname = nickname;
+	}
 }

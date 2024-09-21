@@ -27,4 +27,10 @@ public class AvatarReaderImpl implements AvatarReader {
         return avatarRepository.existsByNickname(nickname);
     }
 
+    @Override
+    public Avatar getById(Long id) {
+        return avatarRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_FOUND));
+    }
+
 }

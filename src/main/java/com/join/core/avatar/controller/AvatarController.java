@@ -1,16 +1,23 @@
 package com.join.core.avatar.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.avatar.domain.AvatarCommand;
 import com.join.core.avatar.domain.AvatarInfo;
 import com.join.core.avatar.domain.AvatarService;
 import com.join.core.common.response.ApiResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -26,6 +33,17 @@ public class AvatarController {
 	@GetMapping("/nickname/valid")
 	public ApiResponse<AvatarInfo.ValidNickname> isValidNickname(AvatarCommand.ChangeNickname command) {
 		return ApiResponse.ok(avatarService.isValid(command));
+	}
+
+	@Tag(name = "${swagger.tag.sign-up}")
+	@Operation(summary = "닉네임 변경 API - 인증 필요",
+		description = "닉네임 변경 API - 인증 필요",
+		security = {@SecurityRequirement(name = "session-token")})
+	@PreAuthorize("isAuthenticated()")
+	@PatchMapping("/nickname")
+	public ApiResponse<AvatarInfo.ValidNickname> changeNickname(@AuthenticationPrincipal UserPrincipal principal,
+		@RequestBody @Valid AvatarCommand.ChangeNickname command) {
+		return ApiResponse.ok(avatarService.changeNickname(principal.getAvatarId(), command));
 	}
 
 }

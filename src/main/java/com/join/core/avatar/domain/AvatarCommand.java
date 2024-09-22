@@ -1,6 +1,6 @@
 package com.join.core.avatar.domain;
 
-import lombok.Builder;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 public class AvatarCommand {
@@ -8,10 +8,10 @@ public class AvatarCommand {
 	private AvatarCommand() {
 	}
 
-	@Builder
 	@Getter
 	public static class ChangeNickname {
-		private final String nickname;
+		@NotBlank
+		private String nickname;
 	}
 
 }

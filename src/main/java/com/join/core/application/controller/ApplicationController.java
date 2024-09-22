@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/application")
+@RequestMapping("${api.prefix}/applications")
 public class ApplicationController {
 
     private final ApplicationService applicationService;
@@ -27,7 +27,7 @@ public class ApplicationController {
             description = "스터디 지원 - 인증 필수",
             security = {@SecurityRequirement(name = "session-token")})
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("/apply")
+    @PostMapping
     public ApiResponse<Void> apply(@AuthenticationPrincipal UserPrincipal principal,
                                    @Valid @RequestBody ApplicationCreateRequest request) {
         Long avatarId = principal.getAvatarId();
@@ -36,11 +36,11 @@ public class ApplicationController {
     }
 
     @Tag(name = "${swagger.tag.study}")
-    @Operation(summary = "스터디 지원 수락 - 인증 필수",
-            description = "스터디 지원 수락 - 인증 필수",
+    @Operation(summary = "스터디 지원 승인 - 인증 필수",
+            description = "스터디 지원 승인 - 인증 필수",
             security = {@SecurityRequirement(name = "session-token")})
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("/apply/accept/{applicationId}")
+    @PatchMapping("/{applicationId}/accept")
     public ApiResponse<Void> acceptApplication(@PathVariable Long applicationId,
                                                @AuthenticationPrincipal UserPrincipal principal) {
         applicationDecisionService.acceptApplication(applicationId, principal.getAvatarId());

@@ -30,7 +30,7 @@ public class StudyController {
     @PostMapping("/recruit")
     public ApiResponse<Void> createStudy(@AuthenticationPrincipal UserPrincipal principal,
                                          @RequestBody StudyRecruitRequest recruitRequest) {
-        studyRecruitService.createStudy(principal.getAvatarToken(), recruitRequest);
+        studyRecruitService.createStudy(principal.getAvatarId(), recruitRequest);
         return ApiResponse.ok();
     }
 

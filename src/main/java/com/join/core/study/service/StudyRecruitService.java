@@ -25,8 +25,8 @@ public class StudyRecruitService {
     private final CategoryReader categoryReader;
 
     @Transactional
-    public void createStudy(String avatarToken, StudyRecruitRequest recruitRequest) {
-        Avatar writer = avatarReader.getAvatarByToken(avatarToken);
+    public void createStudy(Long avatarId, StudyRecruitRequest recruitRequest) {
+        Avatar writer = avatarReader.getAvatarById(avatarId);
         Address address = addressReader.getAddressByLocation(recruitRequest.getProvince(), recruitRequest.getCity());
         Category category = categoryReader.getCategoryByName(recruitRequest.getCategoryName());
 

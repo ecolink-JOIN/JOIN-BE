@@ -26,7 +26,7 @@ public class ApplicationController {
     @Operation(summary = "스터디 지원 - 인증 필수",
             description = "스터디 지원 - 인증 필수",
             security = {@SecurityRequirement(name = "session-token")})
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ApiResponse<Void> apply(@AuthenticationPrincipal UserPrincipal principal,
                                    @Valid @RequestBody ApplicationCreateRequest request) {
@@ -39,7 +39,7 @@ public class ApplicationController {
     @Operation(summary = "스터디 지원 승인 - 인증 필수",
             description = "스터디 지원 승인 - 인증 필수",
             security = {@SecurityRequirement(name = "session-token")})
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @PatchMapping("/{applicationId}/accept")
     public ApiResponse<Void> acceptApplication(@PathVariable Long applicationId,
                                                @AuthenticationPrincipal UserPrincipal principal) {

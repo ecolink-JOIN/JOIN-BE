@@ -14,10 +14,9 @@ public class AvatarReaderImpl implements AvatarReader {
 
     private final AvatarRepository avatarRepository;
 
-    @Transactional(readOnly = true)
     @Override
-    public Avatar getAvatarByToken(String avatarToken) {
-        return avatarRepository.findByAvatarToken(avatarToken)
+    public Avatar getAvatarById(Long id) {
+        return avatarRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_FOUND));
     }
 

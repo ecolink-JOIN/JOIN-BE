@@ -70,7 +70,14 @@ public enum ErrorCode {
 	/**
 	 * 스터디 관련 오류
 	 */
-	STUDY_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "S-001", "주어진 식별자로 스터디를 찾을 수 없습니다.");
+	STUDY_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "S-001", "주어진 식별자로 스터디를 찾을 수 없습니다."),
+	DUPLICATE_APPLICATION(HttpStatus.BAD_REQUEST, "S-002", "이미 지원한 스터디입니다."),
+	APPLICATION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "S-003", "주어진 식별자로 지원 정보를 찾을 수 없습니다."),
+
+	/**
+	 * 권한 관련 오류
+	 */
+	UNAUTHORIZED_ACCESS(HttpStatus.INTERNAL_SERVER_ERROR, "AU-001", "해당 요청에 대한 권한이 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

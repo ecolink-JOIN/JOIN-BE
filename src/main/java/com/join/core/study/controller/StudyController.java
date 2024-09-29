@@ -26,11 +26,11 @@ public class StudyController {
     @Operation(summary = "스터디 모집 - 인증 필수",
             description = "스터디 모집 - 인증 필수",
             security = {@SecurityRequirement(name = "session-token")})
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/recruit")
     public ApiResponse<Void> createStudy(@AuthenticationPrincipal UserPrincipal principal,
                                          @RequestBody StudyRecruitRequest recruitRequest) {
-        studyRecruitService.createStudy(principal.getAvatarToken(), recruitRequest);
+        studyRecruitService.createStudy(principal.getAvatarId(), recruitRequest);
         return ApiResponse.ok();
     }
 

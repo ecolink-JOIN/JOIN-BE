@@ -68,18 +68,15 @@ public class Avatar extends BaseTimeEntity implements SinglePhotoContainer<Profi
 		this.photo = singlePhoto;
 	}
 
-	public Avatar(User user, ProfilePhoto photo) {
+	public Avatar(User user) {
 		if (user == null)
 			throw new InvalidParamException(INVALID_PARAMETER, "Avatar.user");
-		if (photo == null)
-			throw new InvalidParamException(INVALID_PARAMETER, "Avatar.photo");
 
 		this.avatarToken = TokenGenerator.randomCharacterWithPrefix(AVATAR_PREFIX);
 		this.nickname = null;
 		this.totalRating = 0;
 		this.ratingCnt = 0;
 		this.user = user;
-		this.photo = photo;
 	}
 
 	public boolean isNicknameSet() {

@@ -84,7 +84,7 @@ public class User extends BaseTimeEntity {
 		return providerType.equals(this.platform);
 	}
 
-	public User(String email, UserType platform, ProfilePhoto photo) {
+	public User(String email, UserType platform) {
 		if (StringUtils.isEmpty(email)) throw new InvalidParamException(INVALID_PARAMETER, "User.email");
 		if (platform == null) throw new InvalidParamException(INVALID_PARAMETER, "User.platform");
 
@@ -94,7 +94,7 @@ public class User extends BaseTimeEntity {
 		this.singUpDate = LocalDateTime.now();
 		this.status = Status.PENDING;
 		this.termsAgreed = false;
-		this.avatar = new Avatar(this, photo);
+		this.avatar = new Avatar(this);
 	}
 
 	public void addRole(Role role) {

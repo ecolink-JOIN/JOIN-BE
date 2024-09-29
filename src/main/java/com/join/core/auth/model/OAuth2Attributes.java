@@ -42,8 +42,8 @@ public class OAuth2Attributes {
 			"profileImage", profileImage);
 	}
 
-	public User toEntity(ProfilePhoto photo) {
-		return new User(email, platform, photo);
+	public User toEntity() {
+		return new User(email, platform);
 	}
 
 	public boolean hasImage() {

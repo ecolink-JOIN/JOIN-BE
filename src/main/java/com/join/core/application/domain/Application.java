@@ -59,4 +59,12 @@ public class Application extends BaseTimeEntity {
         }
     }
 
+    public void reject() {
+        if (this.status == ApplicationStatus.PENDING) {
+            this.status = ApplicationStatus.REJECTED;
+        } else {
+            throw new IllegalStateException("이미 처리된 지원입니다.");
+        }
+    }
+
 }

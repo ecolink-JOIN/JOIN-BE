@@ -47,4 +47,16 @@ public class ApplicationController {
         return ApiResponse.ok();
     }
 
+    @Tag(name = "${swagger.tag.study}")
+    @Operation(summary = "스터디 지원 반려 - 인증 필수",
+            description = "스터디 지원 반려 - 인증 필수",
+            security = {@SecurityRequirement(name = "session-token")})
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/{applicationId}/reject")
+    public ApiResponse<Void> rejectApplication(@PathVariable Long applicationId,
+                                               @AuthenticationPrincipal UserPrincipal principal) {
+        applicationDecisionService.rejectApplication(applicationId, principal.getAvatarId());
+        return ApiResponse.ok();
+    }
+
 }

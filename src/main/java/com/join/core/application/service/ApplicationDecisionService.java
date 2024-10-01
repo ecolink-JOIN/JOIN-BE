@@ -19,6 +19,19 @@ public class ApplicationDecisionService {
 
     @Transactional
     public void acceptApplication(Long applicationId, Long avatarId) {
+        Application application = getValidApplication(applicationId, avatarId);
+        application.accept();
+        applicationStore.store(application);
+    }
+
+    @Transactional
+    public void rejectApplication(Long applicationId, Long avatarId) {
+        Application application = getValidApplication(applicationId, avatarId);
+        application.reject();
+        applicationStore.store(application);
+    }
+
+    private Application getValidApplication(Long applicationId, Long avatarId) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.APPLICATION_NOT_FOUND));
 
@@ -28,8 +41,7 @@ public class ApplicationDecisionService {
             throw new NoPermissionException(ErrorCode.UNAUTHORIZED_ACCESS);
         }
 
-        application.accept();
-        applicationStore.store(application);
+        return application;
     }
 
 }

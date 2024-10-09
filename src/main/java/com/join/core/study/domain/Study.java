@@ -40,6 +40,9 @@ public class Study {
     private String studyName;
 
     @NotNull
+    private String title;
+
+    @NotNull
     private String introduction;
 
     @NotNull
@@ -108,6 +111,7 @@ public class Study {
             throw new InvalidParamException(INVALID_PARAMETER, "Study.category");
 
         this.studyToken = TokenGenerator.randomCharacterWithPrefix(STUDY_PREFIX);
+        this.title = recruitRequest.getTitle();
         this.capacity = recruitRequest.getCapacity();
         this.isRegular = recruitRequest.isRegular();
         this.recruitEndDate = recruitRequest.getRecruitEndDate();
@@ -129,6 +133,10 @@ public class Study {
     public void updateRecruitDetails(StudyReRecruitRequest reRecruitRequest) {
         this.capacity = reRecruitRequest.getCapacity();
         this.recruitEndDate = reRecruitRequest.getRecruitEndDate();
+        this.title = reRecruitRequest.getTitle();
+        this.introduction = reRecruitRequest.getIntroduction();
+        this.content = reRecruitRequest.getContent();
+        this.qualificationExp = reRecruitRequest.getQualificationExp();
         this.status = StudyStatus.RECRUITING;
     }
 

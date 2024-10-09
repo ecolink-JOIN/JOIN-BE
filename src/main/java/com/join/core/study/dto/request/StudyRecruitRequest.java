@@ -50,9 +50,13 @@ public class StudyRecruitRequest {
     @NotNull
     private String categoryName;
 
-    @Schema(description = "스터디명", example = "직장인 영어 회화 스터디 구해요")
+    @Schema(description = "스터디명", example = "직장인 영어 회화 스터디")
     @NotNull
     private String studyName;
+
+    @Schema(description = "글 제목", example = "직장인 영어 회화 스터디 구해요")
+    @NotNull
+    private String title;
 
     @Schema(description = "스터디 소개", example = "외국인 선생님과 함께하는 직장인 영어 회화 스터디 모집합니다.")
     @NotNull

@@ -8,6 +8,7 @@ import com.join.core.common.util.TokenGenerator;
 import com.join.core.schedule.domain.StudySchedule;
 import com.join.core.study.constant.StudyEndReason;
 import com.join.core.study.constant.StudyStatus;
+import com.join.core.study.dto.request.StudyReRecruitRequest;
 import com.join.core.study.dto.request.StudyRecruitRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -123,6 +124,12 @@ public class Study {
         this.content = recruitRequest.getContent();
         this.ruleExp = recruitRequest.getRuleExp();
         this.qualificationExp = recruitRequest.getQualificationExp();
+    }
+
+    public void updateRecruitDetails(StudyReRecruitRequest reRecruitRequest) {
+        this.capacity = reRecruitRequest.getCapacity();
+        this.recruitEndDate = reRecruitRequest.getRecruitEndDate();
+        this.status = StudyStatus.RECRUITING;
     }
 
     public void addSchedules(List<StudySchedule> schedules) {

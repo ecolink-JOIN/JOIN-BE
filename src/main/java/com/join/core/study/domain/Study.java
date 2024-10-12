@@ -8,6 +8,7 @@ import com.join.core.common.util.TokenGenerator;
 import com.join.core.schedule.domain.StudySchedule;
 import com.join.core.study.constant.StudyEndReason;
 import com.join.core.study.constant.StudyStatus;
+import com.join.core.study.dto.request.StudyReRecruitRequest;
 import com.join.core.study.dto.request.StudyRecruitRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -37,6 +38,9 @@ public class Study {
     @NotNull
     @Size(min = 5, max = 25)
     private String studyName;
+
+    @NotNull
+    private String title;
 
     @NotNull
     private String introduction;
@@ -107,6 +111,7 @@ public class Study {
             throw new InvalidParamException(INVALID_PARAMETER, "Study.category");
 
         this.studyToken = TokenGenerator.randomCharacterWithPrefix(STUDY_PREFIX);
+        this.title = recruitRequest.getTitle();
         this.capacity = recruitRequest.getCapacity();
         this.isRegular = recruitRequest.isRegular();
         this.recruitEndDate = recruitRequest.getRecruitEndDate();
@@ -123,6 +128,16 @@ public class Study {
         this.content = recruitRequest.getContent();
         this.ruleExp = recruitRequest.getRuleExp();
         this.qualificationExp = recruitRequest.getQualificationExp();
+    }
+
+    public void updateRecruitDetails(StudyReRecruitRequest reRecruitRequest) {
+        this.capacity = reRecruitRequest.getCapacity();
+        this.recruitEndDate = reRecruitRequest.getRecruitEndDate();
+        this.title = reRecruitRequest.getTitle();
+        this.introduction = reRecruitRequest.getIntroduction();
+        this.content = reRecruitRequest.getContent();
+        this.qualificationExp = reRecruitRequest.getQualificationExp();
+        this.status = StudyStatus.RECRUITING;
     }
 
     public void addSchedules(List<StudySchedule> schedules) {

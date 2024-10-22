@@ -1,5 +1,6 @@
 package com.join.core.avatar.controller;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,10 +38,10 @@ public class AvatarController {
 	private final AvatarService avatarService;
 
 	@Tag(name = "${swagger.tag.sign-up}")
-	@Operation(summary = "닉네임 유효성 검사 API",
-		description = "닉네임 유효성 검사 API")
+	@Operation(summary = "닉네임 유효성 검사 API", description = "닉네임 유효성 검사 API")
 	@GetMapping("/nickname/valid")
-	public ApiResponse<AvatarInfo.ValidNickname> isValidNickname(AvatarCommand.ChangeNickname command) {
+	public ApiResponse<AvatarInfo.ValidNickname> isValidNickname(
+		@ParameterObject AvatarCommand.ChangeNickname command) {
 		return ApiResponse.ok(avatarService.isValid(command));
 	}
 

@@ -19,4 +19,10 @@ public class StudyReaderImpl implements StudyReader {
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.STUDY_NOT_FOUND));
     }
 
+    @Override
+    public Study getStudyById(Long studyId) {
+        return studyRepository.findById(studyId)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.STUDY_NOT_FOUND));
+    }
+
 }

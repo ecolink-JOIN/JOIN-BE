@@ -50,4 +50,9 @@ public class AvatarServiceImpl implements AvatarService {
 		profilePhotoFactory.store(avatar, command, image);
 	}
 
+	@Override
+	public AvatarInfo.Self getAvatarInfo(Long avatarId) {
+		return avatarReader.getInfo(avatarId);
+	}
+
 }

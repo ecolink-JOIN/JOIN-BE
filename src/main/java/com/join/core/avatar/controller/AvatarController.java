@@ -76,4 +76,15 @@ public class AvatarController {
 		return ApiResponse.ok();
 	}
 
+	@Tag(name = "${swagger.tag.sign-up}")
+	@Tag(name = "${swagger.tag.user}")
+	@Operation(summary = "유저 정보 조회 API - 인증 필요",
+		description = "유저 정보 조회 API - 인증 필요",
+		security = {@SecurityRequirement(name = "session-token")})
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping
+	public ApiResponse<AvatarInfo.Self> getAvatarInfo(@AuthenticationPrincipal UserPrincipal principal) {
+		return ApiResponse.ok(avatarService.getAvatarInfo(principal.getAvatarId()));
+	}
+
 }

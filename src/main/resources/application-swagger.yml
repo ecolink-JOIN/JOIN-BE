@@ -3,4 +3,5 @@ swagger:
     sign-in: '01. 로그인'
     sign-up: '02. 회원가입'
     study: '03. 스터디'
+    user: '04. 유저'
     profile-update: '10. 프로필 수정'

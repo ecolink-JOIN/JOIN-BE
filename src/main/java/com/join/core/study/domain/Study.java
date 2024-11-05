@@ -147,6 +147,12 @@ public class Study {
         }
     }
 
+    public void endStudy(LocalDate actualEndDate) {
+        this.actualEndDate = actualEndDate;
+        this.endReason = StudyEndReason.COMPLETED;
+        this.status = StudyStatus.COMPLETED;
+    }
+
     public void addViewCount() {
         this.viewCnt++;
     }

@@ -2,8 +2,10 @@ package com.join.core.study.controller;
 
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
+import com.join.core.study.dto.request.StudyEndRequest;
 import com.join.core.study.dto.request.StudyReRecruitRequest;
 import com.join.core.study.dto.request.StudyRecruitRequest;
+import com.join.core.study.service.StudyEndService;
 import com.join.core.study.service.StudyRecruitService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class StudyController {
 
     private final StudyRecruitService studyRecruitService;
+    private final StudyEndService studyEndService;
 
     @Tag(name = "${swagger.tag.study}")
     @Operation(summary = "스터디 모집 - 인증 필수",
@@ -42,6 +45,19 @@ public class StudyController {
                                             @RequestParam String studyToken,
                                             @RequestBody StudyReRecruitRequest reRecruitRequest) {
         studyRecruitService.reRecruitStudy(principal.getAvatarId(), studyToken, reRecruitRequest);
+        return ApiResponse.ok();
+    }
+
+    @Tag(name = "${swagger.tag.study}")
+    @Operation(summary = "스터디 종료 - 인증 필수",
+            description = "스터디 종료 - 인증 필수",
+            security = {@SecurityRequirement(name = "session-token")})
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/{studyId}/close")
+    public ApiResponse<Void> closeStudy(@AuthenticationPrincipal UserPrincipal principal,
+                                      @PathVariable Long studyId,
+                                      @RequestBody StudyEndRequest endRequest) {
+        studyEndService.endStudy(studyId, endRequest, principal);
         return ApiResponse.ok();
     }
 

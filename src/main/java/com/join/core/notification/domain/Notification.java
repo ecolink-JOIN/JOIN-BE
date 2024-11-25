@@ -1,6 +1,7 @@
 package com.join.core.notification.domain;
 
 import com.join.core.avatar.domain.Avatar;
+import com.join.core.study.domain.Study;
 import com.join.core.common.domain.BaseTimeEntity;
 import com.join.core.notification.constant.NotificationType;
 import jakarta.persistence.*;
@@ -19,12 +20,26 @@ public class Notification extends BaseTimeEntity {
     private Long id;
 
     @NotNull
+    private String content;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "study_id", nullable = false)
+    private Study study;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "avatar_id", nullable = false)
-    private Avatar avatar;
+    private Avatar writer;
+
+    public Notification(String content, Study study, Avatar writer) {
+        this.content = content;
+        this.study = study;
+        this.writer = writer;
+        this.notificationType = NotificationType.STUDY_ANNOUNCEMENT;
+    }
 
 }

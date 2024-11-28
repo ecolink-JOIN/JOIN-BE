@@ -1,10 +1,10 @@
 package com.join.core.history.repository;
 
 import com.join.core.study.domain.Study;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ViewHistoryReader {
 
-    List<Study> getStudyByAvatarId(Long avatarId);
+    Page<Study> getStudyByAvatarId(Long avatarId, Pageable pageable);
 }

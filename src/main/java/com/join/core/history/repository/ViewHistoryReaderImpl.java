@@ -1,6 +1,6 @@
 package com.join.core.history.repository;
 
-import com.join.core.history.domain.ViewHistory;
+import com.join.core.study.domain.Study;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ public class ViewHistoryReaderImpl implements ViewHistoryReader {
     private final ViewHistoryRepository viewHistoryRepository;
 
     @Override
-    public List<ViewHistory> getViewsByAvatarId(Long avatarId) {
-        return viewHistoryRepository.findByAvatarId(avatarId);
+    public List<Study> getStudyByAvatarId(Long avatarId) {
+        return viewHistoryRepository.findDistinctStudiesByAvatarId(avatarId);
     }
 }

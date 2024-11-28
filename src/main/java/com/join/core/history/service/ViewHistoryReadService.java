@@ -1,6 +1,5 @@
 package com.join.core.history.service;
 
-import com.join.core.history.domain.ViewHistory;
 import com.join.core.history.dto.response.ViewStudyReadResponse;
 import com.join.core.history.mapper.ViewHistoryMapper;
 import com.join.core.history.repository.ViewHistoryReader;
@@ -19,8 +18,7 @@ public class ViewHistoryReadService {
 
     @Transactional(readOnly = true)
     public List<ViewStudyReadResponse> getViewStudyByAvatarId(Long avatarId) {
-        return viewHistoryReader.getViewsByAvatarId(avatarId).stream()
-                .map(ViewHistory::getStudy)
+        return viewHistoryReader.getStudyByAvatarId(avatarId).stream()
                 .map(study -> viewHistoryMapper.toViewStudyReadResponse(study, 0, true))
                 .toList();
     }

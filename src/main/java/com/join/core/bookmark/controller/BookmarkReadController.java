@@ -7,6 +7,7 @@ import com.join.core.bookmark.service.BookmarkReadService;
 import com.join.core.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ public class BookmarkReadController {
     private final BookmarkReadService bookmarkReadService;
 
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<Page<BookmarkStudyReadResponse>> getBookmarkStudy(
             @AuthenticationPrincipal UserPrincipal principal,
             PageParameterRequest pageParameterRequest

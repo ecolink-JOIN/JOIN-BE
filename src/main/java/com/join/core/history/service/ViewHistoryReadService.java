@@ -1,5 +1,8 @@
 package com.join.core.history.service;
 
+import com.join.core.avatar.domain.Avatar;
+import com.join.core.avatar.domain.AvatarReader;
+import com.join.core.bookmark.repository.BookmarkReader;
 import com.join.core.history.dto.request.PageParameterRequest;
 import com.join.core.history.dto.response.ViewStudyReadResponse;
 import com.join.core.history.mapper.ViewHistoryMapper;
@@ -16,12 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class ViewHistoryReadService {
 
     private final ViewHistoryReader viewHistoryReader;
+    private final BookmarkReader bookmarkReader;
+    private final AvatarReader avatarReader;
     private final ViewHistoryMapper viewHistoryMapper;
 
     @Transactional(readOnly = true)
     public Page<ViewStudyReadResponse> getViewStudyByAvatarId(Long avatarId, PageParameterRequest pageParameterRequest) {
         Pageable pageable = PageRequest.of(pageParameterRequest.page() - 1, pageParameterRequest.size());
+        Avatar avatar = avatarReader.getAvatarById(avatarId);
         return viewHistoryReader.getStudyByAvatarId(avatarId, pageable)
-                .map(study -> viewHistoryMapper.toViewStudyReadResponse(study, 0, true));
+                .map(study -> viewHistoryMapper.toViewStudyReadResponse(study, 0, bookmarkReader.isBookmark(study, avatar)));
     }
 }

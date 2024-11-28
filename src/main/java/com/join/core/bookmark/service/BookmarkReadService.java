@@ -35,7 +35,7 @@ public class BookmarkReadService {
                 .map(bookmark -> {
                     Study study = bookmark.getStudy();
                     double averageRating = getAverageRating(study.getId());
-                    return bookmarkMapper.toBookmarkStudyReadResponse(study, averageRating);
+                    return bookmarkMapper.toBookmarkStudyReadResponse(study, averageRating, bookmarkReader.isBookmark(study, avatar));
                 });
     }
 

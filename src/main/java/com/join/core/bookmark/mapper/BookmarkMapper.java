@@ -8,10 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class BookmarkMapper {
 
-    public BookmarkStudyReadResponse toBookmarkStudyReadResponse(Study study, double memberAverage) {
+    public BookmarkStudyReadResponse toBookmarkStudyReadResponse(Study study, double memberAverage, boolean isBookmark) {
         return new BookmarkStudyReadResponse(
                 study.getStudyToken(),
                 study.getTitle(),
+                isBookmark,
                 study.getViewCnt(),
                 new AvatarRatingResponse(
                         study.getWriter().getNickname(),

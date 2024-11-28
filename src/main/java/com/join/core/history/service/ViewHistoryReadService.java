@@ -1,5 +1,7 @@
 package com.join.core.history.service;
 
+import com.join.core.application.domain.Application;
+import com.join.core.application.repository.ApplicationReader;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.bookmark.repository.BookmarkReader;
@@ -14,12 +16,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class ViewHistoryReadService {
 
     private final ViewHistoryReader viewHistoryReader;
     private final BookmarkReader bookmarkReader;
+    private final ApplicationReader applicationReader;
     private final AvatarReader avatarReader;
     private final ViewHistoryMapper viewHistoryMapper;
 
@@ -28,6 +33,17 @@ public class ViewHistoryReadService {
         Pageable pageable = PageRequest.of(pageParameterRequest.page() - 1, pageParameterRequest.size());
         Avatar avatar = avatarReader.getAvatarById(avatarId);
         return viewHistoryReader.getStudyByAvatarId(avatarId, pageable)
-                .map(study -> viewHistoryMapper.toViewStudyReadResponse(study, 0, bookmarkReader.isBookmark(study, avatar)));
+                .map(study -> {
+                    boolean isBookmark = bookmarkReader.isBookmark(study, avatar);
+                    double averageRating = getAverageRating(study.getId());
+                    return viewHistoryMapper.toViewStudyReadResponse(study, averageRating, isBookmark);
+                });
+    }
+
+    private double getAverageRating(Long studyId) {
+        List<Application> applications = applicationReader.getApproveApplications(studyId);
+        return applications.stream()
+                .mapToDouble(application -> application.getAvatar().getTotalRating())
+                .sum() / applications.size();
     }
 }

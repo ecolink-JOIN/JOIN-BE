@@ -8,6 +8,9 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -25,7 +28,13 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Study> getStudiesOrderByPopularity(Long categoryId, StudyForm form, LocalDateTime now) {
+    public Page<Study> getStudiesOrderByPopularity(Long categoryId, StudyForm form, LocalDateTime now, Pageable pageable) {
+        List<Study> content = getPopularityStudies(categoryId, form, now, pageable);
+        Long count = getStudiesCount(categoryId, form);
+        return new PageImpl<>(content, pageable, count);
+    }
+
+    private List<Study> getPopularityStudies(Long categoryId, StudyForm form, LocalDateTime now, Pageable pageable) {
         return queryFactory.selectFrom(study)
                 .leftJoin(viewHistory).on(
                         viewHistory.study.id.eq(study.id),
@@ -50,6 +59,8 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                         getStudiesAvg().desc(),
                         study.studyName.asc()
                 )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
     }
 
@@ -73,5 +84,16 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
 
     private NumberExpression<Double> getStudiesAvg() {
         return application.avatar.totalRating.avg();
+    }
+
+    private Long getStudiesCount(Long categoryId, StudyForm form) {
+        return queryFactory.select(study.count())
+                .from(study)
+                .where(
+                        eqCategory(categoryId),
+                        eqForm(form),
+                        study.status.eq(StudyStatus.RECRUITING)
+                )
+                .fetchOne();
     }
 }

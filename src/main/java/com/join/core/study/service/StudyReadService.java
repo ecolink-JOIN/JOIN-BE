@@ -15,6 +15,9 @@ import com.join.core.study.dto.response.PopularStudyReadResponse;
 import com.join.core.study.dto.response.StudyDetailResponse;
 import com.join.core.study.service.dto.StudyOrderByPopularityCommand;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,16 +64,16 @@ public class StudyReadService {
     }
 
     @Transactional(readOnly = true)
-    public List<PopularStudyReadResponse> getStudiesOrderByPopularity(StudyOrderByPopularityCommand command) {
+    public Page<PopularStudyReadResponse> getStudiesOrderByPopularity(StudyOrderByPopularityCommand command) {
         Category category = categoryReader.getCategoryByName(command.categoryName());
         Avatar avatar = getAvatarById(command.userPrincipal());
-        return studyReader.getStudyOrderByPopularity(category.getId(), command.form(), command.now()).stream()
+        Pageable pageable = PageRequest.of(command.page() - 1, command.size());
+        return studyReader.getStudyOrderByPopularity(category.getId(), command.form(), command.now(), pageable)
                 .map(study -> {
                     double averageRating = getAverageRating(study.getId());
                     boolean isBookmark = isBookmark(avatar, study);
                     return studyMapper.toPopularStudyReadResponse(study, isBookmark, averageRating);
-                })
-                .toList();
+                });
     }
 
     private Avatar getAvatarById(UserPrincipal userPrincipal) {

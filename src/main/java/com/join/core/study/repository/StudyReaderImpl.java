@@ -6,10 +6,11 @@ import com.join.core.study.constant.StudyForm;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -31,11 +32,12 @@ public class StudyReaderImpl implements StudyReader {
     }
 
     @Override
-    public List<Study> getStudyOrderByPopularity(Long categoryId, StudyForm form, LocalDateTime now) {
+    public Page<Study> getStudyOrderByPopularity(Long categoryId, StudyForm form, LocalDateTime now, Pageable pageable) {
         return studyQueryRepository.getStudiesOrderByPopularity(
                 categoryId,
                 form,
-                now
+                now,
+                pageable
         );
     }
 

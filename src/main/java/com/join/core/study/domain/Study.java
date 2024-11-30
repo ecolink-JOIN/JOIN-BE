@@ -7,10 +7,21 @@ import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.common.util.TokenGenerator;
 import com.join.core.schedule.domain.StudySchedule;
 import com.join.core.study.constant.StudyEndReason;
+import com.join.core.study.constant.StudyForm;
 import com.join.core.study.constant.StudyStatus;
 import com.join.core.study.dto.request.StudyReRecruitRequest;
 import com.join.core.study.dto.request.StudyRecruitRequest;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -80,6 +91,9 @@ public class Study {
 
     @NotNull
     private int bookmarkCnt;
+
+    @NotNull
+    private StudyForm form;
 
     @Enumerated(EnumType.STRING)
     private StudyEndReason endReason;

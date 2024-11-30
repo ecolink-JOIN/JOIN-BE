@@ -4,7 +4,6 @@ import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.EntityNotFoundException;
 import com.join.core.study.constant.StudyForm;
 import com.join.core.study.domain.Study;
-import com.join.core.study.dto.request.StudyOrderByPopularityParameter;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

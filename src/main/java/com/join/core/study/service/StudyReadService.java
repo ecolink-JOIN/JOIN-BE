@@ -2,6 +2,10 @@ package com.join.core.study.service;
 
 import com.join.core.application.domain.Application;
 import com.join.core.application.repository.ApplicationReader;
+import com.join.core.auth.domain.UserPrincipal;
+import com.join.core.avatar.domain.Avatar;
+import com.join.core.avatar.domain.AvatarReader;
+import com.join.core.bookmark.repository.BookmarkReader;
 import com.join.core.category.domain.Category;
 import com.join.core.category.service.CategoryReader;
 import com.join.core.schedule.dto.response.StudyScheduleResponse;
@@ -23,6 +27,8 @@ public class StudyReadService {
     private final StudyReader studyReader;
     private final CategoryReader categoryReader;
     private final ApplicationReader applicationReader;
+    private final BookmarkReader bookmarkReader;
+    private final AvatarReader avatarReader;
     private final StudyMapper studyMapper;
 
     @Transactional(readOnly = true)
@@ -57,12 +63,21 @@ public class StudyReadService {
     @Transactional(readOnly = true)
     public List<PopularStudyReadResponse> getStudiesOrderByPopularity(StudyOrderByPopularityCommand command) {
         Category category = categoryReader.getCategoryByName(command.categoryName());
+        Avatar avatar = getAvatarById(command.userPrincipal());
         return studyReader.getStudyOrderByPopularity(category.getId(), command.form(), command.now()).stream()
                 .map(study -> {
                     double averageRating = getAverageRating(study.getId());
-                    return studyMapper.toPopularStudyReadResponse(study, true, averageRating);
+                    boolean isBookmark = isBookmark(avatar, study);
+                    return studyMapper.toPopularStudyReadResponse(study, isBookmark, averageRating);
                 })
                 .toList();
+    }
+
+    private Avatar getAvatarById(UserPrincipal userPrincipal) {
+        if (userPrincipal == null) {
+            return null;
+        }
+        return avatarReader.getAvatarById(userPrincipal.getAvatarId());
     }
 
     private double getAverageRating(Long studyId) {
@@ -73,5 +88,12 @@ public class StudyReadService {
         return applications.stream()
                 .mapToDouble(application -> application.getAvatar().getTotalRating())
                 .sum() / applications.size();
+    }
+
+    private boolean isBookmark(Avatar avatar, Study study) {
+        if (avatar == null) {
+            return false;
+        }
+        return bookmarkReader.isBookmark(study, avatar);
     }
 }

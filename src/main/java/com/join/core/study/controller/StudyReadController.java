@@ -1,5 +1,6 @@
 package com.join.core.study.controller;
 
+import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
 import com.join.core.study.dto.request.StudyOrderByPopularityParameter;
 import com.join.core.study.dto.request.StudyOrderByPopularityRequest;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,12 +42,14 @@ public class StudyReadController {
 
     @GetMapping
     public ApiResponse<List<PopularStudyReadResponse>> getStudiesOrderByPopularity(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             StudyOrderByPopularityParameter studyOrderByPopularityParameter,
             @RequestBody StudyOrderByPopularityRequest studyOrderByPopularityRequest
     ) {
         return ApiResponse.ok(
                 studyReadService.getStudiesOrderByPopularity(
                     new StudyOrderByPopularityCommand(
+                            userPrincipal,
                             studyOrderByPopularityParameter.category(),
                             studyOrderByPopularityParameter.form(),
                             studyOrderByPopularityRequest.now()

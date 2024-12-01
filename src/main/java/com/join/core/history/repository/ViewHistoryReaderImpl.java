@@ -1,5 +1,6 @@
 package com.join.core.history.repository;
 
+import com.join.core.history.service.ViewHistoryReader;
 import com.join.core.study.domain.Study;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

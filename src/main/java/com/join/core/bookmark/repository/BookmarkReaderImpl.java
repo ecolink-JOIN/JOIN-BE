@@ -2,6 +2,7 @@ package com.join.core.bookmark.repository;
 
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.bookmark.domain.Bookmark;
+import com.join.core.bookmark.service.BookmarkReader;
 import com.join.core.study.domain.Study;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

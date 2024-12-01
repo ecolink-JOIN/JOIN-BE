@@ -1,11 +1,10 @@
 package com.join.core.study.service;
 
-import com.join.core.application.domain.Application;
-import com.join.core.application.repository.ApplicationReader;
+import com.join.core.application.service.ApplicationReader;
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;
-import com.join.core.bookmark.repository.BookmarkReader;
+import com.join.core.bookmark.service.BookmarkReader;
 import com.join.core.category.domain.Category;
 import com.join.core.category.service.CategoryReader;
 import com.join.core.schedule.dto.response.StudyScheduleResponse;
@@ -70,7 +69,7 @@ public class StudyReadService {
         Pageable pageable = PageRequest.of(command.page() - 1, command.size());
         return studyReader.getStudyOrderByPopularity(category.getId(), command.form(), command.now(), pageable)
                 .map(study -> {
-                    double averageRating = getAverageRating(study.getId());
+                    double averageRating = applicationReader.getAverageByStudyId(study.getId());
                     boolean isBookmark = isBookmark(avatar, study);
                     return studyMapper.toPopularStudyReadResponse(study, isBookmark, averageRating);
                 });
@@ -81,16 +80,6 @@ public class StudyReadService {
             return null;
         }
         return avatarReader.getAvatarById(userPrincipal.getAvatarId());
-    }
-
-    private double getAverageRating(Long studyId) {
-        List<Application> applications = applicationReader.getApproveApplications(studyId);
-        if (applications.isEmpty()) {
-            return 0;
-        }
-        return applications.stream()
-                .mapToDouble(application -> application.getAvatar().getTotalRating())
-                .sum() / applications.size();
     }
 
     private boolean isBookmark(Avatar avatar, Study study) {

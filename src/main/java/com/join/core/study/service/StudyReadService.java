@@ -12,6 +12,7 @@ import com.join.core.study.StudyMapper;
 import com.join.core.study.domain.Study;
 import com.join.core.study.dto.response.PopularStudyReadResponse;
 import com.join.core.study.dto.response.StudyDetailResponse;
+import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.join.core.study.service.dto.StudyOrderByPopularityCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -64,15 +65,24 @@ public class StudyReadService {
 
     @Transactional(readOnly = true)
     public Page<PopularStudyReadResponse> getStudiesOrderByPopularity(StudyOrderByPopularityCommand command) {
-        Category category = categoryReader.getCategoryByName(command.categoryName());
+        Category category = getCategoryByName(command.categoryName());
         Avatar avatar = getAvatarById(command.userPrincipal());
         Pageable pageable = PageRequest.of(command.page() - 1, command.size());
-        return studyReader.getStudyOrderByPopularity(category.getId(), command.form(), command.now(), pageable)
+        return studyReader.getStudyOrderByPopularity(
+                    new EssentialStudyCondition(category, command.form()), command.now(), pageable
+                )
                 .map(study -> {
                     double averageRating = applicationReader.getAverageByStudyId(study.getId());
                     boolean isBookmark = isBookmark(avatar, study);
                     return studyMapper.toPopularStudyReadResponse(study, isBookmark, averageRating);
                 });
+    }
+
+    private Category getCategoryByName(String categoryName) {
+        if (categoryName == null) {
+            return null;
+        }
+        return categoryReader.getCategoryByName(categoryName);
     }
 
     private Avatar getAvatarById(UserPrincipal userPrincipal) {

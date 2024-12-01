@@ -2,8 +2,8 @@ package com.join.core.study.repository;
 
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.EntityNotFoundException;
-import com.join.core.study.constant.StudyForm;
 import com.join.core.study.domain.Study;
+import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,10 +32,9 @@ public class StudyReaderImpl implements StudyReader {
     }
 
     @Override
-    public Page<Study> getStudyOrderByPopularity(Long categoryId, StudyForm form, LocalDateTime now, Pageable pageable) {
+    public Page<Study> getStudyOrderByPopularity(EssentialStudyCondition condition, LocalDateTime now, Pageable pageable) {
         return studyQueryRepository.getStudiesOrderByPopularity(
-                categoryId,
-                form,
+                condition,
                 now,
                 pageable
         );

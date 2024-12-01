@@ -4,7 +4,7 @@ import com.join.core.application.service.ApplicationReader;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.bookmark.service.BookmarkReader;
-import com.join.core.history.dto.request.PageParameterRequest;
+import com.join.core.common.dto.PageParameterRequest;
 import com.join.core.history.dto.response.ViewStudyReadResponse;
 import com.join.core.history.mapper.ViewHistoryMapper;
 import lombok.RequiredArgsConstructor;

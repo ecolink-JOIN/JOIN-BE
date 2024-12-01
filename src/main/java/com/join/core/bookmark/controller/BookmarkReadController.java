@@ -1,9 +1,9 @@
 package com.join.core.bookmark.controller;
 
 import com.join.core.auth.domain.UserPrincipal;
-import com.join.core.bookmark.dto.request.PageParameterRequest;
 import com.join.core.bookmark.dto.response.BookmarkStudyReadResponse;
 import com.join.core.bookmark.service.BookmarkReadService;
+import com.join.core.common.dto.PageParameterRequest;
 import com.join.core.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

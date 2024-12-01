@@ -1,7 +1,7 @@
 package com.join.core.history.controller;
 
 import com.join.core.auth.domain.UserPrincipal;
-import com.join.core.history.dto.request.PageParameterRequest;
+import com.join.core.common.dto.PageParameterRequest;
 import com.join.core.history.dto.response.ViewStudyReadResponse;
 import com.join.core.history.service.ViewHistoryReadService;
 import lombok.RequiredArgsConstructor;

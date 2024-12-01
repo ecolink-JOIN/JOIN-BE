@@ -1,4 +1,4 @@
-package com.join.core.bookmark.dto.request;
+package com.join.core.common.dto;
 
 public record PageParameterRequest(Integer page, Integer size) {
 

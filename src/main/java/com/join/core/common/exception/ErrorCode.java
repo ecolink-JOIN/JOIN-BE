@@ -15,6 +15,11 @@ public enum ErrorCode {
 	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "E-001", "잘못된 요청입니다."),
 
 	/**
+	 * 공통
+	 */
+	INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "C-001", "잘못된 매개변수가 입력되었습니다."),
+
+	/**
 	 * 아바타 관련 오류
 	 */
 	AVATAR_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "A-001", "주어진 식별자로 아바타를 찾을 수 없습니다."),
@@ -34,8 +39,8 @@ public enum ErrorCode {
 	/**
 	 * 닉네임 관련 오류
 	 */
-	FAIL_TO_FIND_UNIQUE_NICKNAME(HttpStatus.INTERNAL_SERVER_ERROR, "N-001", "유일한 닉네임을 찾는데 실패했습니다."),
-	DUPLICATED_NICKNAME(HttpStatus.BAD_REQUEST, "N-002", "이미 사용중인 닉네임 입니다."),
+	DUPLICATED_NICKNAME(HttpStatus.BAD_REQUEST, "N-001", "이미 사용 중인 닉네임입니다."),
+	INVALID_NICKNAME_FORMAT(HttpStatus.BAD_REQUEST, "N-002", "닉네임 포맷이 적절하지 않습니다."),
 
 	/**
 	 * 파일 업로드 관련 오류
@@ -45,9 +50,37 @@ public enum ErrorCode {
 	FAIL_TO_ANALYZE_FILE(HttpStatus.INTERNAL_SERVER_ERROR, "F-003", "이미지 파일을 분석하는데 실패했습니다."),
 	FAIL_TO_UPLOAD_FILE(HttpStatus.INTERNAL_SERVER_ERROR, "F-004", "파일 업로드에 실패했습니다."),
 	IMAGE_FILE_IS_NULL(HttpStatus.BAD_REQUEST, "F-005", "요청된 파일이 null입니다."),
-	IMAGE_EXTENSION_IS_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "F-006", "요청된 파일의 확장자는 지원되지 않습니다.");
+	IMAGE_EXTENSION_IS_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "F-006", "요청된 파일의 확장자는 지원되지 않습니다."),
+
+	/**
+	 * 약관 관련 오류
+	 */
+	TERM_NOT_EXIST(HttpStatus.BAD_REQUEST, "T-001", "요청된 약관은 존재하지 않습니다."),
+
+	/**
+	 * 주소 선택 관련 오류
+	 */
+	ADDRESS_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "AD-001", "주소 선택이 누락되었습니다."),
+
+	/**
+	 * 카테고리 선택 관련 오류
+	 */
+	CATEGORY_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "C-001", "카테고리 선택이 누락되었습니다."),
+
+	/**
+	 * 스터디 관련 오류
+	 */
+	STUDY_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "S-001", "주어진 식별자로 스터디를 찾을 수 없습니다."),
+	DUPLICATE_APPLICATION(HttpStatus.BAD_REQUEST, "S-002", "이미 지원한 스터디입니다."),
+	APPLICATION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "S-003", "주어진 식별자로 지원 정보를 찾을 수 없습니다."),
+
+	/**
+	 * 권한 관련 오류
+	 */
+	UNAUTHORIZED_ACCESS(HttpStatus.INTERNAL_SERVER_ERROR, "AU-001", "해당 요청에 대한 권한이 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;
+
 }

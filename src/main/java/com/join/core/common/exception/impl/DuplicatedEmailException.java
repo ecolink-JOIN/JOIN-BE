@@ -2,7 +2,7 @@ package com.join.core.common.exception.impl;
 
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.GeneralException;
-import com.join.core.user.constant.UserType;
+import com.join.core.auth.constant.UserType;
 
 import lombok.Getter;
 

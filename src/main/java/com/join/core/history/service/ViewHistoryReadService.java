@@ -1,6 +1,6 @@
 package com.join.core.history.service;
 
-import com.join.core.application.service.ApplicationReader;
+import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.bookmark.service.BookmarkReader;
@@ -20,7 +20,7 @@ public class ViewHistoryReadService {
 
     private final ViewHistoryReader viewHistoryReader;
     private final BookmarkReader bookmarkReader;
-    private final ApplicationReader applicationReader;
+    private final EnrollmentReader enrollmentReader;
     private final AvatarReader avatarReader;
     private final ViewHistoryMapper viewHistoryMapper;
 
@@ -31,8 +31,9 @@ public class ViewHistoryReadService {
         return viewHistoryReader.getStudyByAvatarId(avatarId, pageable)
                 .map(study -> {
                     boolean isBookmark = bookmarkReader.isBookmark(study, avatar);
-                    double averageRating = applicationReader.getAverageByStudyId(study.getId());
-                    return viewHistoryMapper.toViewStudyReadResponse(study, averageRating, isBookmark);
+                    double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
+                    Avatar leader = enrollmentReader.getLeaderByStudyId(study.getId());
+                    return viewHistoryMapper.toViewStudyReadResponse(study, leader, averageRating, isBookmark);
                 });
     }
 }

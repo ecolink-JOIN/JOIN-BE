@@ -1,6 +1,6 @@
 package com.join.core.bookmark.service;
 
-import com.join.core.application.service.ApplicationReader;
+import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.bookmark.dto.response.BookmarkStudyReadResponse;
@@ -20,7 +20,7 @@ public class BookmarkReadService {
 
     private final BookmarkReader bookmarkReader;
     private final AvatarReader avatarReader;
-    private final ApplicationReader applicationReader;
+    private final EnrollmentReader enrollmentReader;
     private final BookmarkMapper bookmarkMapper;
 
     @Transactional(readOnly = true)
@@ -30,8 +30,10 @@ public class BookmarkReadService {
         return bookmarkReader.getBookmarksByAvatar(pageable, avatar)
                 .map(bookmark -> {
                     Study study = bookmark.getStudy();
-                    double averageRating = applicationReader.getAverageByStudyId(study.getId());
-                    return bookmarkMapper.toBookmarkStudyReadResponse(study, averageRating, bookmarkReader.isBookmark(study, avatar));
+                    boolean isBookmark = bookmarkReader.isBookmark(study, avatar);
+                    double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
+                    Avatar leader = enrollmentReader.getLeaderByStudyId(study.getId());
+                    return bookmarkMapper.toBookmarkStudyReadResponse(study, leader, averageRating, isBookmark);
                 });
     }
 }

@@ -1,6 +1,5 @@
 package com.join.core.study.repository;
 
-import com.join.core.application.constant.ApplicationStatus;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.querydsl.core.types.dsl.NumberExpression;
@@ -14,8 +13,8 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.join.core.application.domain.QApplication.application;
 import static com.join.core.bookmark.domain.QBookmark.bookmark;
+import static com.join.core.enrollment.domain.QEnrollment.enrollment;
 import static com.join.core.history.domain.QViewHistory.viewHistory;
 import static com.join.core.study.domain.QStudy.study;
 
@@ -42,9 +41,8 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                         bookmark.study.id.eq(study.id),
                         bookmark.createdDate.after(now.minusDays(7))
                 )
-                .leftJoin(application).on(
-                        application.study.id.eq(study.id),
-                        application.status.eq(ApplicationStatus.APPROVED)
+                .leftJoin(enrollment).on(
+                        enrollment.study.id.eq(study.id)
                 )
                 .where(condition.toBooleanBuilder())
                 .groupBy(study.id)
@@ -63,7 +61,7 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
     }
 
     private NumberExpression<Double> getStudiesAvg() {
-        return application.avatar.totalRating.avg();
+        return enrollment.avatar.totalRating.avg();
     }
 
     private Long getStudiesCount(EssentialStudyCondition condition) {

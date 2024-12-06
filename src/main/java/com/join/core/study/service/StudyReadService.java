@@ -1,6 +1,6 @@
 package com.join.core.study.service;
 
-import com.join.core.application.service.ApplicationReader;
+import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;
@@ -29,7 +29,7 @@ public class StudyReadService {
 
     private final StudyReader studyReader;
     private final CategoryReader categoryReader;
-    private final ApplicationReader applicationReader;
+    private final EnrollmentReader enrollmentReader;
     private final BookmarkReader bookmarkReader;
     private final AvatarReader avatarReader;
     private final StudyMapper studyMapper;
@@ -72,9 +72,10 @@ public class StudyReadService {
                     new EssentialStudyCondition(category, command.form()), command.now(), pageable
                 )
                 .map(study -> {
-                    double averageRating = applicationReader.getAverageByStudyId(study.getId());
+                    double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
                     boolean isBookmark = isBookmark(avatar, study);
-                    return studyMapper.toPopularStudyReadResponse(study, isBookmark, averageRating);
+                    Avatar studyLeader = enrollmentReader.getLeaderByStudyId(study.getId());
+                    return studyMapper.toPopularStudyReadResponse(study, studyLeader, isBookmark, averageRating);
                 });
     }
 

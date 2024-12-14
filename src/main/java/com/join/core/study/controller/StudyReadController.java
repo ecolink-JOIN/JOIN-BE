@@ -2,11 +2,14 @@ package com.join.core.study.controller;
 
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
+import com.join.core.study.dto.request.CustomStudyParameter;
 import com.join.core.study.dto.request.StudyOrderByPopularityParameter;
 import com.join.core.study.dto.request.StudyOrderByPopularityRequest;
+import com.join.core.study.dto.response.CustomStudyResponse;
 import com.join.core.study.dto.response.PopularStudyReadResponse;
 import com.join.core.study.dto.response.StudyDetailResponse;
 import com.join.core.study.service.StudyReadService;
+import com.join.core.study.service.dto.CustomStudyCommand;
 import com.join.core.study.service.dto.StudyOrderByPopularityCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -20,6 +23,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -39,7 +44,7 @@ public class StudyReadController {
         return ApiResponse.ok(studyDetail);
     }
 
-    @GetMapping
+    @GetMapping("/popular")
     public ApiResponse<Page<PopularStudyReadResponse>> getStudiesOrderByPopularity(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             StudyOrderByPopularityParameter studyOrderByPopularityParameter,
@@ -57,5 +62,27 @@ public class StudyReadController {
                     )
                 )
         );
+    }
+
+    @GetMapping("/recommendation")
+    public ApiResponse<List<CustomStudyResponse>> recommendStudies(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            CustomStudyParameter customStudyParameter,
+            @RequestBody StudyOrderByPopularityRequest studyOrderByPopularityRequest
+            ) {
+        return ApiResponse.ok(studyReadService.recommendStudies(
+                new CustomStudyCommand(
+                        userPrincipal,
+                        customStudyParameter.category(),
+                        customStudyParameter.form(),
+                        customStudyParameter.possibleDays(),
+                        customStudyParameter.timeZone(),
+                        customStudyParameter.minParticipationCount(),
+                        customStudyParameter.maxParticipationCount(),
+                        studyOrderByPopularityRequest.now(),
+                        customStudyParameter.province(),
+                        customStudyParameter.city()
+                )
+        ));
     }
 }

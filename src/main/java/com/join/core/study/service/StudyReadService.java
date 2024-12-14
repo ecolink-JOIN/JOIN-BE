@@ -1,18 +1,20 @@
 package com.join.core.study.service;
 
-import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.bookmark.service.BookmarkReader;
 import com.join.core.category.domain.Category;
 import com.join.core.category.service.CategoryReader;
+import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.schedule.dto.response.StudyScheduleResponse;
-import com.join.core.study.StudyMapper;
 import com.join.core.study.domain.Study;
+import com.join.core.study.dto.response.CustomStudyResponse;
 import com.join.core.study.dto.response.PopularStudyReadResponse;
 import com.join.core.study.dto.response.StudyDetailResponse;
+import com.join.core.study.mapper.StudyMapper;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
+import com.join.core.study.service.dto.CustomStudyCommand;
 import com.join.core.study.service.dto.StudyOrderByPopularityCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -98,5 +100,21 @@ public class StudyReadService {
             return false;
         }
         return bookmarkReader.isBookmark(study, avatar);
+    }
+
+    public List<CustomStudyResponse> recommendStudies(CustomStudyCommand command) {
+        Avatar avatar = getAvatarById(command.userPrincipal());
+        Category category = getCategoryByName(command.category());
+        return studyReader.getStudiesOrderByRecommendations(
+                studyMapper.toEssentialStudyCondition(category, command.form()),
+                studyMapper.toCustomStudyCondition(command)
+        ).stream()
+                .map(study -> {
+                    double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
+                    boolean isBookmark = isBookmark(avatar, study);
+                    Avatar studyLeader = enrollmentReader.getLeaderByStudyId(study.getId());
+                    return studyMapper.toCustomStudyResponse(study, studyLeader, isBookmark, averageRating);
+                })
+                .toList();
     }
 }

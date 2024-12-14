@@ -1,6 +1,7 @@
 package com.join.core.study.repository;
 
 import com.join.core.study.domain.Study;
+import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -16,6 +17,7 @@ import java.util.List;
 import static com.join.core.bookmark.domain.QBookmark.bookmark;
 import static com.join.core.enrollment.domain.QEnrollment.enrollment;
 import static com.join.core.history.domain.QViewHistory.viewHistory;
+import static com.join.core.schedule.domain.QStudySchedule.studySchedule;
 import static com.join.core.study.domain.QStudy.study;
 
 @RequiredArgsConstructor
@@ -69,5 +71,30 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                 .from(study)
                 .where(condition.toBooleanBuilder())
                 .fetchOne();
+    }
+
+    @Override
+    public List<Study> getStudiesOrderByRecommendations(
+            EssentialStudyCondition essentialStudyCondition,
+            CustomStudyCondition customStudyCondition
+    ) {
+        return queryFactory.selectFrom(study)
+                .leftJoin(enrollment).on(
+                        enrollment.study.id.eq(study.id)
+                )
+                .leftJoin(studySchedule).on(
+                        studySchedule.study.id.eq(study.id)
+                )
+                .where(
+                        essentialStudyCondition.toBooleanBuilder()
+                )
+                .groupBy(study.id, studySchedule.id)
+                .orderBy(
+                        customStudyCondition.toScore().desc(),
+                        getStudiesAvg().desc(),
+                        study.studyName.asc()
+                )
+                .limit(20)
+                .fetch();
     }
 }

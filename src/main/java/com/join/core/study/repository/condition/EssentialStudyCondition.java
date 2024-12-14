@@ -10,7 +10,6 @@ import static com.join.core.study.domain.QStudy.study;
 
 public record EssentialStudyCondition(Category category, StudyForm studyForm) {
 
-
     public BooleanBuilder toBooleanBuilder() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(eqCategoryId());

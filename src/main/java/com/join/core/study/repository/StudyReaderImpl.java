@@ -3,6 +3,7 @@ package com.join.core.study.repository;
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.EntityNotFoundException;
 import com.join.core.study.domain.Study;
+import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -40,4 +42,8 @@ public class StudyReaderImpl implements StudyReader {
         );
     }
 
+    @Override
+    public List<Study> getStudiesOrderByRecommendations(EssentialStudyCondition condition, CustomStudyCondition customStudyCondition) {
+        return studyQueryRepository.getStudiesOrderByRecommendations(condition, customStudyCondition);
+    }
 }

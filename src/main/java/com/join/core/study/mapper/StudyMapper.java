@@ -7,6 +7,7 @@ import com.join.core.study.domain.Study;
 import com.join.core.study.dto.response.AvatarRatingResponse;
 import com.join.core.study.dto.response.CustomStudyResponse;
 import com.join.core.study.dto.response.PopularStudyReadResponse;
+import com.join.core.study.dto.response.SearchResponse;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.join.core.study.service.dto.CustomStudyCommand;
@@ -55,6 +56,20 @@ public class StudyMapper {
                 command.maxParticipationCount(),
                 command.province(),
                 command.city()
+        );
+    }
+
+    public SearchResponse toSearchResponse(Study study, Avatar studyLeader, boolean isBookmark, double averageRating) {
+        return new SearchResponse(
+                study.getStudyToken(),
+                study.getTitle(),
+                isBookmark,
+                study.getViewCnt(),
+                new AvatarRatingResponse(
+                        studyLeader.getNickname(),
+                        studyLeader.getTotalRating()
+                ),
+                averageRating
         );
     }
 }

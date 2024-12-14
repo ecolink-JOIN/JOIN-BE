@@ -14,4 +14,5 @@ public interface StudyReader {
     Study getStudyById(Long studyId);
     Page<Study> getStudyOrderByPopularity(EssentialStudyCondition condition, LocalDateTime now, Pageable pageable);
     List<Study> getStudiesOrderByRecommendations(EssentialStudyCondition condition, CustomStudyCondition customStudyCondition);
+    List<Study> getStudiesByTitleContaining(String keyword);
 }

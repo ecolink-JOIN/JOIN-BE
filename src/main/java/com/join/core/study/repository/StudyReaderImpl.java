@@ -46,4 +46,9 @@ public class StudyReaderImpl implements StudyReader {
     public List<Study> getStudiesOrderByRecommendations(EssentialStudyCondition condition, CustomStudyCondition customStudyCondition) {
         return studyQueryRepository.getStudiesOrderByRecommendations(condition, customStudyCondition);
     }
+
+    @Override
+    public List<Study> getStudiesByTitleContaining(String keyword) {
+        return studyRepository.findAllByTitleContaining(keyword);
+    }
 }

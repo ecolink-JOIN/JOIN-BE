@@ -3,10 +3,10 @@ package com.join.core.study.controller;
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.dto.PageParameterRequest;
 import com.join.core.common.response.ApiResponse;
+import com.join.core.study.controller.specification.StudyReadApiSpecification;
 import com.join.core.study.dto.request.CustomStudyParameter;
 import com.join.core.study.dto.request.SearchParameter;
 import com.join.core.study.dto.request.StudyOrderByPopularityParameter;
-import com.join.core.study.dto.request.StudyOrderByPopularityRequest;
 import com.join.core.study.dto.response.CustomStudyResponse;
 import com.join.core.study.dto.response.PopularStudyReadResponse;
 import com.join.core.study.dto.response.SearchResponse;
@@ -24,7 +24,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,8 +50,7 @@ public class StudyReadController {
     @GetMapping("/popular")
     public ApiResponse<Page<PopularStudyReadResponse>> getStudiesOrderByPopularity(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            StudyOrderByPopularityParameter studyOrderByPopularityParameter,
-            @RequestBody StudyOrderByPopularityRequest studyOrderByPopularityRequest
+            StudyOrderByPopularityParameter studyOrderByPopularityParameter
     ) {
         return ApiResponse.ok(
                 studyReadService.getStudiesOrderByPopularity(
@@ -60,7 +58,7 @@ public class StudyReadController {
                             userPrincipal,
                             studyOrderByPopularityParameter.category(),
                             studyOrderByPopularityParameter.form(),
-                            studyOrderByPopularityRequest.now(),
+                            studyOrderByPopularityParameter.now(),
                             studyOrderByPopularityParameter.page(),
                             studyOrderByPopularityParameter.size()
                     )
@@ -71,8 +69,7 @@ public class StudyReadController {
     @GetMapping("/recommendation")
     public ApiResponse<Collection<CustomStudyResponse>> recommendStudies(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            CustomStudyParameter customStudyParameter,
-            @RequestBody StudyOrderByPopularityRequest studyOrderByPopularityRequest
+            CustomStudyParameter customStudyParameter
             ) {
         return ApiResponse.ok(studyReadService.recommendStudies(
                 new CustomStudyCommand(
@@ -83,7 +80,6 @@ public class StudyReadController {
                         customStudyParameter.timeZone(),
                         customStudyParameter.minParticipationCount(),
                         customStudyParameter.maxParticipationCount(),
-                        studyOrderByPopularityRequest.now(),
                         customStudyParameter.province(),
                         customStudyParameter.city()
                 )

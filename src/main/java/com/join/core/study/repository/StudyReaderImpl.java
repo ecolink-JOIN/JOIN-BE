@@ -48,7 +48,7 @@ public class StudyReaderImpl implements StudyReader {
     }
 
     @Override
-    public List<Study> getStudiesByTitleContaining(String keyword) {
-        return studyRepository.findAllByTitleContaining(keyword);
+    public Page<Study> getStudiesByTitleContaining(String keyword, Pageable pageable) {
+        return studyRepository.findAllByTitleContaining(keyword, pageable);
     }
 }

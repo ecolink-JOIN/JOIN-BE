@@ -123,15 +123,15 @@ public class StudyReadService {
     }
 
     @Transactional(readOnly = true)
-    public Collection<SearchResponse> search(SearchCommand command) {
+    public Page<SearchResponse> search(SearchCommand command) {
         Avatar avatar = getAvatarById(command.userPrincipal());
-        return studyReader.getStudiesByTitleContaining(command.keyword()).stream()
+        Pageable pageable = PageRequest.of(command.page() - 1, command.size());
+        return studyReader.getStudiesByTitleContaining(command.keyword(), pageable)
                 .map(study -> {
                     double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
                     boolean isBookmark = isBookmark(avatar, study);
                     Avatar studyLeader = enrollmentReader.getLeaderByStudyId(study.getId());
                     return studyMapper.toSearchResponse(study, studyLeader, isBookmark, averageRating);
-                })
-                .toList();
+                });
     }
 }

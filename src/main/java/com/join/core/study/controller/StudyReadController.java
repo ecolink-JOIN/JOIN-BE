@@ -1,6 +1,7 @@
 package com.join.core.study.controller;
 
 import com.join.core.auth.domain.UserPrincipal;
+import com.join.core.common.dto.PageParameterRequest;
 import com.join.core.common.response.ApiResponse;
 import com.join.core.study.dto.request.CustomStudyParameter;
 import com.join.core.study.dto.request.SearchParameter;
@@ -90,10 +91,20 @@ public class StudyReadController {
     }
 
     @GetMapping("/search")
-    public ApiResponse<Collection<SearchResponse>> searchStudy(
+    public ApiResponse<Page<SearchResponse>> searchStudy(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            SearchParameter searchParameter
+            SearchParameter searchParameter,
+            PageParameterRequest pageParameterRequest
     ) {
-        return ApiResponse.ok(studyReadService.search(new SearchCommand(userPrincipal, searchParameter.keyword())));
+        return ApiResponse.ok(
+                studyReadService.search(
+                        new SearchCommand(
+                                userPrincipal,
+                                searchParameter.keyword(),
+                                pageParameterRequest.page(),
+                                pageParameterRequest.size()
+                        )
+                )
+        );
     }
 }

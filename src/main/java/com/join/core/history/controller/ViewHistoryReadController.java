@@ -2,6 +2,7 @@ package com.join.core.history.controller;
 
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.dto.PageParameterRequest;
+import com.join.core.history.controller.specification.ViewHistoryReadApiSpecification;
 import com.join.core.history.dto.response.ViewStudyReadResponse;
 import com.join.core.history.service.ViewHistoryReadService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/views")
-public class ViewHistoryReadController {
+public class ViewHistoryReadController implements ViewHistoryReadApiSpecification {
 
     private final ViewHistoryReadService viewHistoryReadService;
 

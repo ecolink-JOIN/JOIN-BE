@@ -32,7 +32,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/study")
-public class StudyReadController {
+public class StudyReadController implements StudyReadApiSpecification {
 
     private final StudyReadService studyReadService;
 

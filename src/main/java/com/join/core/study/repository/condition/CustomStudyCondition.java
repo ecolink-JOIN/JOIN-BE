@@ -1,10 +1,10 @@
 package com.join.core.study.repository.condition;
 
 import com.join.core.common.constant.DayType;
+import com.join.core.study.constant.TimeZone;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 
-import java.time.LocalTime;
 import java.util.List;
 
 import static com.join.core.address.domain.QAddress.address;
@@ -12,7 +12,7 @@ import static com.join.core.schedule.domain.QStudySchedule.studySchedule;
 
 public record CustomStudyCondition(
         List<DayType> possibleDays,
-        String timeZone,
+        TimeZone timeZone,
         Integer minParticipationCount,
         Integer maxParticipationCount,
         String province,
@@ -39,20 +39,16 @@ public record CustomStudyCondition(
 
     // TODO: 오전/오후/저녁 처리 방식 상의 필요
     private NumberExpression<Integer> eqTimeZone(NumberExpression<Integer> score) {
-        if (timeZone == null || timeZone.isEmpty()) {
+        if (timeZone == null) {
             return score;
         }
-        if (timeZone.equals("오전")) {
-            return score.add(Expressions.cases()
-                    .when(studySchedule.stTime.before(LocalTime.of(12, 0, 0)))
-                    .then(1)
-                    .otherwise(0));
-        } else {
-            return score.add(Expressions.cases()
-                    .when(studySchedule.stTime.after(LocalTime.of(12, 0, 0)))
-                    .then(1)
-                    .otherwise(0));
-        }
+        return score.add(Expressions.cases()
+                .when(
+                        studySchedule.stTime.goe(timeZone.getStartTime())
+                                .and(studySchedule.stTime.before(timeZone.getEndTime()))
+                )
+                .then(1)
+                .otherwise(0));
     }
 
     private NumberExpression<Integer> eqParticipationCount(NumberExpression<Integer> score) {

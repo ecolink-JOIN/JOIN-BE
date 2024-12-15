@@ -1,6 +1,7 @@
 package com.join.core.enrollment.repository;
 
 import com.join.core.avatar.domain.Avatar;
+import com.join.core.enrollment.constant.EnrollmentStatus;
 import com.join.core.enrollment.constant.StudyRole;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,8 @@ public class EnrollmentQueryRepositoryImpl implements EnrollmentQueryRepository 
                 .from(enrollment)
                 .where(
                         enrollment.study.id.eq(studyId),
-                        enrollment.role.eq(StudyRole.MEMBER)
+                        enrollment.role.eq(StudyRole.MEMBER),
+                        enrollment.status.eq(EnrollmentStatus.APPROVED)
                 )
                 .fetchOne();
     }

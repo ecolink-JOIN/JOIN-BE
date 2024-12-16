@@ -6,6 +6,7 @@ import com.join.core.bookmark.dto.response.BookmarkStudyReadResponse;
 import com.join.core.bookmark.service.BookmarkReadService;
 import com.join.core.common.dto.PageParameterRequest;
 import com.join.core.common.response.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,7 +26,7 @@ public class BookmarkReadController implements BookmarkReadApiSpecification {
     @PreAuthorize("isAuthenticated()")
     public ApiResponse<Page<BookmarkStudyReadResponse>> getBookmarkStudy(
             @AuthenticationPrincipal UserPrincipal principal,
-            PageParameterRequest pageParameterRequest
+            @Valid PageParameterRequest pageParameterRequest
     ) {
         return ApiResponse.ok(bookmarkReadService.getBookmarkStudy(principal.getAvatarId(), pageParameterRequest));
     }

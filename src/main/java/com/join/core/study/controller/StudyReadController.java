@@ -18,6 +18,7 @@ import com.join.core.study.service.dto.StudyOrderByPopularityCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,7 +51,8 @@ public class StudyReadController implements StudyReadApiSpecification {
     @GetMapping("/popular")
     public ApiResponse<Page<PopularStudyReadResponse>> getStudiesOrderByPopularity(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            StudyOrderByPopularityParameter studyOrderByPopularityParameter
+            StudyOrderByPopularityParameter studyOrderByPopularityParameter,
+            @Valid PageParameterRequest pageParameterRequest
     ) {
         return ApiResponse.ok(
                 studyReadService.getStudiesOrderByPopularity(
@@ -59,8 +61,8 @@ public class StudyReadController implements StudyReadApiSpecification {
                             studyOrderByPopularityParameter.category(),
                             studyOrderByPopularityParameter.form(),
                             studyOrderByPopularityParameter.now(),
-                            studyOrderByPopularityParameter.page(),
-                            studyOrderByPopularityParameter.size()
+                            pageParameterRequest.getPage(),
+                            pageParameterRequest.getSize()
                     )
                 )
         );
@@ -90,15 +92,15 @@ public class StudyReadController implements StudyReadApiSpecification {
     public ApiResponse<Page<SearchResponse>> searchStudy(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             SearchParameter searchParameter,
-            PageParameterRequest pageParameterRequest
+            @Valid PageParameterRequest pageParameterRequest
     ) {
         return ApiResponse.ok(
                 studyReadService.search(
                         new SearchCommand(
                                 userPrincipal,
                                 searchParameter.keyword(),
-                                pageParameterRequest.page(),
-                                pageParameterRequest.size()
+                                pageParameterRequest.getPage(),
+                                pageParameterRequest.getSize()
                         )
                 )
         );

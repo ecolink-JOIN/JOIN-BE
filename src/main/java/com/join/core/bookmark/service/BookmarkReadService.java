@@ -26,7 +26,7 @@ public class BookmarkReadService {
     @Transactional(readOnly = true)
     public Page<BookmarkStudyReadResponse> getBookmarkStudy(Long avatarId, PageParameterRequest pageParameterRequest) {
         Avatar avatar = avatarReader.getAvatarById(avatarId);
-        Pageable pageable = PageRequest.of(pageParameterRequest.page() - 1, pageParameterRequest.size());
+        Pageable pageable = PageRequest.of(pageParameterRequest.getPage() - 1, pageParameterRequest.getSize());
         return bookmarkReader.getBookmarksByAvatar(pageable, avatar)
                 .map(bookmark -> {
                     Study study = bookmark.getStudy();

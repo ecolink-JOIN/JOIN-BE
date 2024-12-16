@@ -23,7 +23,8 @@ public interface StudyReadApiSpecification {
             description = "인기순 스터디 조회")
     ApiResponse<Page<PopularStudyReadResponse>> getStudiesOrderByPopularity(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            StudyOrderByPopularityParameter studyOrderByPopularityParameter
+            StudyOrderByPopularityParameter studyOrderByPopularityParameter,
+            PageParameterRequest pageParameterRequest
     );
 
     @Tag(name = "${swagger.tag.study}")

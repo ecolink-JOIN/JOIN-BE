@@ -26,7 +26,7 @@ public class ViewHistoryReadService {
 
     @Transactional(readOnly = true)
     public Page<ViewStudyReadResponse> getViewStudyByAvatarId(Long avatarId, PageParameterRequest pageParameterRequest) {
-        Pageable pageable = PageRequest.of(pageParameterRequest.page() - 1, pageParameterRequest.size());
+        Pageable pageable = PageRequest.of(pageParameterRequest.getPage() - 1, pageParameterRequest.getSize());
         Avatar avatar = avatarReader.getAvatarById(avatarId);
         return viewHistoryReader.getStudyByAvatarId(avatarId, pageable)
                 .map(study -> {

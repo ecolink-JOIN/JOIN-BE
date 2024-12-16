@@ -5,6 +5,7 @@ import com.join.core.common.dto.PageParameterRequest;
 import com.join.core.history.controller.specification.ViewHistoryReadApiSpecification;
 import com.join.core.history.dto.response.ViewStudyReadResponse;
 import com.join.core.history.service.ViewHistoryReadService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +25,7 @@ public class ViewHistoryReadController implements ViewHistoryReadApiSpecificatio
     @PreAuthorize("isAuthenticated()")
     public Page<ViewStudyReadResponse> getViewStudyByAvatarId(
             @AuthenticationPrincipal UserPrincipal principal,
-            PageParameterRequest pageParameterRequest
+            @Valid PageParameterRequest pageParameterRequest
     ) {
         return viewHistoryReadService.getViewStudyByAvatarId(principal.getAvatarId(), pageParameterRequest);
     }

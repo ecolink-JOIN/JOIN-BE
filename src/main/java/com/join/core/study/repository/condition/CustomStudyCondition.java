@@ -4,6 +4,7 @@ import com.join.core.common.constant.DayType;
 import com.join.core.study.constant.TimeZone;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -62,10 +63,11 @@ public record CustomStudyCondition(
     }
 
     private NumberExpression<Integer> eqAddress(NumberExpression<Integer> score) {
-        if ((province == null || province.isEmpty()) || (city == null || city.isEmpty())) {
-            if (province == null || province.isEmpty()) {
-                return eqCityOnly(score);
-            }
+        if (StringUtils.isEmpty(province)) {
+            return eqCityOnly(score);
+        }
+
+        if (StringUtils.isEmpty(city)) {
             return eqProvinceOnly(score);
         }
         return score.add(Expressions.cases()
@@ -74,7 +76,7 @@ public record CustomStudyCondition(
     }
 
     private NumberExpression<Integer> eqProvinceOnly(NumberExpression<Integer> score) {
-        if (province == null || province.isEmpty()) {
+        if (StringUtils.isEmpty(province)) {
             return score;
         }
         return score.add(Expressions.cases()
@@ -83,7 +85,7 @@ public record CustomStudyCondition(
     }
 
     private NumberExpression<Integer> eqCityOnly(NumberExpression<Integer> score) {
-        if (city == null || city.isEmpty()) {
+        if (StringUtils.isEmpty(city)) {
             return score;
         }
         return score.add(Expressions.cases()

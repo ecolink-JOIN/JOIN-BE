@@ -2,11 +2,13 @@ package com.join.core.study.repository.condition;
 
 import com.join.core.common.constant.DayType;
 import com.join.core.study.constant.TimeZone;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.join.core.address.domain.QAddress.address;
 import static com.join.core.schedule.domain.QStudySchedule.studySchedule;
@@ -21,75 +23,64 @@ public record CustomStudyCondition(
 ) {
 
     public NumberExpression<Integer> toScore() {
-        NumberExpression<Integer> score = Expressions.asNumber(0);
-        score = eqPossibleDays(score);
-        score = eqTimeZone(score);
-        score = eqParticipationCount(score);
-        score = eqAddress(score);
-        return score;
+        return Stream.of(
+                        eqPossibleDays(),
+                        eqTimeZone(),
+                        eqParticipationCount(),
+                        eqAddress()
+                )
+                .reduce(Expressions.asNumber(0), NumberExpression::add);
     }
 
-    private NumberExpression<Integer> eqPossibleDays(NumberExpression<Integer> score) {
-        if (possibleDays == null || possibleDays.isEmpty()) {
-            return score;
+    private NumberExpression<Integer> eqPossibleDays() {
+        if (possibleDays == null) {
+            return Expressions.asNumber(0);
         }
-        return score.add(Expressions.cases()
-                .when(studySchedule.weekOfDay.in(possibleDays)).then(1)
-                .otherwise(0));
+        return createScoreExpression(studySchedule.weekOfDay.in(possibleDays));
     }
 
     // TODO: 오전/오후/저녁 처리 방식 상의 필요
-    private NumberExpression<Integer> eqTimeZone(NumberExpression<Integer> score) {
+    private NumberExpression<Integer> eqTimeZone() {
         if (timeZone == null) {
-            return score;
+            return Expressions.asNumber(0);
         }
-        return score.add(Expressions.cases()
-                .when(
-                        studySchedule.stTime.goe(timeZone.getStartTime())
-                                .and(studySchedule.stTime.before(timeZone.getEndTime()))
-                )
-                .then(1)
-                .otherwise(0));
+        return createScoreExpression(
+                studySchedule.stTime.goe(timeZone.getStartTime())
+                        .and(studySchedule.stTime.before(timeZone.getEndTime()))
+        );
     }
 
-    private NumberExpression<Integer> eqParticipationCount(NumberExpression<Integer> score) {
+    private NumberExpression<Integer> eqParticipationCount() {
         if (minParticipationCount == null && maxParticipationCount == null) {
-            return score;
+            return Expressions.asNumber(0);
         }
-        return score.add(Expressions.cases()
-                .when(studySchedule.id.count().between(minParticipationCount, maxParticipationCount))
+        return createScoreExpression(
+                studySchedule.id.count().between(minParticipationCount, maxParticipationCount)
+        );
+    }
+
+    private NumberExpression<Integer> eqAddress() {
+        if (StringUtils.isEmpty(province) && StringUtils.isEmpty(city)) {
+            return Expressions.asNumber(0);
+        }
+        BooleanExpression addressCondition = createAddressCondition();
+        return createScoreExpression(addressCondition);
+    }
+
+    private BooleanExpression createAddressCondition() {
+        if (StringUtils.isEmpty(province)) {
+            return address.city.eq(city);
+        }
+        if (StringUtils.isEmpty(city)) {
+            return address.province.eq(province);
+        }
+        return address.province.eq(province).and(address.city.eq(city));
+    }
+
+    private NumberExpression<Integer> createScoreExpression(BooleanExpression expression) {
+        return Expressions.cases()
+                .when(expression)
                 .then(1)
-                .otherwise(0));
-    }
-
-    private NumberExpression<Integer> eqAddress(NumberExpression<Integer> score) {
-        if (StringUtils.isEmpty(province)) {
-            return eqCityOnly(score);
-        }
-
-        if (StringUtils.isEmpty(city)) {
-            return eqProvinceOnly(score);
-        }
-        return score.add(Expressions.cases()
-                .when(address.province.eq(province).and(address.city.eq(city))).then(1)
-                .otherwise(0));
-    }
-
-    private NumberExpression<Integer> eqProvinceOnly(NumberExpression<Integer> score) {
-        if (StringUtils.isEmpty(province)) {
-            return score;
-        }
-        return score.add(Expressions.cases()
-                .when(address.province.eq(province)).then(1)
-                .otherwise(0));
-    }
-
-    private NumberExpression<Integer> eqCityOnly(NumberExpression<Integer> score) {
-        if (StringUtils.isEmpty(city)) {
-            return score;
-        }
-        return score.add(Expressions.cases()
-                .when(address.city.eq(city)).then(1)
-                .otherwise(0));
+                .otherwise(0);
     }
 }

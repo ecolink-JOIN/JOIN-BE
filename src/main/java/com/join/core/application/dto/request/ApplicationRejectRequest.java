@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ApplicationRejectRequest {
 
-    @Schema(description = "거절 사유", example = "출석률")
+    @Schema(description = "거절 사유", example = "OTHER")
     @NotBlank
     private ApplicationRejectReason rejectReason;
 

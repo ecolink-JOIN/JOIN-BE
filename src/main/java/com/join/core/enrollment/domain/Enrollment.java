@@ -34,10 +34,8 @@ public class Enrollment extends BaseTimeEntity {
     @NotNull
     private LocalDateTime enrolledDate;
 
-    @NotNull
     private LocalDateTime endDate;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private EnrollmentEndReason endReason;
 
@@ -50,5 +48,16 @@ public class Enrollment extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "avatar_id")
     private Avatar avatar;
+
+    public Enrollment(Study study, Avatar avatar, EnrollmentStatus status, LocalDateTime enrolledDate,
+                      LocalDateTime endDate, EnrollmentEndReason endReason, StudyRole role) {
+        this.study = study;
+        this.avatar = avatar;
+        this.status = status;
+        this.enrolledDate = enrolledDate;
+        this.endDate = endDate;
+        this.endReason = endReason;
+        this.role = role;
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.join.core.avatar.controller;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,10 +38,10 @@ public class AvatarController {
 	private final AvatarService avatarService;
 
 	@Tag(name = "${swagger.tag.sign-up}")
-	@Operation(summary = "닉네임 유효성 검사 API",
-		description = "닉네임 유효성 검사 API")
+	@Operation(summary = "닉네임 유효성 검사 API", description = "닉네임 유효성 검사 API")
 	@GetMapping("/nickname/valid")
-	public ApiResponse<AvatarInfo.ValidNickname> isValidNickname(AvatarCommand.ChangeNickname command) {
+	public ApiResponse<AvatarInfo.ValidNickname> isValidNickname(
+		@ParameterObject AvatarCommand.ChangeNickname command) {
 		return ApiResponse.ok(avatarService.isValid(command));
 	}
 
@@ -73,6 +74,17 @@ public class AvatarController {
 	) {
 		avatarService.changePhoto(principal.getAvatarId(), command, file);
 		return ApiResponse.ok();
+	}
+
+	@Tag(name = "${swagger.tag.sign-up}")
+	@Tag(name = "${swagger.tag.user}")
+	@Operation(summary = "유저 정보 조회 API - 인증 필요",
+		description = "유저 정보 조회 API - 인증 필요",
+		security = {@SecurityRequirement(name = "session-token")})
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping
+	public ApiResponse<AvatarInfo.Self> getAvatarInfo(@AuthenticationPrincipal UserPrincipal principal) {
+		return ApiResponse.ok(avatarService.getAvatarInfo(principal.getAvatarId()));
 	}
 
 }

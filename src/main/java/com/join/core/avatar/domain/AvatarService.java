@@ -10,4 +10,6 @@ public interface AvatarService {
 
 	void changePhoto(Long avatarId, AvatarCommand.ChangePhoto command, MultipartFile image);
 
+	AvatarInfo.Self getAvatarInfo(Long avatarId);
+
 }

@@ -7,4 +7,6 @@ public interface AvatarReader {
 
 	Avatar getById(Long id);
 
+	AvatarInfo.Self getInfo(Long id);
+
 }

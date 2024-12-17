@@ -22,7 +22,7 @@ public class ApplicationDecisionService {
 
     private final ApplicationRepository applicationRepository;
     private final ApplicationStore applicationStore;
-    private final EnrollmentService enrollmentService; // EnrollmentService 주입
+    private final EnrollmentService enrollmentService;
 
     @Transactional
     public void acceptApplication(Long applicationId, Long avatarId) {
@@ -33,7 +33,7 @@ public class ApplicationDecisionService {
         EnrollmentCreateRequest enrollmentRequest = new EnrollmentCreateRequest(
                 application.getStudy().getId(),
                 application.getAvatar().getId(),
-                EnrollmentStatus.JOINED,
+                EnrollmentStatus.READY_JOIN,
                 StudyRole.MEMBER,
                 LocalDateTime.now()
         );

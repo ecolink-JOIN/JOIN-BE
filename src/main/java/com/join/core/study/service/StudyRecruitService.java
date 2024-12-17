@@ -12,10 +12,15 @@ import com.join.core.schedule.domain.StudySchedule;
 import com.join.core.study.domain.Study;
 import com.join.core.study.dto.request.StudyReRecruitRequest;
 import com.join.core.study.dto.request.StudyRecruitRequest;
+import com.join.core.enrollment.service.EnrollmentService;
+import com.join.core.enrollment.dto.request.EnrollmentCreateRequest;
+import com.join.core.enrollment.constant.EnrollmentStatus;
+import com.join.core.enrollment.constant.StudyRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -27,6 +32,7 @@ public class StudyRecruitService {
     private final AddressReader addressReader;
     private final CategoryReader categoryReader;
     private final StudyReader studyReader;
+    private final EnrollmentService enrollmentService;
 
     @Transactional
     public void createStudy(Long avatarId, StudyRecruitRequest recruitRequest) {
@@ -44,6 +50,15 @@ public class StudyRecruitService {
         }
 
         studyStore.store(study);
+
+        EnrollmentCreateRequest enrollmentRequest = new EnrollmentCreateRequest(
+                study.getId(),
+                writer.getId(),
+                EnrollmentStatus.READY_JOIN,
+                StudyRole.LEADER,
+                LocalDateTime.now()
+        );
+        enrollmentService.createEnrollment(enrollmentRequest, study, writer);
     }
 
     @Transactional

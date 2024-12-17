@@ -3,6 +3,7 @@ package com.join.core.notification.service;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.repository.AvatarRepository;
 import com.join.core.common.exception.ErrorCode;
+import com.join.core.common.exception.LeaderForbiddenException;
 import com.join.core.common.exception.impl.EntityNotFoundException;
 import com.join.core.notification.domain.Notification;
 import com.join.core.notification.dto.request.NotificationRequest;
@@ -29,7 +30,7 @@ public class NotificationService {
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_FOUND));
 
         if (!study.getWriter().getId().equals(writer.getId())) {
-            throw new EntityNotFoundException(ErrorCode.UNAUTHORIZED_ACCESS);
+            throw new LeaderForbiddenException(ErrorCode.NOT_LEADER_OF_STUDY);
         }
 
         Notification notification = new Notification(

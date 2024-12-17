@@ -67,7 +67,7 @@ public class StudyRecruitService {
         EnrollmentCreateRequest enrollmentRequest = new EnrollmentCreateRequest(
                 study.getId(),
                 writer.getId(),
-                EnrollmentStatus.READY_JOIN,
+                EnrollmentStatus.JOINED,
                 StudyRole.LEADER,
                 LocalDateTime.now()
         );

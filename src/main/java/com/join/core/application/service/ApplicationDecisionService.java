@@ -37,7 +37,7 @@ public class ApplicationDecisionService {
         EnrollmentCreateRequest enrollmentRequest = new EnrollmentCreateRequest(
                 application.getStudy().getId(),
                 application.getAvatar().getId(),
-                EnrollmentStatus.READY_JOIN,
+                EnrollmentStatus.JOINED,
                 StudyRole.MEMBER,
                 LocalDateTime.now()
         );

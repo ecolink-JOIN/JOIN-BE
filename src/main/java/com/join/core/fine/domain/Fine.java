@@ -4,7 +4,7 @@ import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.domain.BaseTimeEntity;
 import com.join.core.fine.constant.FineReason;
 import com.join.core.fine.constant.PaidStatus;
-import com.join.core.session.domain.Session;
+import com.join.core.meeting.domain.Meeting;
 import com.join.core.study.domain.Study;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -51,7 +51,7 @@ public class Fine extends BaseTimeEntity {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "session_id", nullable = false)
-    private Session session;
+    @JoinColumn(name = "meeting_id", nullable = false)
+    private Meeting meeting;
 
 }

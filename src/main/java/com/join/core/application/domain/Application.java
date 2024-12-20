@@ -1,5 +1,6 @@
 package com.join.core.application.domain;
 
+import com.join.core.application.constant.ApplicationRejectReason;
 import com.join.core.application.constant.ApplicationStatus;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.domain.BaseTimeEntity;
@@ -43,6 +44,12 @@ public class Application extends BaseTimeEntity {
     @JoinColumn(name = "avatar_id", nullable = false)
     private Avatar avatar;
 
+    @Size(max = 100)
+    private String otherReason;
+
+    @Enumerated(EnumType.STRING)
+    private ApplicationRejectReason rejectReason;
+
     public Application(Study study, Avatar avatar, LocalDate appDate, String introduction) {
         this.study = study;
         this.avatar = avatar;
@@ -59,9 +66,13 @@ public class Application extends BaseTimeEntity {
         }
     }
 
-    public void reject() {
+    public void reject(ApplicationRejectReason rejectReason, String otherReason) {
         if (this.status == ApplicationStatus.PENDING) {
             this.status = ApplicationStatus.REJECTED;
+            this.rejectReason = rejectReason;
+            if (rejectReason == ApplicationRejectReason.OTHER && otherReason != null) {
+                this.otherReason = otherReason;
+            }
         } else {
             throw new IllegalStateException("이미 처리된 지원입니다.");
         }

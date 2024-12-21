@@ -1,5 +1,6 @@
 package com.join.core.attendance.controller;
 
+import com.join.core.attendance.dto.CreateAttendanceRequest;
 import com.join.core.attendance.service.AttendanceService;
 import com.join.core.attendance.service.command.CreateAttendanceCommand;
 import com.join.core.auth.domain.UserPrincipal;
@@ -9,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,10 +25,15 @@ public class AttendanceController {
     @PostMapping
     public ApiResponse<Void> createAttendance(
             @AuthenticationPrincipal UserPrincipal principal,
-            @PathVariable Integer meetingNo
+            @PathVariable Integer meetingNo,
+            @RequestBody CreateAttendanceRequest request
     ) {
         attendanceService.createAttendance(
-                new CreateAttendanceCommand(principal.getAvatarId(), meetingNo)
+                new CreateAttendanceCommand(
+                        principal.getAvatarId(),
+                        meetingNo,
+                        request.now()
+                )
         );
         return ApiResponse.ok();
     }

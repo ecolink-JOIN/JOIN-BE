@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static com.join.core.common.exception.ErrorCode.*;
@@ -68,5 +69,15 @@ public class Meeting {
 
     public void updateMeetingNo(int meetingNo) {
         this.meetingNo = meetingNo;
+    }
+
+    public boolean isWithinMeetingTime(LocalDateTime now) {
+        if (!studyDate.isEqual(now.toLocalDate())) {
+            return false;
+        }
+
+        LocalTime currentTime = now.toLocalTime();
+        LocalTime meetingStart = stTime.minusMinutes(10);
+        return currentTime.isAfter(meetingStart) && currentTime.isBefore(endTime);
     }
 }

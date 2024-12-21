@@ -87,7 +87,13 @@ public enum ErrorCode {
 	/**
 	 * 회차 관련 오류
 	 */
-	MEETING_NOT_FOUND(HttpStatus.NOT_FOUND, "ME-001", "존재하지 않는 회차입니다.");
+	MEETING_NOT_FOUND(HttpStatus.NOT_FOUND, "ME-001", "존재하지 않는 회차입니다."),
+
+	/**
+	 * 출석 관련 오류
+	 */
+	OUT_OF_ATTENDANCE_TIME(HttpStatus.BAD_REQUEST, "AT-001", "출석 시간이 아닙니다.");
+
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;

@@ -92,11 +92,11 @@ public class Study {
     @NotNull
     private int bookmarkCnt;
 
-    @NotNull
-    private StudyForm form;
-
     @Enumerated(EnumType.STRING)
     private StudyEndReason endReason;
+
+    @Enumerated(EnumType.STRING)
+    private StudyForm form;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

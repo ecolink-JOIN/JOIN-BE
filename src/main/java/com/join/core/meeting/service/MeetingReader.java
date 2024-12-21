@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface MeetingReader {
     List<Meeting> findByStudy(Study study);
-
+    Meeting findByMeetingNo(int meetingNo);
 }

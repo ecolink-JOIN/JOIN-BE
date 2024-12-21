@@ -82,8 +82,12 @@ public enum ErrorCode {
 	/**
 	 * 권한 관련 오류
 	 */
-	UNAUTHORIZED_ACCESS(HttpStatus.INTERNAL_SERVER_ERROR, "AU-001", "해당 요청에 대한 권한이 없습니다.");
+	UNAUTHORIZED_ACCESS(HttpStatus.INTERNAL_SERVER_ERROR, "AU-001", "해당 요청에 대한 권한이 없습니다."),
 
+	/**
+	 * 회차 관련 오류
+	 */
+	MEETING_NOT_FOUND(HttpStatus.NOT_FOUND, "ME-001", "존재하지 않는 회차입니다.");
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;

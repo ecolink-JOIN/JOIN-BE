@@ -39,7 +39,6 @@ public record CustomStudyCondition(
         return createScoreExpression(studySchedule.weekOfDay.in(possibleDays));
     }
 
-    // TODO: 오전/오후/저녁 처리 방식 상의 필요
     private NumberExpression<Integer> eqTimeZone() {
         if (timeZone == null) {
             return Expressions.asNumber(0);

@@ -19,7 +19,7 @@ import static com.join.core.bookmark.domain.QBookmark.bookmark;
 import static com.join.core.enrollment.domain.QEnrollment.enrollment;
 import static com.join.core.history.domain.QViewHistory.viewHistory;
 import static com.join.core.schedule.domain.QStudySchedule.studySchedule;
-import static com.join.core.study.domain.QStudy.study;
+import static com.join.core.study.domain.QStudy.*;
 
 @RequiredArgsConstructor
 @Repository
@@ -45,7 +45,8 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                         bookmark.createdDate.after(now.minusDays(7))
                 )
                 .leftJoin(enrollment).on(
-                        enrollment.study.id.eq(study.id)
+                        enrollment.study.id.eq(study.id),
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
                 )
                 .where(condition.toBooleanBuilder())
                 .groupBy(study.id)
@@ -82,7 +83,7 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
         return queryFactory.selectFrom(study)
                 .leftJoin(enrollment).on(
                         enrollment.study.id.eq(study.id),
-                        enrollment.status.eq(EnrollmentStatus.APPROVED)
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
                 )
                 .leftJoin(studySchedule).on(
                         studySchedule.study.id.eq(study.id)

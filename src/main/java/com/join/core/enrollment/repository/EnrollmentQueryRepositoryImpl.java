@@ -23,7 +23,7 @@ public class EnrollmentQueryRepositoryImpl implements EnrollmentQueryRepository 
                 .where(
                         enrollment.study.id.eq(studyId),
                         enrollment.role.eq(StudyRole.MEMBER),
-                        enrollment.status.eq(EnrollmentStatus.APPROVED)
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
                 )
                 .fetchOne();
     }
@@ -35,7 +35,8 @@ public class EnrollmentQueryRepositoryImpl implements EnrollmentQueryRepository 
                 .from(enrollment)
                 .where(
                         enrollment.study.id.eq(studyId),
-                        enrollment.role.eq(StudyRole.LEADER)
+                        enrollment.role.eq(StudyRole.LEADER),
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
                 )
                 .fetchOne();
     }

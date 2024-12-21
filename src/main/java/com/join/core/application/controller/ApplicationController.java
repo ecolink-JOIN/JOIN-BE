@@ -1,6 +1,7 @@
 package com.join.core.application.controller;
 
 import com.join.core.application.dto.request.ApplicationCreateRequest;
+import com.join.core.application.dto.request.ApplicationRejectRequest;
 import com.join.core.application.service.ApplicationDecisionService;
 import com.join.core.application.service.ApplicationService;
 import com.join.core.auth.domain.UserPrincipal;
@@ -54,8 +55,10 @@ public class ApplicationController {
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/{applicationId}/reject")
     public ApiResponse<Void> rejectApplication(@PathVariable Long applicationId,
-                                               @AuthenticationPrincipal UserPrincipal principal) {
-        applicationDecisionService.rejectApplication(applicationId, principal.getAvatarId());
+                                               @AuthenticationPrincipal UserPrincipal principal,
+                                               @RequestBody ApplicationRejectRequest rejectRequest) {
+        applicationDecisionService.rejectApplication(applicationId, principal.getAvatarId(),
+                rejectRequest.getRejectReason(), rejectRequest.getOtherReason());
         return ApiResponse.ok();
     }
 

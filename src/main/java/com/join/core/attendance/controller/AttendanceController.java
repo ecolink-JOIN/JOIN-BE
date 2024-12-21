@@ -1,5 +1,6 @@
 package com.join.core.attendance.controller;
 
+import com.join.core.attendance.controller.specification.AttendanceControllerSpecification;
 import com.join.core.attendance.dto.CreateAttendanceRequest;
 import com.join.core.attendance.service.AttendanceService;
 import com.join.core.attendance.service.command.CreateAttendanceCommand;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/study/{studyToken}/meetings/{meetingNo}/attendance")
-public class AttendanceController {
+public class AttendanceController implements AttendanceControllerSpecification {
 
     private final AttendanceService attendanceService;
 

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/meetings/{meetingNo}/attendance")
+@RequestMapping("${api.prefix}/study/{studyToken}/meetings/{meetingNo}/attendance")
 public class AttendanceController {
 
     private final AttendanceService attendanceService;
@@ -25,12 +25,14 @@ public class AttendanceController {
     @PostMapping
     public ApiResponse<Void> createAttendance(
             @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable String studyToken,
             @PathVariable Integer meetingNo,
             @RequestBody CreateAttendanceRequest request
     ) {
         attendanceService.createAttendance(
                 new CreateAttendanceCommand(
                         principal.getAvatarId(),
+                        studyToken,
                         meetingNo,
                         request.now()
                 )

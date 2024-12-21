@@ -92,7 +92,8 @@ public enum ErrorCode {
 	/**
 	 * 출석 관련 오류
 	 */
-	OUT_OF_ATTENDANCE_TIME(HttpStatus.BAD_REQUEST, "AT-001", "출석 시간이 아닙니다.");
+	OUT_OF_ATTENDANCE_TIME(HttpStatus.BAD_REQUEST, "AT-001", "출석 시간이 아닙니다."),
+	NOT_MEMBER_OF_STUDY(HttpStatus.BAD_REQUEST, "AT-002", "스터디 참여자가 아닙니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

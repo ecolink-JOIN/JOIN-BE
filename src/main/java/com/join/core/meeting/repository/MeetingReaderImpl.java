@@ -22,8 +22,8 @@ public class MeetingReaderImpl implements MeetingReader {
     }
 
     @Override
-    public Meeting findByMeetingNo(int meetingNo) {
-        return meetingRepository.findByMeetingNo(meetingNo)
+    public Meeting findByStudyIdAndMeetingNo(Long studyId, int meetingNo) {
+        return meetingRepository.findByStudyIdAndMeetingNo(studyId, meetingNo)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEETING_NOT_FOUND));
     }
 }

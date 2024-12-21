@@ -13,6 +13,7 @@ import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -27,10 +28,11 @@ public class AttendanceService {
     private final EnrollmentReader enrollmentReader;
     private final AttendanceMapper attendanceMapper;
 
+    @Transactional
     public void createAttendance(CreateAttendanceCommand command) {
         Avatar avatar = avatarReader.getAvatarById(command.avatarId());
         Study study = studyReader.getStudyByToken(command.studyToken());
-        Meeting meeting = meetingReader.findByMeetingNo(command.meetingNo());
+        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), command.meetingNo());
 
         checkMember(avatar.getId(), study.getId());
         checkMeetingTime(meeting, command.now());

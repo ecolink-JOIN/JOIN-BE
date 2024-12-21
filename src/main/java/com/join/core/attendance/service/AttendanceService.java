@@ -24,8 +24,9 @@ public class AttendanceService {
     private final AvatarReader avatarReader;
     private final MeetingReader meetingReader;
     private final StudyReader studyReader;
-    private final AttendanceSaver attendanceSaver;
     private final EnrollmentReader enrollmentReader;
+    private final AttendanceReader attendanceReader;
+    private final AttendanceSaver attendanceSaver;
     private final AttendanceMapper attendanceMapper;
 
     @Transactional
@@ -35,6 +36,7 @@ public class AttendanceService {
         Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), command.meetingNo());
 
         checkMember(avatar.getId(), study.getId());
+        checkDuplicated(avatar.getId(), meeting.getId());
         checkMeetingTime(meeting, command.now());
         attendanceSaver.save(attendanceMapper.toEntity(meeting, avatar));
     }
@@ -42,6 +44,12 @@ public class AttendanceService {
     private void checkMember(Long avatarId, Long studyId) {
         if (!enrollmentReader.existEnrollmentByAvatarIdAndStudyId(avatarId, studyId)) {
             throw new InvalidSelectionException(ErrorCode.NOT_MEMBER_OF_STUDY);
+        }
+    }
+
+    private void checkDuplicated(Long avatarId, Long meetingId) {
+        if (attendanceReader.existsAttendance(avatarId, meetingId)) {
+            throw new InvalidSelectionException(ErrorCode.ATTENDANCE_ALREADY_COMPLETED);
         }
     }
 

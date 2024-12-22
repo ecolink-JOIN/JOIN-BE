@@ -37,7 +37,7 @@ public class AttendanceReadService {
 
     private void checkMember(Long avatarId, Long studyId) {
         if (!enrollmentReader.existEnrollmentByAvatarIdAndStudyId(avatarId, studyId)) {
-            throw new NoPermissionException(ErrorCode.UNAUTHORIZED_ACCESS);
+            throw new NoPermissionException(ErrorCode.NOT_MEMBER_OF_STUDY);
         }
     }
 

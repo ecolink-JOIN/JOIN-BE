@@ -61,8 +61,7 @@ public class StudyReadController implements StudyReadApiSpecification {
                             studyOrderByPopularityParameter.category(),
                             studyOrderByPopularityParameter.form(),
                             studyOrderByPopularityParameter.now(),
-                            pageParameterRequest.getPage(),
-                            pageParameterRequest.getSize()
+                            pageParameterRequest
                     )
                 )
         );
@@ -99,8 +98,7 @@ public class StudyReadController implements StudyReadApiSpecification {
                         new SearchCommand(
                                 userPrincipal,
                                 searchParameter.keyword(),
-                                pageParameterRequest.getPage(),
-                                pageParameterRequest.getSize()
+                                pageParameterRequest
                         )
                 )
         );

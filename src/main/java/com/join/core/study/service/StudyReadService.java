@@ -20,8 +20,6 @@ import com.join.core.study.service.dto.SearchCommand;
 import com.join.core.study.service.dto.StudyOrderByPopularityCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,9 +70,8 @@ public class StudyReadService {
     public Page<PopularStudyReadResponse> getStudiesOrderByPopularity(StudyOrderByPopularityCommand command) {
         Category category = getCategoryByName(command.categoryName());
         Avatar avatar = getAvatarById(command.userPrincipal());
-        Pageable pageable = PageRequest.of(command.page() - 1, command.size());
         return studyReader.getStudyOrderByPopularity(
-                    new EssentialStudyCondition(category, command.form()), command.now(), pageable
+                    new EssentialStudyCondition(category, command.form()), command.now(), command.pageable()
                 )
                 .map(study -> {
                     double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
@@ -125,8 +122,7 @@ public class StudyReadService {
     @Transactional(readOnly = true)
     public Page<SearchResponse> search(SearchCommand command) {
         Avatar avatar = getAvatarById(command.userPrincipal());
-        Pageable pageable = PageRequest.of(command.page() - 1, command.size());
-        return studyReader.getStudiesByTitleContaining(command.keyword(), pageable)
+        return studyReader.getStudiesByTitleContaining(command.keyword(), command.pageable())
                 .map(study -> {
                     double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
                     boolean isBookmark = isBookmark(avatar, study);

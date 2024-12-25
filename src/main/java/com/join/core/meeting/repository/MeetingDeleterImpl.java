@@ -1,7 +1,7 @@
 package com.join.core.meeting.repository;
 
 import com.join.core.meeting.domain.Meeting;
-import com.join.core.meeting.service.MeetingDeleter;
+import com.join.core.meeting.domain.MeetingDeleter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

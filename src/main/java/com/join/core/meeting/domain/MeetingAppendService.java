@@ -1,8 +1,7 @@
-package com.join.core.meeting.service;
+package com.join.core.meeting.domain;
 
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.NoPermissionException;
-import com.join.core.meeting.domain.Meeting;
 import com.join.core.meeting.dto.request.MeetingAppendRequest;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;

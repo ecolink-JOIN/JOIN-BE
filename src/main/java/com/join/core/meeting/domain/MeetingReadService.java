@@ -1,4 +1,4 @@
-package com.join.core.meeting.service;
+package com.join.core.meeting.domain;
 
 import com.join.core.meeting.dto.response.MeetingResponse;
 import com.join.core.study.domain.Study;

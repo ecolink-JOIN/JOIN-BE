@@ -1,6 +1,5 @@
-package com.join.core.meeting.service;
+package com.join.core.meeting.domain;
 
-import com.join.core.meeting.domain.Meeting;
 import com.join.core.study.domain.Study;
 
 import java.util.List;

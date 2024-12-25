@@ -3,7 +3,7 @@ package com.join.core.meeting.repository;
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.EntityNotFoundException;
 import com.join.core.meeting.domain.Meeting;
-import com.join.core.meeting.service.MeetingReader;
+import com.join.core.meeting.domain.MeetingReader;
 import com.join.core.study.domain.Study;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

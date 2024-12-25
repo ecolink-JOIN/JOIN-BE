@@ -15,7 +15,7 @@ public class MeetingReaderImpl implements MeetingReader {
     private final MeetingRepository meetingRepository;
 
     @Override
-    public List<Meeting> findByStudy(Study study) {
+    public List<Meeting> getMeetingsByStudy(Study study) {
         return meetingRepository.findByStudy(study);
     }
 }

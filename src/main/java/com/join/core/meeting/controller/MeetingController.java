@@ -32,9 +32,11 @@ public class MeetingController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ApiResponse<Void> append(@AuthenticationPrincipal UserPrincipal principal,
-                                    @Valid @RequestBody MeetingAppendRequest request) {
+                                    @Valid @RequestBody MeetingAppendRequest request,
+                                    @PathVariable String studyToken
+                                    ) {
         Long avatarId = principal.getAvatarId();
-        meetingAppendService.appendMeetingToStudy(avatarId, request);
+        meetingAppendService.appendMeetingToStudy(avatarId, studyToken, request);
         return ApiResponse.ok();
     }
 

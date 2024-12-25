@@ -6,6 +6,6 @@ import com.join.core.study.domain.Study;
 import java.util.List;
 
 public interface MeetingReader {
-    List<Meeting> findByStudy(Study study);
+    List<Meeting> getMeetingsByStudy(Study study);
 
 }

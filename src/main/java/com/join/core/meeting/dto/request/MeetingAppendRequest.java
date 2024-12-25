@@ -3,7 +3,6 @@ package com.join.core.meeting.dto.request;
 import com.join.core.meeting.domain.Meeting;
 import com.join.core.study.domain.Study;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +13,6 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor
 public class MeetingAppendRequest {
-
-    @Schema(description = "회차를 추가하고자 하는 스터디 토큰", example = "std_abc123")
-    @NotBlank
-    private String studyToken;
-
     @Schema(description = "스터디 회차 날짜", example = "2024-09-01")
     @NotNull
     private LocalDate studyDate;

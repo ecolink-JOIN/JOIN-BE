@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface MeetingReader {
     List<Meeting> getMeetingsByStudy(Study study);
+    Meeting getMeetingById(Long meetingId);
 
 }

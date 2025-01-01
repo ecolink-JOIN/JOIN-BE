@@ -1,8 +1,7 @@
-package com.join.core.meeting.service;
+package com.join.core.meeting.domain;
 
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.NoPermissionException;
-import com.join.core.meeting.domain.Meeting;
 import com.join.core.meeting.dto.request.MeetingAppendRequest;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
@@ -24,9 +23,9 @@ public class MeetingAppendService {
     private final MeetingReader meetingReader;
 
     @Transactional
-    public void appendMeetingToStudy(Long avatarId, MeetingAppendRequest request) {
+    public void appendMeetingToStudy(Long avatarId, String studyToken, MeetingAppendRequest request) {
 
-        Study study = studyReader.getStudyByToken(request.getStudyToken());
+        Study study = studyReader.getStudyByToken(studyToken);
 
         if (!study.getWriter().getId().equals(avatarId)) {
             throw new NoPermissionException(ErrorCode.UNAUTHORIZED_ACCESS);
@@ -35,7 +34,7 @@ public class MeetingAppendService {
 
         meetingStore.store(newMeeting);
 
-        List<Meeting> meetings = meetingReader.findByStudy(study);
+        List<Meeting> meetings = meetingReader.getMeetingsByStudy(study);
         int meetingCount = meetings.size();
 
         meetings.sort(Comparator.comparing(meeting ->

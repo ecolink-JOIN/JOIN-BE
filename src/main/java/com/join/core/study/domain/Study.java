@@ -175,4 +175,8 @@ public class Study {
         this.bookmarkCnt++;
     }
 
+    public boolean isWriter(Long avatarId) {
+        return getWriter().getId().equals(avatarId);
+    }
+
 }

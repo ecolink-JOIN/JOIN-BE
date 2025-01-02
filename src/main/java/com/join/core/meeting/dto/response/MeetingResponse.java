@@ -12,6 +12,9 @@ import java.time.LocalTime;
 @Getter
 @AllArgsConstructor
 public class MeetingResponse {
+    @Schema(description = "회차 id", example = "1")
+    private Long id;
+
     @Schema(description = "회차 순서", example = "1")
     private int meetingNo;
 
@@ -28,6 +31,6 @@ public class MeetingResponse {
     private MeetingStatus status;
 
     public static MeetingResponse from(Meeting meeting) {
-        return new MeetingResponse(meeting.getMeetingNo(), meeting.getStudyDate(), meeting.getStTime(), meeting.getEndTime(), meeting.getStatus());
+        return new MeetingResponse(meeting.getId(), meeting.getMeetingNo(), meeting.getStudyDate(), meeting.getStTime(), meeting.getEndTime(), meeting.getStatus());
     }
 }

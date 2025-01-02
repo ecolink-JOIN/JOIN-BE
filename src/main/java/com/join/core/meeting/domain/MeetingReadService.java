@@ -1,4 +1,4 @@
-package com.join.core.meeting.service;
+package com.join.core.meeting.domain;
 
 import com.join.core.meeting.dto.response.MeetingResponse;
 import com.join.core.study.domain.Study;
@@ -20,7 +20,7 @@ public class MeetingReadService {
     public List<MeetingResponse> getMeetings(String studyToken) {
         Study study = studyReader.getStudyByToken(studyToken);
 
-        return meetingReader.findByStudy(study)
+        return meetingReader.getMeetingsByStudy(study)
                 .stream()
                 .map(MeetingResponse::from)
                 .toList();

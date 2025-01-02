@@ -1,11 +1,11 @@
-package com.join.core.meeting.service;
+package com.join.core.meeting.domain;
 
-import com.join.core.meeting.domain.Meeting;
 import com.join.core.study.domain.Study;
 
 import java.util.List;
 
 public interface MeetingReader {
-    List<Meeting> findByStudy(Study study);
+    List<Meeting> getMeetingsByStudy(Study study);
+    Meeting getMeetingById(Long meetingId);
     Meeting findByStudyIdAndMeetingNo(Long studyId, int meetingNo);
 }

@@ -2,13 +2,15 @@ package com.join.core.proof.domain;
 
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.domain.BaseTimeEntity;
-import com.join.core.proof.constant.ProofType;
 import com.join.core.meeting.domain.Meeting;
+import com.join.core.proof.constant.ProofType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -33,6 +35,7 @@ public class Proof extends BaseTimeEntity {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "meeting_id", nullable = false)
     private Meeting meeting;
 

@@ -1,6 +1,6 @@
 package com.join.core.auth.domain;
 
-import org.joda.time.LocalDateTime;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

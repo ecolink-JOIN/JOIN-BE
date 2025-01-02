@@ -8,7 +8,7 @@ import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.InvalidSelectionException;
 import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.meeting.domain.Meeting;
-import com.join.core.meeting.service.MeetingReader;
+import com.join.core.meeting.domain.MeetingReader;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;

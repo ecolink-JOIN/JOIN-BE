@@ -75,6 +75,11 @@ public enum ErrorCode {
 	APPLICATION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "S-003", "주어진 식별자로 지원 정보를 찾을 수 없습니다."),
 
 	/**
+	 * 회차 관련 오류
+	 */
+	MEETING_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "M-001", "주어진 식별자로 회차를 찾을 수 없습니다."),
+
+	/**
 	 * 공지 관련 오류
 	 */
 	NOT_LEADER_OF_STUDY(HttpStatus.FORBIDDEN, "L-003", "스터디 공지를 작성할 수 있는 권한이 없습니다."),
@@ -84,10 +89,6 @@ public enum ErrorCode {
 	 */
 	UNAUTHORIZED_ACCESS(HttpStatus.INTERNAL_SERVER_ERROR, "AU-001", "해당 요청에 대한 권한이 없습니다."),
 
-	/**
-	 * 회차 관련 오류
-	 */
-	MEETING_NOT_FOUND(HttpStatus.NOT_FOUND, "ME-001", "존재하지 않는 회차입니다."),
 
 	/**
 	 * 출석 관련 오류

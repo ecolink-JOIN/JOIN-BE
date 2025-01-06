@@ -95,7 +95,12 @@ public enum ErrorCode {
 	 */
 	OUT_OF_ATTENDANCE_TIME(HttpStatus.BAD_REQUEST, "AT-001", "출석 시간이 아닙니다."),
 	NOT_MEMBER_OF_STUDY(HttpStatus.FORBIDDEN, "AT-002", "스터디 참여자가 아닙니다."),
-	ATTENDANCE_ALREADY_COMPLETED(HttpStatus.CONFLICT, "AT-003", "이미 출석이 완료되었습니다.");
+	ATTENDANCE_ALREADY_COMPLETED(HttpStatus.CONFLICT, "AT-003", "이미 출석이 완료되었습니다."),
+
+	/**
+	 * 인증 관련 오류
+	 */
+	PROOF_PHOTO_NOT_FOUND(HttpStatus.NOT_FOUND, "PR-001", "해당 파일을 찾을 수 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

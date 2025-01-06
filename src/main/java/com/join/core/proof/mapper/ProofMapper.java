@@ -2,6 +2,7 @@ package com.join.core.proof.mapper;
 
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.meeting.domain.Meeting;
+import com.join.core.proof.constant.ProofStatus;
 import com.join.core.proof.domain.Proof;
 import com.join.core.proof.domain.ProofPhoto;
 import com.join.core.proof.dto.response.CreateProofResponse;
@@ -18,7 +19,7 @@ public class ProofMapper {
                 .avatar(avatar)
                 .meeting(meeting)
                 .photo(photo)
-                .proofStatus(false)
+                .proofStatus(ProofStatus.PENDING)
                 .build();
     }
 

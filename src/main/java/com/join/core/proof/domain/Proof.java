@@ -3,6 +3,7 @@ package com.join.core.proof.domain;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.domain.BaseTimeEntity;
 import com.join.core.meeting.domain.Meeting;
+import com.join.core.proof.constant.ProofStatus;
 import com.join.core.proof.constant.ProofType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -35,7 +36,8 @@ public class Proof extends BaseTimeEntity {
     private Long id;
 
     @NotNull
-    private boolean proofStatus;
+    @Enumerated(EnumType.STRING)
+    private ProofStatus proofStatus;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -60,7 +62,7 @@ public class Proof extends BaseTimeEntity {
     private Avatar avatar;
 
     @Builder
-    public Proof(Long id, boolean proofStatus, ProofType type, LocalDateTime provenDate, ProofPhoto photo, Meeting meeting, Avatar avatar) {
+    public Proof(Long id, ProofStatus proofStatus, ProofType type, LocalDateTime provenDate, ProofPhoto photo, Meeting meeting, Avatar avatar) {
         this.id = id;
         this.proofStatus = proofStatus;
         this.type = type;

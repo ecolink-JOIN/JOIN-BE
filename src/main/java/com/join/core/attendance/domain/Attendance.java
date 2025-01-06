@@ -6,6 +6,7 @@ import com.join.core.meeting.domain.Meeting;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -31,4 +32,9 @@ public class Attendance extends BaseTimeEntity {
     @JoinColumn(name = "avatar_id", nullable = false)
     private Avatar avatar;
 
+    @Builder
+    public Attendance(Meeting meeting, Avatar avatar) {
+        this.meeting = meeting;
+        this.avatar = avatar;
+    }
 }

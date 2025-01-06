@@ -9,7 +9,6 @@ import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.meeting.domain.Meeting;
 import com.join.core.meeting.domain.MeetingReader;
 import com.join.core.proof.constant.ProofType;
-import com.join.core.proof.domain.Proof;
 import com.join.core.proof.domain.ProofPhoto;
 import com.join.core.proof.dto.response.CreateProofResponse;
 import com.join.core.proof.mapper.ProofMapper;
@@ -40,11 +39,13 @@ public class ProofService {
         Study study = studyReader.getStudyByToken(command.studyToken());
         checkPermission(avatar.getId(), study.getId());
         checkProofType(command.proofType(), command.proofPhotoUrl());
+
         Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), command.meetingNo());
+        meeting.checkProofTime(command.provenDate());
+
         checkDuplicated(avatar.getId(), meeting.getId());
         ProofPhoto photo = proofPhotoReader.readPhoto(command.proofPhotoUrl());
-        Proof proof = proofStore.save(proofMapper.toEntity(command, avatar, meeting, photo));
-        return proofMapper.toResponse(proof);
+        return proofMapper.toResponse(proofStore.save(proofMapper.toEntity(command, avatar, meeting, photo)));
     }
 
     private void checkPermission(Long avatarId, Long studyId) {

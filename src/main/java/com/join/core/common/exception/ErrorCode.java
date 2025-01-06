@@ -100,7 +100,7 @@ public enum ErrorCode {
 	 * 인증 관련 오류
 	 */
 	PROOF_PHOTO_NOT_FOUND(HttpStatus.NOT_FOUND, "PR-001", "해당 파일을 찾을 수 없습니다."),
-
+	EMPTY_PROOF_PHOTO(HttpStatus.BAD_REQUEST, "PR-002", "사진 인증을 위해 이미지를 업로드해야 합니다."),
 	/**
 	 * 스터디 참여자 관련 오류
 	 */

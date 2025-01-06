@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProofService {
 
     private final ProofStore proofStore;
+    private final ProofReader proofReader;
     private final AvatarReader avatarReader;
     private final StudyReader studyReader;
     private final EnrollmentReader enrollmentReader;
@@ -40,6 +41,7 @@ public class ProofService {
         checkPermission(avatar.getId(), study.getId());
         checkProofType(command.proofType(), command.proofPhotoUrl());
         Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), command.meetingNo());
+        checkDuplicated(avatar.getId(), meeting.getId());
         ProofPhoto photo = proofPhotoReader.readPhoto(command.proofPhotoUrl());
         Proof proof = proofStore.save(proofMapper.toEntity(command, avatar, meeting, photo));
         return proofMapper.toResponse(proof);
@@ -54,7 +56,12 @@ public class ProofService {
     private void checkProofType(ProofType proofType, String proofPhotoUrl) {
         if (proofType.isPhotoType() && StringUtils.isEmpty(proofPhotoUrl)) {
                 throw new BadRequestException(ErrorCode.EMPTY_PROOF_PHOTO);
-            }
+        }
+    }
 
+    private void checkDuplicated(Long avatarId, Long meetingId) {
+        if (proofReader.hasOngoingProof(avatarId, meetingId)) {
+            throw new BadRequestException(ErrorCode.DUPLICATED_PROOF);
+        }
     }
 }

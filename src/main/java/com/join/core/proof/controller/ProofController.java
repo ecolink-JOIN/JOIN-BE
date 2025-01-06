@@ -2,6 +2,7 @@ package com.join.core.proof.controller;
 
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
+import com.join.core.proof.controller.specification.ProofControllerSpecification;
 import com.join.core.proof.dto.request.CreateProofRequest;
 import com.join.core.proof.dto.response.CreateProofResponse;
 import com.join.core.proof.service.ProofService;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/study/{studyToken}/meetings/{meetingNo}/proof")
-public class ProofController {
+public class ProofController implements ProofControllerSpecification {
 
     private final ProofService proofService;
 

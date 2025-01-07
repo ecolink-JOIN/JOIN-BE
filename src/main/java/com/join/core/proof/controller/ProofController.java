@@ -47,7 +47,7 @@ public class ProofController implements ProofControllerSpecification {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PatchMapping("/{proofId}")
+    @PatchMapping("/{proofId}/approve")
     public ApiResponse<Void> approve(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @PathVariable String studyToken,

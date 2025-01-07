@@ -73,9 +73,9 @@ public class ProofService {
         Avatar avatar = avatarReader.getAvatarById(command.avatarId());
         Study study = studyReader.getStudyByToken(command.studyToken());
         Avatar leader = enrollmentReader.getLeaderByStudyId(study.getId());
+        checkPermission(avatar.getId(), study.getId());
         checkLeaderAuthorization(avatar, leader);
 
-        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), command.meetingNo());
         Proof proof = proofReader.getProofById(command.proofId());
         proof.approve();
     }

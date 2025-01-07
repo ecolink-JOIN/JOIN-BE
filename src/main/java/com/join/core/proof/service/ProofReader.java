@@ -6,4 +6,5 @@ public interface ProofReader {
 
     boolean hasOngoingProof(Long avatarId, Long meetingId);
     Proof findLastProof(Long avatarId, Long meetingId);
+    Proof getProofById(Long proofId);
 }

@@ -104,6 +104,7 @@ public enum ErrorCode {
 	DUPLICATED_PROOF(HttpStatus.CONFLICT, "PR-003", "이미 진행 중인 인증이 존재합니다."),
 	OUT_OF_PROOF_TIME(HttpStatus.BAD_REQUEST, "PR-004", "인증 시간이 아닙니다."),
 	INVALID_PROOF_STATUS(HttpStatus.INTERNAL_SERVER_ERROR, "PR-005", "인증 상태를 조회하는 과정에서 오류가 발생하였습니다."),
+	INVALID_PROOF_ID(HttpStatus.BAD_REQUEST, "PR-006", "존재하지 않는 인증 정보입니다,"),
 
 	/**
 	 * 스터디 참여자 관련 오류

@@ -9,9 +9,11 @@ import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.meeting.domain.Meeting;
 import com.join.core.meeting.domain.MeetingReader;
 import com.join.core.proof.constant.ProofType;
+import com.join.core.proof.domain.Proof;
 import com.join.core.proof.domain.ProofPhoto;
 import com.join.core.proof.dto.response.CreateProofResponse;
 import com.join.core.proof.mapper.ProofMapper;
+import com.join.core.proof.service.dto.ApproveCommand;
 import com.join.core.proof.service.dto.CreateProofCommand;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
@@ -64,5 +66,14 @@ public class ProofService {
         if (proofReader.hasOngoingProof(avatarId, meetingId)) {
             throw new BadRequestException(ErrorCode.DUPLICATED_PROOF);
         }
+    }
+
+    @Transactional
+    public void approve(ApproveCommand command) {
+        Avatar avatar = avatarReader.getAvatarById(command.avatarId());
+        Study study = studyReader.getStudyByToken(command.studyToken());
+        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), command.meetingNo());
+        Proof proof = proofReader.getProofById(command.proofId());
+        proof.approve();
     }
 }

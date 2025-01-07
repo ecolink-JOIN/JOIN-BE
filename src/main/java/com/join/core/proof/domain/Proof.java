@@ -71,4 +71,8 @@ public class Proof extends BaseTimeEntity {
         this.meeting = meeting;
         this.avatar = avatar;
     }
+
+    public void approve() {
+        this.proofStatus = ProofStatus.APPROVED;
+    }
 }

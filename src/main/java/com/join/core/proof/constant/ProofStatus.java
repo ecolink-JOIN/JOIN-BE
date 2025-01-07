@@ -4,5 +4,9 @@ public enum ProofStatus {
 
     PENDING,
     APPROVED,
-    REJECTED
+    REJECTED;
+
+    public boolean isPending() {
+        return this == PENDING;
+    }
 }

@@ -15,6 +15,7 @@ import com.join.core.proof.dto.response.CreateProofResponse;
 import com.join.core.proof.mapper.ProofMapper;
 import com.join.core.proof.service.dto.ApproveCommand;
 import com.join.core.proof.service.dto.CreateProofCommand;
+import com.join.core.proof.service.dto.RejectCommand;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
@@ -84,5 +85,11 @@ public class ProofService {
         if (!leader.isSameAvatar(avatar.getId())) {
             throw new NoPermissionException(ErrorCode.LEADER_ONLY_ACCESS);
         }
+    }
+
+    @Transactional
+    public void reject(RejectCommand command) {
+        Proof proof = proofReader.getProofById(command.proofId());
+        proof.reject();
     }
 }

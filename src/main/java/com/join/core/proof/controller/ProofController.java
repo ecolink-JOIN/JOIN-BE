@@ -8,6 +8,7 @@ import com.join.core.proof.dto.response.CreateProofResponse;
 import com.join.core.proof.service.ProofService;
 import com.join.core.proof.service.dto.ApproveCommand;
 import com.join.core.proof.service.dto.CreateProofCommand;
+import com.join.core.proof.service.dto.RejectCommand;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -55,6 +56,23 @@ public class ProofController implements ProofControllerSpecification {
             @PathVariable Long proofId
     ) {
         proofService.approve(new ApproveCommand(
+                userPrincipal.getAvatarId(),
+                studyToken,
+                meetingNo,
+                proofId
+        ));
+        return ApiResponse.noContent();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/{proofId}/reject")
+    public ApiResponse<Void> reject(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable String studyToken,
+            @PathVariable Integer meetingNo,
+            @PathVariable Long proofId
+    ) {
+        proofService.reject(new RejectCommand(
                 userPrincipal.getAvatarId(),
                 studyToken,
                 meetingNo,

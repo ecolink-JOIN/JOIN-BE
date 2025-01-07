@@ -89,6 +89,12 @@ public class ProofService {
 
     @Transactional
     public void reject(RejectCommand command) {
+        Avatar avatar = avatarReader.getAvatarById(command.avatarId());
+        Study study = studyReader.getStudyByToken(command.studyToken());
+        Avatar leader = enrollmentReader.getLeaderByStudyId(study.getId());
+        checkPermission(avatar.getId(), study.getId());
+        checkLeaderAuthorization(avatar, leader);
+
         Proof proof = proofReader.getProofById(command.proofId());
         proof.reject();
     }

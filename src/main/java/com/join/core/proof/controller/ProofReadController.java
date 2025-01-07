@@ -2,6 +2,7 @@ package com.join.core.proof.controller;
 
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
+import com.join.core.proof.controller.specification.ProofReadControllerSpecification;
 import com.join.core.proof.dto.response.CheckProofResponse;
 import com.join.core.proof.service.ProofReadService;
 import com.join.core.proof.service.dto.CheckProofCommand;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/study/{studyToken}/meetings/{meetingNo}/proof")
-public class ProofReadController {
+public class ProofReadController implements ProofReadControllerSpecification {
 
     private final ProofReadService proofReadService;
 

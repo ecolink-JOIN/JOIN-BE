@@ -109,7 +109,8 @@ public enum ErrorCode {
 	/**
 	 * 스터디 참여자 관련 오류
 	 */
-	NOT_MEMBER_OF_STUDY(HttpStatus.FORBIDDEN, "EN-002", "스터디에 참여중인 사용자가 아닙니다.");
+	NOT_MEMBER_OF_STUDY(HttpStatus.FORBIDDEN, "EN-001", "스터디에 참여중인 사용자가 아닙니다."),
+	LEADER_ONLY_ACCESS(HttpStatus.FORBIDDEN, "EN-002", "해당 기능은 스터디 리더만 사용할 수 있습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

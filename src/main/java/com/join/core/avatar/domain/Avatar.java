@@ -1,17 +1,10 @@
 package com.join.core.avatar.domain;
 
-import static com.join.core.common.exception.ErrorCode.*;
-
-import javax.annotation.Nullable;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.join.core.auth.domain.User;
 import com.join.core.common.domain.BaseTimeEntity;
 import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.common.util.TokenGenerator;
 import com.join.core.file.domain.SinglePhotoContainer;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,6 +19,11 @@ import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Nullable;
+
+import static com.join.core.common.exception.ErrorCode.INVALID_PARAMETER;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -87,5 +85,9 @@ public class Avatar extends BaseTimeEntity implements SinglePhotoContainer<Profi
 		if(StringUtils.isBlank(nickname))
 			throw new InvalidParamException(INVALID_PARAMETER, "Avatar.nickname");
 		this.nickname = nickname;
+	}
+
+	public boolean isSameAvatar(Long id) {
+		return id.equals(this.id);
 	}
 }

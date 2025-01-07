@@ -72,8 +72,17 @@ public class ProofService {
     public void approve(ApproveCommand command) {
         Avatar avatar = avatarReader.getAvatarById(command.avatarId());
         Study study = studyReader.getStudyByToken(command.studyToken());
+        Avatar leader = enrollmentReader.getLeaderByStudyId(study.getId());
+        checkLeaderAuthorization(avatar, leader);
+
         Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), command.meetingNo());
         Proof proof = proofReader.getProofById(command.proofId());
         proof.approve();
+    }
+
+    private void checkLeaderAuthorization(Avatar avatar, Avatar leader) {
+        if (!leader.isSameAvatar(avatar.getId())) {
+            throw new NoPermissionException(ErrorCode.LEADER_ONLY_ACCESS);
+        }
     }
 }

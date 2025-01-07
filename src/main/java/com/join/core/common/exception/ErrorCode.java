@@ -75,6 +75,11 @@ public enum ErrorCode {
 	APPLICATION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "S-003", "주어진 식별자로 지원 정보를 찾을 수 없습니다."),
 
 	/**
+	 * 회차 관련 오류
+	 */
+	MEETING_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "M-001", "주어진 식별자로 회차를 찾을 수 없습니다."),
+
+	/**
 	 * 공지 관련 오류
 	 */
 	NOT_LEADER_OF_STUDY(HttpStatus.FORBIDDEN, "L-003", "스터디 공지를 작성할 수 있는 권한이 없습니다."),
@@ -85,6 +90,13 @@ public enum ErrorCode {
 	UNAUTHORIZED_ACCESS(HttpStatus.INTERNAL_SERVER_ERROR, "AU-001", "해당 요청에 대한 권한이 없습니다."),
 
 	/**
+	 * 출석 관련 오류
+	 */
+	OUT_OF_ATTENDANCE_TIME(HttpStatus.BAD_REQUEST, "AT-001", "출석 시간이 아닙니다."),
+	NOT_MEMBER_OF_STUDY(HttpStatus.BAD_REQUEST, "AT-002", "스터디 참여자가 아닙니다."),
+	ATTENDANCE_ALREADY_COMPLETED(HttpStatus.CONFLICT, "AT-003", "이미 출석이 완료되었습니다."),
+  
+  /**
 	 * 북마크 관련 오류
 	 */
 	BOOKMARK_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "B-001", "북마크가 이미 존재합니다.");

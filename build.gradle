@@ -52,9 +52,12 @@ dependencies {
     //Spring Docs(swagger)
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
-    //AWS S3 SDK
-    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
-    implementation 'com.amazonaws:aws-java-sdk-s3'
+    //AWS SDK
+    implementation platform('software.amazon.awssdk:bom:2.29.41')
+    //S3
+    implementation 'software.amazon.awssdk:s3'
+    //DynamoDB
+    implementation 'software.amazon.awssdk:dynamodb-enhanced'
 
     // Utils
     implementation 'com.google.guava:guava:28.2-jre'

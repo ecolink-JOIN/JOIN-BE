@@ -13,7 +13,10 @@ import com.join.core.meeting.domain.MeetingReader;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -24,6 +27,7 @@ public class AttendanceReadService {
     private final StudyReader studyReader;
     private final AvatarReader avatarReader;
     private final EnrollmentReader enrollmentReader;
+    private final ReturnTypeParser genericReturnTypeParser;
 
     public CheckAttendanceResponse checkAttendance(CheckAttendanceCommand command) {
         Avatar avatar = avatarReader.getAvatarById(command.avatarId());
@@ -42,12 +46,9 @@ public class AttendanceReadService {
     }
 
     private CheckAttendanceResponse findAttendance(Long avatarId, Long meetingId) {
-        boolean hasAttendance = attendanceReader.existsAttendance(avatarId, meetingId);
-        if (hasAttendance) {
-            Attendance attendance = attendanceReader.findAttendance(avatarId, meetingId);
-            return new CheckAttendanceResponse(hasAttendance, attendance.getCreatedDate());
-        }
-
-        return new CheckAttendanceResponse(hasAttendance, null);
+        Optional<Attendance> attendance = attendanceReader.findAttendance(avatarId, meetingId);
+        return attendance
+                .map(value -> new CheckAttendanceResponse(true, value.getCreatedDate()))
+                .orElseGet(() -> new CheckAttendanceResponse(false, null));
     }
 }

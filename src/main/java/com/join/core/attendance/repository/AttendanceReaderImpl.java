@@ -5,6 +5,8 @@ import com.join.core.attendance.service.AttendanceReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Component
 public class AttendanceReaderImpl implements AttendanceReader {
@@ -17,8 +19,7 @@ public class AttendanceReaderImpl implements AttendanceReader {
     }
 
     @Override
-    public Attendance findAttendance(Long avatarId, Long meetingId) {
-        return attendanceRepository.findAttendanceByAvatarIdAndMeetingId(avatarId, meetingId)
-                .orElse(null);
+    public Optional<Attendance> findAttendance(Long avatarId, Long meetingId) {
+        return attendanceRepository.findAttendanceByAvatarIdAndMeetingId(avatarId, meetingId);
     }
 }

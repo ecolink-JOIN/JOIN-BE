@@ -1,7 +1,7 @@
 package com.join.core.attendance.service;
 
 import com.join.core.attendance.mapper.AttendanceMapper;
-import com.join.core.attendance.service.command.CreateAttendanceCommand;
+import com.join.core.attendance.service.dto.CreateAttendanceParams;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.common.exception.ErrorCode;
@@ -30,14 +30,14 @@ public class AttendanceService {
     private final AttendanceMapper attendanceMapper;
 
     @Transactional
-    public void createAttendance(CreateAttendanceCommand command) {
-        Avatar avatar = avatarReader.getAvatarById(command.avatarId());
-        Study study = studyReader.getStudyByToken(command.studyToken());
-        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), command.meetingNo());
+    public void createAttendance(CreateAttendanceParams params) {
+        Avatar avatar = avatarReader.getAvatarById(params.avatarId());
+        Study study = studyReader.getStudyByToken(params.studyToken());
+        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), params.meetingNo());
 
         checkMember(avatar.getId(), study.getId());
         checkDuplicated(avatar.getId(), meeting.getId());
-        checkMeetingTime(meeting, command.now());
+        checkMeetingTime(meeting, params.now());
         attendanceSaver.save(attendanceMapper.toEntity(meeting, avatar));
     }
 

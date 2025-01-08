@@ -2,7 +2,7 @@ package com.join.core.attendance.service;
 
 import com.join.core.attendance.domain.Attendance;
 import com.join.core.attendance.dto.response.CheckAttendanceResponse;
-import com.join.core.attendance.service.command.CheckAttendanceCommand;
+import com.join.core.attendance.service.dto.CheckAttendanceParams;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.common.exception.ErrorCode;
@@ -13,7 +13,6 @@ import com.join.core.meeting.domain.MeetingReader;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -27,14 +26,13 @@ public class AttendanceReadService {
     private final StudyReader studyReader;
     private final AvatarReader avatarReader;
     private final EnrollmentReader enrollmentReader;
-    private final ReturnTypeParser genericReturnTypeParser;
 
-    public CheckAttendanceResponse checkAttendance(CheckAttendanceCommand command) {
-        Avatar avatar = avatarReader.getAvatarById(command.avatarId());
-        Study study = studyReader.getStudyByToken(command.studyToken());
+    public CheckAttendanceResponse checkAttendance(CheckAttendanceParams params) {
+        Avatar avatar = avatarReader.getAvatarById(params.avatarId());
+        Study study = studyReader.getStudyByToken(params.studyToken());
         checkMember(avatar.getId(), study.getId());
 
-        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), command.meetingNo());
+        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), params.meetingNo());
 
         return findAttendance(avatar.getId(), meeting.getId());
     }

@@ -40,3 +40,6 @@ out/
 application-dev-db.yml
 application-s3.yml
 application-oauth.yml
+
+### system ###
+.DS_Store

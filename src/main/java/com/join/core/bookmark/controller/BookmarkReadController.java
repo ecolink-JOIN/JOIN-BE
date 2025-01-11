@@ -3,7 +3,7 @@ package com.join.core.bookmark.controller;
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.bookmark.controller.specification.BookmarkReadApiSpecification;
 import com.join.core.bookmark.dto.response.BookmarkStudyReadResponse;
-import com.join.core.bookmark.service.BookmarkReadService;
+import com.join.core.bookmark.domain.BookmarkReadService;
 import com.join.core.common.dto.PageParameterRequest;
 import com.join.core.common.response.ApiResponse;
 import jakarta.validation.Valid;

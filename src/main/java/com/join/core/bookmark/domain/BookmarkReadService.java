@@ -1,4 +1,4 @@
-package com.join.core.bookmark.service;
+package com.join.core.bookmark.domain;
 
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;

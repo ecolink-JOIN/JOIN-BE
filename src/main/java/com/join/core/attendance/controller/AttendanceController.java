@@ -3,7 +3,7 @@ package com.join.core.attendance.controller;
 import com.join.core.attendance.controller.specification.AttendanceControllerSpecification;
 import com.join.core.attendance.dto.CreateAttendanceRequest;
 import com.join.core.attendance.service.AttendanceService;
-import com.join.core.attendance.service.command.CreateAttendanceCommand;
+import com.join.core.attendance.service.dto.CreateAttendanceParams;
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class AttendanceController implements AttendanceControllerSpecification {
             @RequestBody CreateAttendanceRequest request
     ) {
         attendanceService.createAttendance(
-                new CreateAttendanceCommand(
+                new CreateAttendanceParams(
                         principal.getAvatarId(),
                         studyToken,
                         meetingNo,

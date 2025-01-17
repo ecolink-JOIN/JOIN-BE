@@ -3,7 +3,7 @@ package com.join.core.study.service;
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;
-import com.join.core.bookmark.service.BookmarkReader;
+import com.join.core.bookmark.domain.BookmarkReader;
 import com.join.core.category.domain.Category;
 import com.join.core.category.service.CategoryReader;
 import com.join.core.enrollment.service.EnrollmentReader;

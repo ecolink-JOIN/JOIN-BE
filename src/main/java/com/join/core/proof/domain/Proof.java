@@ -3,10 +3,22 @@ package com.join.core.proof.domain;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.domain.BaseTimeEntity;
 import com.join.core.meeting.domain.Meeting;
+import com.join.core.proof.constant.ProofStatus;
 import com.join.core.proof.constant.ProofType;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -24,7 +36,8 @@ public class Proof extends BaseTimeEntity {
     private Long id;
 
     @NotNull
-    private boolean proofStatus;
+    @Enumerated(EnumType.STRING)
+    private ProofStatus proofStatus;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -32,6 +45,10 @@ public class Proof extends BaseTimeEntity {
 
     @NotNull
     private LocalDateTime provenDate;
+
+    @NotNull
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private ProofPhoto photo;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,4 +61,14 @@ public class Proof extends BaseTimeEntity {
     @JoinColumn(name = "avatar_id", nullable = false)
     private Avatar avatar;
 
+    @Builder
+    public Proof(Long id, ProofStatus proofStatus, ProofType type, LocalDateTime provenDate, ProofPhoto photo, Meeting meeting, Avatar avatar) {
+        this.id = id;
+        this.proofStatus = proofStatus;
+        this.type = type;
+        this.provenDate = provenDate;
+        this.photo = photo;
+        this.meeting = meeting;
+        this.avatar = avatar;
+    }
 }

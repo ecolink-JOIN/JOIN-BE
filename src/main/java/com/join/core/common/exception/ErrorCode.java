@@ -93,15 +93,25 @@ public enum ErrorCode {
 	 * 출석 관련 오류
 	 */
 	OUT_OF_ATTENDANCE_TIME(HttpStatus.BAD_REQUEST, "AT-001", "출석 시간이 아닙니다."),
-
-	NOT_MEMBER_OF_STUDY(HttpStatus.FORBIDDEN, "AT-002", "스터디 참여자가 아닙니다."),
 	ATTENDANCE_ALREADY_COMPLETED(HttpStatus.CONFLICT, "AT-003", "이미 출석이 완료되었습니다."),
-  
-  /**
-	 * 북마크 관련 오류
-	 */
-	BOOKMARK_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "B-001", "북마크가 이미 존재합니다.");
 
+	/**
+	* 인증 관련 오류
+	*/
+	PROOF_PHOTO_NOT_FOUND(HttpStatus.NOT_FOUND, "PR-001", "해당 파일을 찾을 수 없습니다."),
+	EMPTY_PROOF_PHOTO(HttpStatus.BAD_REQUEST, "PR-002", "사진 인증을 위해 이미지를 업로드해야 합니다."),
+	DUPLICATED_PROOF(HttpStatus.CONFLICT, "PR-003", "이미 진행 중인 인증이 존재합니다."),
+	OUT_OF_PROOF_TIME(HttpStatus.BAD_REQUEST, "PR-001", "인증 시간이 아닙니다."),
+
+	/**
+	* 스터디 참여자 관련 오류
+	*/
+	NOT_MEMBER_OF_STUDY(HttpStatus.FORBIDDEN, "EN-002", "스터디에 참여중인 사용자가 아닙니다."),
+
+	/**
+	* 북마크 관련 오류
+	*/
+	BOOKMARK_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "B-001", "북마크가 이미 존재합니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/study/{studyToken}/meetings/{meetingNo}/proof")
+@RequestMapping("${api.prefix}/study/{studyToken}/meetings/{meetingNo}/proofs")
 public class ProofController implements ProofControllerSpecification {
 
     private final ProofService proofService;

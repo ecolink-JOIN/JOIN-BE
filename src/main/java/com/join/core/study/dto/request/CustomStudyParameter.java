@@ -11,7 +11,7 @@ public record CustomStudyParameter(
         @Schema(example = "입시") String category,
         @Schema(example = "ONLINE") StudyForm form,
         List<DayType> possibleDays,
-        @Schema(example = "MORNING", type = "list") TimeZone timeZone,
+        @Schema(example = "MORNING") TimeZone timeZone,
         @Schema(example = "0") Integer minParticipationCount,
         @Schema(example = "7") Integer maxParticipationCount,
         @Schema(example = "서울특별시") String province,

@@ -10,10 +10,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CopyObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.FileUploadException;
 import com.join.core.file.dto.FileInfo;
@@ -22,6 +18,12 @@ import com.join.core.file.event.DeleteFileEvent;
 import com.join.core.file.event.UploadFileEvent;
 
 import lombok.extern.slf4j.Slf4j;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.CopyObjectRequest;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Slf4j
 @Service
@@ -30,13 +32,16 @@ public class S3StorageService implements FileStorageService {
 	public static final String BACKUP_PATH = "backups/";
 
 	private final String bucketName;
-	private final AmazonS3 amazonS3;
+	private final Region region;
+	private final S3Client s3Client;
 	private final ApplicationEventPublisher eventPublisher;
 
-	public S3StorageService(@Value("${cloud.aws.s3.bucket}") String bucketName, AmazonS3 amazonS3,
+	public S3StorageService(@Value("${cloud.aws.s3.bucket}") String bucketName, Region region,
+		S3Client s3Client,
 		ApplicationEventPublisher eventPublisher) {
 		this.bucketName = bucketName;
-		this.amazonS3 = amazonS3;
+		this.region = region;
+		this.s3Client = s3Client;
 		this.eventPublisher = eventPublisher;
 	}
 
@@ -66,19 +71,25 @@ public class S3StorageService implements FileStorageService {
 	private FileInfo upload(FileUploadRequest request) {
 		MultipartFile file = request.file();
 		String key = request.key();
-		ObjectMetadata metadata = new ObjectMetadata();
-		metadata.setContentLength(file.getSize());
-		metadata.setContentType(file.getContentType());
 
 		try (InputStream inputStream = file.getInputStream()) {
-			PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, inputStream, metadata);
-			amazonS3.putObject(putObjectRequest);
-			String url = amazonS3.getUrl(bucketName, key).toString();
+			PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+				.bucket(bucketName)
+				.key(key)
+				.build();
+
+			s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(inputStream, file.getSize()));
+
+			String url = getPublicURL(bucketName, region, key);
 			return new FileInfo(file, url, key);
 		} catch (IOException e) {
 			log.warn(e.toString());
 			throw new FileUploadException(ErrorCode.FAIL_TO_UPLOAD_FILE);
 		}
+	}
+
+	private static String getPublicURL(String bucketName, Region region, String objectKey) {
+		return String.format("https://%s.s3.%s.amazonaws.com/%s", bucketName, region.id(), objectKey);
 	}
 
 	private List<String> publishUploadEvent() {
@@ -116,7 +127,11 @@ public class S3StorageService implements FileStorageService {
 	}
 
 	private void delete(String key) {
-		amazonS3.deleteObject(bucketName, key);
+		s3Client.deleteObject(DeleteObjectRequest.builder()
+			.bucket(bucketName)
+			.key(key)
+			.build()
+		);
 	}
 
 	private List<String> publishDeleteEvent() {
@@ -146,8 +161,14 @@ public class S3StorageService implements FileStorageService {
 	}
 
 	private void copy(String sourceKey, String destinationKey) {
-		CopyObjectRequest copyObjectRequest = new CopyObjectRequest(bucketName, sourceKey, bucketName, destinationKey);
-		amazonS3.copyObject(copyObjectRequest);
+		CopyObjectRequest copyObjectRequest = CopyObjectRequest.builder()
+			.sourceBucket(bucketName)
+			.sourceKey(sourceKey)
+			.destinationBucket(bucketName)
+			.destinationKey(destinationKey)
+			.build();
+
+		s3Client.copyObject(copyObjectRequest);
 	}
 
 }

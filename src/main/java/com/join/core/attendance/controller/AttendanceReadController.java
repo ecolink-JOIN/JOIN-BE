@@ -3,7 +3,7 @@ package com.join.core.attendance.controller;
 import com.join.core.attendance.controller.specification.AttendanceReadControllerSpecification;
 import com.join.core.attendance.dto.response.CheckAttendanceResponse;
 import com.join.core.attendance.service.AttendanceReadService;
-import com.join.core.attendance.service.command.CheckAttendanceCommand;
+import com.join.core.attendance.service.dto.CheckAttendanceParams;
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class AttendanceReadController implements AttendanceReadControllerSpecifi
     ) {
         return ApiResponse.ok(
                 attendanceReadService.checkAttendance(
-                        new CheckAttendanceCommand(
+                        new CheckAttendanceParams(
                                 userPrincipal.getAvatarId(),
                                 studyToken,
                                 meetingNo

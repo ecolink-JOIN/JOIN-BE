@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface ProofRepository extends JpaRepository<Proof, Long> {
 
-    boolean existsByAvatarIdAndMeetingIdAndProofStatus(Long avatarId, Long meetingId, ProofStatus proofStatus);
+    boolean existsByAvatarIdAndMeetingIdAndStatus(Long avatarId, Long meetingId, ProofStatus status);
     Optional<Proof> findFirstByAvatarIdAndMeetingIdOrderByIdDesc(Long avatarId, Long meetingId);
 }

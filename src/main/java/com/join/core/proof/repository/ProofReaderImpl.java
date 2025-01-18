@@ -16,8 +16,8 @@ public class ProofReaderImpl implements ProofReader {
 
     @Override
     public boolean hasOngoingProof(Long avatarId, Long meetingId) {
-        return proofRepository.existsByAvatarIdAndMeetingIdAndProofStatus(avatarId, meetingId, ProofStatus.PENDING) ||
-                proofRepository.existsByAvatarIdAndMeetingIdAndProofStatus(avatarId, meetingId, ProofStatus.APPROVED);
+        return proofRepository.existsByAvatarIdAndMeetingIdAndStatus(avatarId, meetingId, ProofStatus.PENDING) ||
+                proofRepository.existsByAvatarIdAndMeetingIdAndStatus(avatarId, meetingId, ProofStatus.APPROVED);
     }
 
     @Override

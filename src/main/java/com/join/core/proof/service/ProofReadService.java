@@ -9,7 +9,7 @@ import com.join.core.meeting.domain.Meeting;
 import com.join.core.meeting.domain.MeetingReader;
 import com.join.core.proof.dto.response.CheckProofResponse;
 import com.join.core.proof.dto.response.ProofStatusResponse;
-import com.join.core.proof.service.dto.CheckProofCommand;
+import com.join.core.proof.service.dto.CheckProofParams;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +27,12 @@ public class ProofReadService {
     private final MeetingReader meetingReader;
 
     @Transactional
-    public CheckProofResponse getProofStatus(CheckProofCommand command) {
-        Avatar avatar = avatarReader.getAvatarById(command.avatarId());
-        Study study = studyReader.getStudyByToken(command.studyToken());
+    public CheckProofResponse getProofStatus(CheckProofParams params) {
+        Avatar avatar = avatarReader.getAvatarById(params.avatarId());
+        Study study = studyReader.getStudyByToken(params.studyToken());
         checkAuthorization(avatar.getId(), study.getId());
 
-        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), command.meetingNo());
+        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), params.meetingNo());
 
         return findProof(avatar.getId(), meeting.getId());
     }

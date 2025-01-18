@@ -1,5 +1,6 @@
 package com.join.core.attendance.service;
 
+import com.join.core.attendance.constant.AttendanceStatus;
 import com.join.core.attendance.mapper.AttendanceMapper;
 import com.join.core.attendance.service.dto.CreateAttendanceParams;
 import com.join.core.avatar.domain.Avatar;
@@ -37,8 +38,8 @@ public class AttendanceService {
 
         checkMember(avatar.getId(), study.getId());
         checkDuplicated(avatar.getId(), meeting.getId());
-        checkMeetingTime(meeting, params.now());
-        attendanceSaver.save(attendanceMapper.toEntity(meeting, avatar));
+        AttendanceStatus attendanceStatus = checkMeetingTime(meeting, params.now());
+        attendanceSaver.save(attendanceMapper.toEntity(attendanceStatus, meeting, avatar));
     }
 
     private void checkMember(Long avatarId, Long studyId) {
@@ -53,9 +54,13 @@ public class AttendanceService {
         }
     }
 
-    private void checkMeetingTime(Meeting meeting, LocalDateTime now) {
-        if (!meeting.isWithinMeetingTime(now)) {
+    private AttendanceStatus checkMeetingTime(Meeting meeting, LocalDateTime now) {
+        if (!meeting.isAfterMeetingTime(now)) {
             throw new InvalidSelectionException(ErrorCode.OUT_OF_ATTENDANCE_TIME);
         }
+        if (meeting.isLate(now)) {
+            return AttendanceStatus.LATENESS;
+        }
+        return AttendanceStatus.PRESENT;
     }
 }

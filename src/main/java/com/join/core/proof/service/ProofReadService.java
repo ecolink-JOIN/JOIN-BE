@@ -7,7 +7,6 @@ import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.meeting.domain.Meeting;
 import com.join.core.meeting.domain.MeetingReader;
-import com.join.core.proof.domain.Proof;
 import com.join.core.proof.dto.response.CheckProofResponse;
 import com.join.core.proof.dto.response.ProofStatusResponse;
 import com.join.core.proof.service.dto.CheckProofCommand;
@@ -34,9 +33,8 @@ public class ProofReadService {
         checkAuthorization(avatar.getId(), study.getId());
 
         Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), command.meetingNo());
-        Proof proof = proofReader.findLastProof(avatar.getId(), meeting.getId());
 
-        return getProofResponse(proof);
+        return findProof(avatar.getId(), meeting.getId());
     }
 
     private void checkAuthorization(Long avatarId, Long studyId) {
@@ -45,13 +43,12 @@ public class ProofReadService {
         }
     }
 
-    private CheckProofResponse getProofResponse(Proof proof) {
-        if (proof == null) {
-            return new CheckProofResponse(ProofStatusResponse.NONE, null);
-        }
-        return new CheckProofResponse(
-                ProofStatusResponse.getProofStatusRequest(proof.getProofStatus()),
-                proof.getProvenDate()
-        );
+    private CheckProofResponse findProof(Long avatarId, Long meetingId) {
+        return proofReader.findLastProof(avatarId, meetingId)
+                .map(proof -> new CheckProofResponse(
+                        ProofStatusResponse.getProofStatusRequest(proof.getProofStatus()),
+                        proof.getProvenDate()
+                ))
+                .orElse(new CheckProofResponse(ProofStatusResponse.NONE, null));
     }
 }

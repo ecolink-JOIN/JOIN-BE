@@ -6,7 +6,7 @@ import com.join.core.proof.controller.specification.ProofControllerSpecification
 import com.join.core.proof.dto.request.CreateProofRequest;
 import com.join.core.proof.dto.response.CreateProofResponse;
 import com.join.core.proof.service.ProofService;
-import com.join.core.proof.service.dto.ApproveCommand;
+import com.join.core.proof.service.dto.ApproveParams;
 import com.join.core.proof.service.dto.CreateProofCommand;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +54,7 @@ public class ProofController implements ProofControllerSpecification {
             @PathVariable Integer meetingNo,
             @PathVariable Long proofId
     ) {
-        proofService.approve(new ApproveCommand(
+        proofService.approve(new ApproveParams(
                 userPrincipal.getAvatarId(),
                 studyToken,
                 meetingNo,

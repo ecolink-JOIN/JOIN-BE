@@ -108,10 +108,15 @@ public enum ErrorCode {
 	ALREADY_CHECK_PROOF(HttpStatus.CONFLICT, "PR-007", "이미 수락 또는 반려된 인증입니다."),
 
 	/**
-	 * 스터디 참여자 관련 오류
-	 */
+	* 스터디 참여자 관련 오류
+	*/
 	NOT_MEMBER_OF_STUDY(HttpStatus.FORBIDDEN, "EN-001", "스터디에 참여중인 사용자가 아닙니다."),
-	LEADER_ONLY_ACCESS(HttpStatus.FORBIDDEN, "EN-002", "해당 기능은 스터디 리더만 사용할 수 있습니다.");
+    LEADER_ONLY_ACCESS(HttpStatus.FORBIDDEN, "EN-002", "해당 기능은 스터디 리더만 사용할 수 있습니다."),
+
+	/**
+	* 북마크 관련 오류
+	*/
+	BOOKMARK_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "B-001", "북마크가 이미 존재합니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

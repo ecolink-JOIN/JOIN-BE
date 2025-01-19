@@ -5,7 +5,7 @@ import com.join.core.common.response.ApiResponse;
 import com.join.core.proof.controller.specification.ProofReadControllerSpecification;
 import com.join.core.proof.dto.response.CheckProofResponse;
 import com.join.core.proof.service.ProofReadService;
-import com.join.core.proof.service.dto.CheckProofCommand;
+import com.join.core.proof.service.dto.CheckProofParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,7 +29,7 @@ public class ProofReadController implements ProofReadControllerSpecification {
             @PathVariable Integer meetingNo
     ) {
         return ApiResponse.ok(
-                proofReadService.getProofStatus(new CheckProofCommand(
+                proofReadService.getProofStatus(new CheckProofParams(
                         userPrincipal.getAvatarId(),
                         studyToken,
                         meetingNo

@@ -9,6 +9,7 @@ import com.join.core.block.service.dto.CreateBlockParams;
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.common.exception.impl.EntityAlreadyExistsException;
+import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class BlockService {
     private final BlockStore blockStore;
     private final BlockReader blockReader;
     private final AvatarReader avatarReader;
+    private final StudyReader studyReader;
     private final BlockMapper blockMapper;
 
     public CreateBlockResponse createBlock(CreateBlockParams params) {
@@ -26,6 +28,7 @@ public class BlockService {
         Avatar target = avatarReader.getAvatarByAvatarToken(params.targetAvatarToken());
         checkDuplicated(avatar.getAvatarToken(), target.getAvatarToken());
         checkTarget(avatar.getAvatarToken(), target.getAvatarToken());
+        checkOngoingStudy(avatar.getAvatarToken(), target.getAvatarToken());
         Block block = blockStore.save(blockMapper.toEntity(avatar, target, params.blockDate()));
         return blockMapper.toCreateBlockResponse(block);
     }
@@ -39,6 +42,12 @@ public class BlockService {
     private void checkTarget(String subjectAvatarToken, String targetAvatarToken) {
         if (subjectAvatarToken.equals(targetAvatarToken)) {
             throw new BadRequestException(ErrorCode.SELF_BLOCK_NOT_ALLOWED);
+        }
+    }
+
+    private void checkOngoingStudy(String subjectAvatarToken, String targetAvatarToken) {
+        if (studyReader.existsByEnrollmentsAvatarToken(subjectAvatarToken, targetAvatarToken)) {
+            throw new EntityAlreadyExistsException(ErrorCode.ACTIVE_STUDY_EXISTS);
         }
     }
 }

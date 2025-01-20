@@ -51,4 +51,9 @@ public class StudyReaderImpl implements StudyReader {
     public Page<Study> getStudiesByTitleContaining(String keyword, Pageable pageable) {
         return studyRepository.findAllByTitleContaining(keyword, pageable);
     }
+
+    @Override
+    public boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken) {
+        return studyQueryRepository.existsByEnrollmentsAvatarToken(subjectToken, targetToken);
+    }
 }

@@ -7,6 +7,7 @@ import com.join.core.block.dto.response.CreateBlockResponse;
 import com.join.core.block.mapper.BlockMapper;
 import com.join.core.block.service.dto.CreateBlockParams;
 import com.join.core.common.exception.ErrorCode;
+import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.common.exception.impl.EntityAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class BlockService {
         Avatar avatar = avatarReader.getAvatarByAvatarToken(params.subjectAvatarToken());
         Avatar target = avatarReader.getAvatarByAvatarToken(params.targetAvatarToken());
         checkDuplicated(avatar.getAvatarToken(), target.getAvatarToken());
+        checkTarget(avatar.getAvatarToken(), target.getAvatarToken());
         Block block = blockStore.save(blockMapper.toEntity(avatar, target, params.blockDate()));
         return blockMapper.toCreateBlockResponse(block);
     }
@@ -31,6 +33,12 @@ public class BlockService {
     private void checkDuplicated(String subjectAvatarToken, String targetAvatarToken) {
         if (blockReader.existBySubjectTokenAndTargetToken(subjectAvatarToken, targetAvatarToken)) {
             throw new EntityAlreadyExistsException(ErrorCode.BLOCK_ALREADY_EXISTS);
+        }
+    }
+
+    private void checkTarget(String subjectAvatarToken, String targetAvatarToken) {
+        if (subjectAvatarToken.equals(targetAvatarToken)) {
+            throw new BadRequestException(ErrorCode.SELF_BLOCK_NOT_ALLOWED);
         }
     }
 }

@@ -117,7 +117,8 @@ public enum ErrorCode {
 	/**
 	 * 차단 관련 오류
 	 */
-	BLOCK_ALREADY_EXISTS(HttpStatus.CONFLICT, "BL-001", "이미 존재하는 차단 내역입니다.");
+	BLOCK_ALREADY_EXISTS(HttpStatus.CONFLICT, "BL-001", "이미 존재하는 차단 내역입니다."),
+	SELF_BLOCK_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "BL-002", "자기 자신을 차단할 수 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

@@ -22,7 +22,7 @@ public enum ErrorCode {
 	/**
 	 * 아바타 관련 오류
 	 */
-	AVATAR_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "A-001", "주어진 식별자로 아바타를 찾을 수 없습니다."),
+	AVATAR_NOT_FOUND(HttpStatus.NOT_FOUND, "A-001", "주어진 식별자로 아바타를 찾을 수 없습니다."),
 
 	/**
 	 * 유저 관련 오류

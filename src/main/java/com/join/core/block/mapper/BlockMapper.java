@@ -25,6 +25,7 @@ public class BlockMapper {
 
     public BlockMemberResponse toBlockMemberResponse(Block block) {
         return new BlockMemberResponse(
+                block.getId(),
                 block.getTarget().getAvatarToken(),
                 block.getTarget().getNickname(),
                 block.getTarget().getPhoto().getFile().getUrl()

@@ -3,9 +3,11 @@ package com.join.core.block.controller;
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.block.controller.specification.BlockControllerSpecification;
 import com.join.core.block.dto.request.CreateBlockRequest;
+import com.join.core.block.dto.request.CreateOngoingStudyBlockRequest;
 import com.join.core.block.dto.response.CreateBlockResponse;
 import com.join.core.block.service.BlockService;
 import com.join.core.block.service.dto.CreateBlockParams;
+import com.join.core.block.service.dto.CreateOngoingStudyBlockParams;
 import com.join.core.common.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +31,27 @@ public class BlockController implements BlockControllerSpecification {
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @RequestBody @Valid CreateBlockRequest createBlockRequest
     ) {
-        return ApiResponse.created(blockService.createBlock(
+        return ApiResponse.created(blockService.block(
                 new CreateBlockParams(
                         userPrincipal.getAvatarToken(),
                         createBlockRequest.targetAvatarToken(),
                         createBlockRequest.blockDate()
+                )
+        ));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/block/study-member")
+    public ApiResponse<CreateBlockResponse> createBlockStudyEnrollment(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestBody @Valid CreateOngoingStudyBlockRequest createOngoingStudyBlockRequest
+    ) {
+        return ApiResponse.created(blockService.blockStudyEnrollment(
+                new CreateOngoingStudyBlockParams(
+                        userPrincipal.getAvatarToken(),
+                        createOngoingStudyBlockRequest.targetAvatarToken(),
+                        createOngoingStudyBlockRequest.studyToken(),
+                        createOngoingStudyBlockRequest.blockDate()
                 )
         ));
     }

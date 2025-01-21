@@ -60,4 +60,7 @@ public class Enrollment extends BaseTimeEntity {
         this.role = role;
     }
 
+    public void withdraw() {
+        this.status = EnrollmentStatus.LEFT;
+    }
 }

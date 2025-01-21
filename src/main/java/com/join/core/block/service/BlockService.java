@@ -10,6 +10,7 @@ import com.join.core.block.service.dto.CreateOngoingStudyBlockParams;
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.common.exception.impl.EntityAlreadyExistsException;
+import com.join.core.common.exception.impl.NoPermissionException;
 import com.join.core.enrollment.domain.Enrollment;
 import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.study.domain.Study;
@@ -67,11 +68,21 @@ public class BlockService {
         checkDuplicated(avatar.getAvatarToken(), target.getAvatarToken());
         checkTarget(avatar.getAvatarToken(), target.getAvatarToken());
         study.checkActiveStatus();
+        checkEnrollment(avatar.getId(), target.getId(), study.getId());
 
         withdrawFromStudy(avatar.getId(), study.getId());
         Block block = blockMapper.toEntity(avatar, target, params.blockDate());
 
         return blockMapper.toCreateBlockResponse(blockStore.save(block));
+    }
+
+    private void checkEnrollment(Long subjectId, Long targetId, Long studyId) {
+        if (!enrollmentReader.existEnrollmentByAvatarIdAndStudyId(subjectId, studyId)) {
+            throw new NoPermissionException(ErrorCode.NOT_MEMBER_OF_STUDY);
+        }
+        if (!enrollmentReader.existEnrollmentByAvatarIdAndStudyId(targetId, studyId)) {
+            throw new BadRequestException(ErrorCode.TARGET_IS_NOT_MEMBER_OF_STUDY);
+        }
     }
 
     private void withdrawFromStudy(Long avatarId, Long studyId) {

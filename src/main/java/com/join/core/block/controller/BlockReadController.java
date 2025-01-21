@@ -1,6 +1,7 @@
 package com.join.core.block.controller;
 
 import com.join.core.auth.domain.UserPrincipal;
+import com.join.core.block.controller.specification.BlockReadControllerSpecification;
 import com.join.core.block.dto.response.BlockMemberResponse;
 import com.join.core.block.service.BlockReadService;
 import com.join.core.common.response.ApiResponse;
@@ -16,7 +17,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/blocks")
-public class BlockReadController {
+public class BlockReadController implements BlockReadControllerSpecification {
 
     private final BlockReadService blockReadService;
 

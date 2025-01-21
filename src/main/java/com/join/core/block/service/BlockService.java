@@ -63,8 +63,10 @@ public class BlockService {
         Avatar avatar = avatarReader.getAvatarByAvatarToken(params.subjectAvatarToken());
         Avatar target = avatarReader.getAvatarByAvatarToken(params.targetAvatarToken());
         Study study = studyReader.getStudyByToken(params.studyToken());
+
         checkDuplicated(avatar.getAvatarToken(), target.getAvatarToken());
         checkTarget(avatar.getAvatarToken(), target.getAvatarToken());
+        study.checkActiveStatus();
 
         withdrawFromStudy(avatar.getId(), study.getId());
         Block block = blockMapper.toEntity(avatar, target, params.blockDate());

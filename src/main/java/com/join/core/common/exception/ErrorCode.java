@@ -73,6 +73,7 @@ public enum ErrorCode {
 	STUDY_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "S-001", "주어진 식별자로 스터디를 찾을 수 없습니다."),
 	DUPLICATE_APPLICATION(HttpStatus.BAD_REQUEST, "S-002", "이미 지원한 스터디입니다."),
 	APPLICATION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "S-003", "주어진 식별자로 지원 정보를 찾을 수 없습니다."),
+	NOT_ACTIVE_STUDY(HttpStatus.BAD_REQUEST, "S-004", "진행 중인 스터디가 아닙니다."),
 
 	/**
 	 * 회차 관련 오류

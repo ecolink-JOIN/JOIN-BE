@@ -19,7 +19,7 @@ public class ProofMapper {
                 .avatar(avatar)
                 .meeting(meeting)
                 .photo(photo)
-                .proofStatus(ProofStatus.PENDING)
+                .status(ProofStatus.PENDING)
                 .build();
     }
 

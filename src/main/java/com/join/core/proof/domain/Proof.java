@@ -37,7 +37,7 @@ public class Proof extends BaseTimeEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private ProofStatus proofStatus;
+    private ProofStatus status;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -62,9 +62,9 @@ public class Proof extends BaseTimeEntity {
     private Avatar avatar;
 
     @Builder
-    public Proof(Long id, ProofStatus proofStatus, ProofType type, LocalDateTime provenDate, ProofPhoto photo, Meeting meeting, Avatar avatar) {
+    public Proof(Long id, ProofStatus status, ProofType type, LocalDateTime provenDate, ProofPhoto photo, Meeting meeting, Avatar avatar) {
         this.id = id;
-        this.proofStatus = proofStatus;
+        this.status = status;
         this.type = type;
         this.provenDate = provenDate;
         this.photo = photo;

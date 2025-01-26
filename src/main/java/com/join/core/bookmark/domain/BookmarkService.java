@@ -4,7 +4,6 @@ import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.common.exception.impl.EntityAlreadyExistsException;
 import com.join.core.common.exception.ErrorCode;
-import com.join.core.common.exception.impl.EntityNotFoundException;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ public class BookmarkService {
     private final BookmarkDeleter bookmarkDeleter;
 
     private boolean existsBookmark(Long avatarId, Long studyId) {
-        return bookmarkReader.findBookmarkByAvatarAndStudy(avatarId, studyId).isPresent();
+        return bookmarkReader.existsByAvatarAndStudy(avatarId, studyId);
     }
 
     @Transactional
@@ -44,8 +43,7 @@ public class BookmarkService {
     }
 
     public Bookmark getBookmark(Long storeId, Long avatarId) {
-        return bookmarkReader.findBookmarkByAvatarAndStudy(avatarId, storeId)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.BOOKMARK_NOT_FOUND));
+        return bookmarkReader.findBookmarkByAvatarAndStudy(avatarId, storeId);
     }
 
     @Transactional

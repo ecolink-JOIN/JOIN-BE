@@ -11,3 +11,5 @@ swagger:
     attendance: '09. 출석'
     profile-update: '10. 프로필 수정'
     proof: '11. 회차 인증'
+
+    report: '13. 신고'

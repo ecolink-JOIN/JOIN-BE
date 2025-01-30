@@ -19,4 +19,13 @@ public interface BookmarkApiSpecification {
             BookmarkRequest bookmarkRequest
     );
 
+    @Tag(name = "${swagger.tag.bookmark}")
+    @Operation(summary = "스터디 북마크 취소 API - 인증 필수",
+            description = "스터디 북마크 취소 API - 인증 필수",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<Void> deleteBookmark(
+            @AuthenticationPrincipal UserPrincipal principal,
+            BookmarkRequest bookmarkRequest
+    );
+
 }

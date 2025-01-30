@@ -1,5 +1,6 @@
 package com.join.core.proof.repository;
 
+import com.join.core.enrollment.constant.EnrollmentStatus;
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.proof.constant.ProofStatus;
@@ -8,6 +9,7 @@ import com.join.core.proof.service.ProofReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -15,16 +17,27 @@ import java.util.Optional;
 public class ProofReaderImpl implements ProofReader {
 
     private final ProofRepository proofRepository;
+    private final ProofQueryRepository proofQueryRepository;
 
     @Override
     public boolean hasOngoingProof(Long avatarId, Long meetingId) {
-        return proofRepository.existsByAvatarIdAndMeetingIdAndProofStatus(avatarId, meetingId, ProofStatus.PENDING) ||
-                proofRepository.existsByAvatarIdAndMeetingIdAndProofStatus(avatarId, meetingId, ProofStatus.APPROVED);
+        return proofRepository.existsByAvatarIdAndMeetingIdAndStatus(avatarId, meetingId, ProofStatus.PENDING) ||
+                proofRepository.existsByAvatarIdAndMeetingIdAndStatus(avatarId, meetingId, ProofStatus.APPROVED);
     }
 
     @Override
     public Optional<Proof> findLastProof(Long avatarId, Long meetingId) {
         return proofRepository.findFirstByAvatarIdAndMeetingIdOrderByIdDesc(avatarId, meetingId);
+    }
+
+    @Override
+    public List<Proof> findProofsByAvatarIdForJoinedStudies(Long avatarId) {
+        return proofQueryRepository.findProofsByAvatarIdAndEnrollmentStatus(avatarId, List.of(EnrollmentStatus.JOINED, EnrollmentStatus.REQUEST_LEAVE));
+    }
+
+    @Override
+    public List<Proof> findProofsByAvatarIdForLeftStudies(Long avatarId) {
+        return proofQueryRepository.findProofsByAvatarIdAndEnrollmentStatus(avatarId, List.of(EnrollmentStatus.LEFT));
     }
 
     @Override

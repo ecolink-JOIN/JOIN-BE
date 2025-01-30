@@ -8,4 +8,5 @@ public interface MeetingReader {
     List<Meeting> getMeetingsByStudy(Study study);
     Meeting getMeetingById(Long meetingId);
     Meeting findByStudyIdAndMeetingNo(Long studyId, int meetingNo);
+    List<Meeting> findMeetingsByAvatarIdForStudies(Long avatarId);
 }

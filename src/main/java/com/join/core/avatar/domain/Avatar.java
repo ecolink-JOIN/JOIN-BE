@@ -22,8 +22,9 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 
-import static com.join.core.common.exception.ErrorCode.INVALID_PARAMETER;
+import static com.join.core.common.exception.ErrorCode.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -85,6 +86,15 @@ public class Avatar extends BaseTimeEntity implements SinglePhotoContainer<Profi
 		if(StringUtils.isBlank(nickname))
 			throw new InvalidParamException(INVALID_PARAMETER, "Avatar.nickname");
 		this.nickname = nickname;
+	}
+
+	/*
+	* 계산식: rating(총 평점) / cnt / 3(성실도, 숙지도, 분위기 영향)
+	* */
+	public double getAverageEvaluation() {
+		DecimalFormat df = new DecimalFormat("#.0");
+		double averageEvaluation = ratingCnt == 0 ? 0.0 : (double) totalRating / (double) ratingCnt / 3;
+		return Double.parseDouble(df.format(averageEvaluation));
 	}
 
 	public boolean isSameAvatar(Long id) {

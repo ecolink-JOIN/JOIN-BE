@@ -42,4 +42,13 @@ public class Evaluation extends BaseTimeEntity {
     @JoinColumn(name = "study_id")
     private Study study;
 
+    public Evaluation(int sincerity, int familiarity, int effect, Avatar ratee, Avatar rater, Study study) {
+        this.sincerity = sincerity;
+        this.familiarity = familiarity;
+        this.effect = effect;
+        this.ratee = ratee;
+        this.rater = rater;
+        this.study = study;
+    }
+
 }

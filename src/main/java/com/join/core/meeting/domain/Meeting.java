@@ -81,14 +81,19 @@ public class Meeting {
         this.meetingNo = meetingNo;
     }
 
-    public boolean isWithinMeetingTime(LocalDateTime now) {
+    public boolean isAfterMeetingTime(LocalDateTime now) {
         if (!studyDate.isEqual(now.toLocalDate())) {
             return false;
         }
 
         LocalTime currentTime = now.toLocalTime();
         LocalTime meetingStart = stTime.minusMinutes(10);
-        return currentTime.isAfter(meetingStart) && currentTime.isBefore(endTime);
+        return currentTime.isAfter(meetingStart);
+    }
+
+    public boolean isLate(LocalDateTime now) {
+        LocalTime currentTime = now.toLocalTime();
+        return currentTime.isAfter(stTime);
     }
 
     public void checkProofTime(LocalDateTime provenDate) {

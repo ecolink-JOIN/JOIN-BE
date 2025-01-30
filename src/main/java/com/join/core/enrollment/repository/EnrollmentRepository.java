@@ -7,4 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
 
     boolean existsByAvatarIdAndStudyIdAndStatus(Long avatarId, Long studyId, EnrollmentStatus status);
+
+    boolean existsByAvatarIdAndStudyIdAndStatusNot(Long avatarId, Long studyId, EnrollmentStatus enrollmentStatus);
+
 }

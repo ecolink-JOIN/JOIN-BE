@@ -65,7 +65,7 @@ public enum ErrorCode {
 	/**
 	 * 카테고리 선택 관련 오류
 	 */
-	CATEGORY_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "C-001", "카테고리 선택이 누락되었습니다."),
+	CATEGORY_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "CA-001", "카테고리 선택이 누락되었습니다."),
 
 	/**
 	 * 스터디 관련 오류
@@ -113,7 +113,12 @@ public enum ErrorCode {
 	* 북마크 관련 오류
 	*/
 	BOOKMARK_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "B-001", "북마크가 이미 존재합니다."),
-  BOOKMARK_NOT_FOUND(HttpStatus.BAD_REQUEST, "B-002", "취소할 북마크를 찾을 수 없습니다.");
+    BOOKMARK_NOT_FOUND(HttpStatus.BAD_REQUEST, "B-002", "취소할 북마크를 찾을 수 없습니다."),
+
+	/**
+	 * 평가 관련 오류
+	 */
+	EVALUATION_PERIOD_INVALID(HttpStatus.BAD_REQUEST, "EV-001", "스터디원 평가 기간이 아닙니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class AttendanceRateService {
 
+    private final AvatarReader avatarReader;
     private final AttendanceReader attendanceReader;
     private final MeetingReader meetingReader;
 
@@ -51,7 +52,7 @@ public class AttendanceRateService {
         List<Attendance> attendancesForJoinedStudies = attendanceReader.findByStudyIdForJoinedStudy(studyId);
         List<Attendance> attendancesForLeftStudies = attendanceReader.findByStudyIdForLeftStudy(studyId);
 
-        long countStudyMembers = avatarReader.findAvatarsExceptLeftByStudyId(studyId).size();
+        long countStudyMembers = avatarReader.findAvatarsExceptPendingByStudyId(studyId).size();
         long countAllMeetings = meetingReader.findMeetingsByStudyId(studyId).size();
         long totalMeetings = countAllMeetings * countStudyMembers;
 

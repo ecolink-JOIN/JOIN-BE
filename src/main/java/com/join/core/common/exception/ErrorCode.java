@@ -89,6 +89,7 @@ public enum ErrorCode {
 	 */
 	UNAUTHORIZED_ACCESS(HttpStatus.INTERNAL_SERVER_ERROR, "AU-001", "해당 요청에 대한 권한이 없습니다."),
 
+
 	/**
 	 * 출석 관련 오류
 	 */
@@ -96,18 +97,21 @@ public enum ErrorCode {
 	ATTENDANCE_ALREADY_COMPLETED(HttpStatus.CONFLICT, "AT-003", "이미 출석이 완료되었습니다."),
 
 	/**
-	* 인증 관련 오류
-	*/
+	 * 인증 관련 오류
+	 */
 	PROOF_PHOTO_NOT_FOUND(HttpStatus.NOT_FOUND, "PR-001", "해당 파일을 찾을 수 없습니다."),
 	EMPTY_PROOF_PHOTO(HttpStatus.BAD_REQUEST, "PR-002", "사진 인증을 위해 이미지를 업로드해야 합니다."),
 	DUPLICATED_PROOF(HttpStatus.CONFLICT, "PR-003", "이미 진행 중인 인증이 존재합니다."),
 	OUT_OF_PROOF_TIME(HttpStatus.BAD_REQUEST, "PR-004", "인증 시간이 아닙니다."),
 	INVALID_PROOF_STATUS(HttpStatus.INTERNAL_SERVER_ERROR, "PR-005", "인증 상태를 조회하는 과정에서 오류가 발생하였습니다."),
+	INVALID_PROOF_ID(HttpStatus.BAD_REQUEST, "PR-006", "존재하지 않는 인증 정보입니다,"),
+	ALREADY_CHECK_PROOF(HttpStatus.CONFLICT, "PR-007", "이미 수락 또는 반려된 인증입니다."),
 
 	/**
 	* 스터디 참여자 관련 오류
 	*/
-	NOT_MEMBER_OF_STUDY(HttpStatus.FORBIDDEN, "EN-002", "스터디에 참여중인 사용자가 아닙니다."),
+	NOT_MEMBER_OF_STUDY(HttpStatus.FORBIDDEN, "EN-001", "스터디에 참여중인 사용자가 아닙니다."),
+    LEADER_ONLY_ACCESS(HttpStatus.FORBIDDEN, "EN-002", "해당 기능은 스터디 리더만 사용할 수 있습니다."),
 
 	/**
 	* 북마크 관련 오류

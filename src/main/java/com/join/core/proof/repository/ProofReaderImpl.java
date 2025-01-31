@@ -1,6 +1,8 @@
 package com.join.core.proof.repository;
 
 import com.join.core.enrollment.constant.EnrollmentStatus;
+import com.join.core.common.exception.ErrorCode;
+import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.proof.constant.ProofStatus;
 import com.join.core.proof.domain.Proof;
 import com.join.core.proof.service.ProofReader;
@@ -36,5 +38,11 @@ public class ProofReaderImpl implements ProofReader {
     @Override
     public List<Proof> findProofsByAvatarIdForLeftStudies(Long avatarId) {
         return proofQueryRepository.findProofsByAvatarIdAndEnrollmentStatus(avatarId, List.of(EnrollmentStatus.LEFT));
+    }
+
+    @Override
+    public Proof getProofById(Long proofId) {
+        return proofRepository.findById(proofId)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.INVALID_PROOF_ID));
     }
 }

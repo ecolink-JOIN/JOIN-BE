@@ -11,4 +11,5 @@ public interface ProofReader {
     Optional<Proof> findLastProof(Long avatarId, Long meetingId);
     List<Proof> findProofsByAvatarIdForJoinedStudies(Long avatarId);
     List<Proof> findProofsByAvatarIdForLeftStudies(Long avatarId);
+    Proof getProofById(Long proofId);
 }

@@ -6,11 +6,13 @@ import com.join.core.proof.controller.specification.ProofControllerSpecification
 import com.join.core.proof.dto.request.CreateProofRequest;
 import com.join.core.proof.dto.response.CreateProofResponse;
 import com.join.core.proof.service.ProofService;
+import com.join.core.proof.service.dto.ApproveParams;
 import com.join.core.proof.service.dto.CreateProofCommand;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,5 +44,22 @@ public class ProofController implements ProofControllerSpecification {
                         createProofRequest.provenDate()
                 ))
         );
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/{proofId}/approve")
+    public ApiResponse<Void> approve(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable String studyToken,
+            @PathVariable Integer meetingNo,
+            @PathVariable Long proofId
+    ) {
+        proofService.approve(new ApproveParams(
+                userPrincipal.getAvatarId(),
+                studyToken,
+                meetingNo,
+                proofId
+        ));
+        return ApiResponse.noContent();
     }
 }

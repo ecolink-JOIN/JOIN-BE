@@ -37,4 +37,15 @@ public class MeetingQueryRepositoryImpl implements MeetingQueryRepository {
                 )
                 .fetch();
     }
+
+    @Override
+    public List<Meeting> findMeetingsByStudyId(Long studyId) {
+        return queryFactory
+                .selectFrom(meeting)
+                .join(meeting.study, study)
+                .where(
+                        study.id.eq(studyId)
+                )
+                .fetch();
+    }
 }

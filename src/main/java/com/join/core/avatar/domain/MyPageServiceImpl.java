@@ -21,9 +21,9 @@ public class MyPageServiceImpl implements MyPageService {
     public MyPageInfoResponse getMyPageInfo(Long avatarId) {
         Avatar avatar = avatarReader.getAvatarById(avatarId);
 
-        double averageAttendanceRate = attendanceRateService.calculateAttendanceRate(avatarId);
+        double averageAttendanceRate = attendanceRateService.calculateIndividualAttendanceRate(avatarId);
 
-        double averageProofRate = proofRateService.calculateProofRate(avatarId);
+        double averageProofRate = proofRateService.calculateIndividualProofRate(avatarId);
 
         return MyPageInfoResponse.of(avatar, averageAttendanceRate, averageProofRate);
     }

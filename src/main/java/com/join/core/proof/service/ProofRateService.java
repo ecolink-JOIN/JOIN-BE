@@ -1,5 +1,6 @@
 package com.join.core.proof.service;
 
+import com.join.core.common.util.NumberUtil;
 import com.join.core.enrollment.constant.EnrollmentStatus;
 import com.join.core.meeting.domain.MeetingReader;
 import com.join.core.proof.domain.Proof;
@@ -18,7 +19,7 @@ public class ProofRateService {
     private final ProofReader proofReader;
 
     @Transactional(readOnly = true)
-    public double calculateProofRate(Long avatarId) {
+    public double calculateIndividualProofRate(Long avatarId) {
         List<Proof> proofsForJoinedStudies = proofReader.findProofsByAvatarIdForJoinedStudies(avatarId);
         List<Proof> proofsForLeftStudies = proofReader.findProofsByAvatarIdForLeftStudies(avatarId);
 
@@ -43,6 +44,7 @@ public class ProofRateService {
             return 0.0;
         }
 
-        return totalProof / totalMeetings * 100;
+        return NumberUtil.round(2, totalProof / totalMeetings * 100);
+    }
     }
 }

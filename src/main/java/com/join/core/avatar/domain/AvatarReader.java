@@ -9,4 +9,6 @@ public interface AvatarReader {
 
 	AvatarInfo.Self getInfo(Long id);
 
+	Avatar getAvatarByAvatarToken(String avatarToken);
+
 }

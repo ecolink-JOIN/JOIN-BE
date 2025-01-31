@@ -60,4 +60,8 @@ public class StudyReaderImpl implements StudyReader {
                 .orElseThrow(() -> new InvalidStateException(ErrorCode.EVALUATION_PERIOD_INVALID));
     }
 
+    @Override
+    public boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken) {
+        return studyQueryRepository.existsByEnrollmentsAvatarToken(subjectToken, targetToken);
+    }
 }

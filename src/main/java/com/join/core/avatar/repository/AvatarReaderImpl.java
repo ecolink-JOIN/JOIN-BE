@@ -41,4 +41,10 @@ public class AvatarReaderImpl implements AvatarReader {
         return avatarInfoMapper.of(getAvatarById(id));
     }
 
+    @Override
+    public Avatar getAvatarByAvatarToken(String avatarToken) {
+        return avatarRepository.findByAvatarToken(avatarToken)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_FOUND));
+    }
+
 }

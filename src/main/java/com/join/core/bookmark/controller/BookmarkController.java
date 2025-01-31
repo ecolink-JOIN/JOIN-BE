@@ -7,10 +7,7 @@ import com.join.core.bookmark.dto.request.BookmarkRequest;
 import com.join.core.common.response.ApiResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -28,6 +25,17 @@ public class BookmarkController implements BookmarkApiSpecification {
             @RequestBody BookmarkRequest bookmarkRequest
     ) {
         bookmarkService.addBookmark(bookmarkRequest.studyId(), principal.getAvatarId());
+        return ApiResponse.ok();
+    }
+
+    @Override
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping
+    public ApiResponse<Void> deleteBookmark(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @RequestBody BookmarkRequest bookmarkRequest
+    ) {
+        bookmarkService.deleteBookmark(bookmarkRequest.studyId(), principal.getAvatarId());
         return ApiResponse.ok();
     }
 

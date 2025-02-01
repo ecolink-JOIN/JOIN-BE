@@ -3,6 +3,7 @@ package com.join.core.study.repository;
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.EntityNotFoundException;
 import com.join.core.common.exception.impl.InvalidStateException;
+import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
@@ -47,6 +48,11 @@ public class StudyReaderImpl implements StudyReader {
     @Override
     public List<Study> getStudiesOrderByRecommendations(EssentialStudyCondition condition, CustomStudyCondition customStudyCondition) {
         return studyQueryRepository.getStudiesOrderByRecommendations(condition, customStudyCondition);
+    }
+
+    @Override
+    public List<Study> getStudiesByLeaderAvatarId(Long avatarId) {
+        return studyQueryRepository.findAllByAvatarIdAndRole(avatarId, StudyRole.LEADER);
     }
 
     @Override

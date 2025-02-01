@@ -13,3 +13,4 @@ swagger:
     proof: '11. 회차 인증'
     evaluation: '12. 평가'
     block: '13. 차단'
+    my-page: '14. 마이페이지'

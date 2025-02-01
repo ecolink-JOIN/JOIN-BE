@@ -12,4 +12,9 @@ public interface ProofReader {
     List<Proof> findProofsByAvatarIdForJoinedStudies(Long avatarId);
     List<Proof> findProofsByAvatarIdForLeftStudies(Long avatarId);
     Proof getProofById(Long proofId);
+    List<Proof> findByStudyIdForJoinedStudy(Long studyId);
+    List<Proof> findByStudyIdForLeftStudy(Long studyId);
+    List<Proof> findByAvatarIdAndStudyIdForJoinedStudy(Long avatarId, Long studyId);
+    List<Proof> findByAvatarIdAndStudyIdForLeftStudy(Long avatarId, Long studyId);
+    boolean isFullyApproved(Long avatarId, Long studyId);
 }

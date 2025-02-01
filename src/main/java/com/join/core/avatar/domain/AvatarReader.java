@@ -1,5 +1,7 @@
 package com.join.core.avatar.domain;
 
+import java.util.List;
+
 public interface AvatarReader {
 	Avatar getAvatarById(Long avatarId);
 
@@ -11,4 +13,5 @@ public interface AvatarReader {
 
 	Avatar getAvatarByAvatarToken(String avatarToken);
 
+	List<Avatar> findAvatarsExceptPendingByStudyId(Long studyId);
 }

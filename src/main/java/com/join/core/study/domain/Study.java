@@ -116,6 +116,8 @@ public class Study {
     @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudySchedule> schedules;
 
+    private String kakaoUrl;
+
     public Study(StudyRecruitRequest recruitRequest, Avatar writer, Address address, Category category) {
         if (writer == null)
             throw new InvalidParamException(INVALID_PARAMETER, "Study.writer");

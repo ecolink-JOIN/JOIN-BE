@@ -43,4 +43,9 @@ public class MeetingReaderImpl implements MeetingReader {
 
         return Stream.concat(meetingsForJoinedStudies.stream(), meetingsForLeftStudies.stream()).toList();
     }
+
+    @Override
+    public List<Meeting> findMeetingsByStudyId(Long studyId) {
+        return meetingQueryRepository.findMeetingsByStudyId(studyId);
+    }
 }

@@ -45,4 +45,29 @@ public class ProofReaderImpl implements ProofReader {
         return proofRepository.findById(proofId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.INVALID_PROOF_ID));
     }
+
+    @Override
+    public List<Proof> findByStudyIdForJoinedStudy(Long studyId) {
+        return proofQueryRepository.findProofsByStudyIdInEnrollmentStatuses(studyId, List.of(EnrollmentStatus.JOINED, EnrollmentStatus.REQUEST_LEAVE));
+    }
+
+    @Override
+    public List<Proof> findByStudyIdForLeftStudy(Long studyId) {
+        return proofQueryRepository.findProofsByStudyIdInEnrollmentStatuses(studyId, List.of(EnrollmentStatus.LEFT));
+    }
+
+    @Override
+    public List<Proof> findByAvatarIdAndStudyIdForJoinedStudy(Long avatarId, Long studyId) {
+        return proofQueryRepository.findByAvatarIdAndStudyIdInEnrollmentStatuses(avatarId, studyId, List.of(EnrollmentStatus.JOINED, EnrollmentStatus.REQUEST_LEAVE));
+    }
+
+    @Override
+    public List<Proof> findByAvatarIdAndStudyIdForLeftStudy(Long avatarId, Long studyId) {
+        return proofQueryRepository.findByAvatarIdAndStudyIdInEnrollmentStatuses(avatarId, studyId, List.of(EnrollmentStatus.LEFT));
+    }
+
+    @Override
+    public boolean isFullyApproved(Long avatarId, Long studyId) {
+        return proofQueryRepository.allProofsHaveApprovedStatus(avatarId, studyId);
+    }
 }

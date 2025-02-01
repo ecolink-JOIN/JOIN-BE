@@ -71,6 +71,8 @@ public class User extends BaseTimeEntity {
 	@NotNull
 	private boolean pushConsent;
 
+	private String fcmToken;
+
 	@NotNull
 	@OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
 	private Avatar avatar;
@@ -81,14 +83,15 @@ public class User extends BaseTimeEntity {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<TermAgreeHistory> termAgreeHistoryList = new ArrayList<>();
 
-
 	public boolean isUserOf(UserType providerType) {
 		return providerType.equals(this.platform);
 	}
 
 	public User(String email, UserType platform) {
-		if (StringUtils.isEmpty(email)) throw new InvalidParamException(INVALID_PARAMETER, "User.email");
-		if (platform == null) throw new InvalidParamException(INVALID_PARAMETER, "User.platform");
+		if (StringUtils.isEmpty(email))
+			throw new InvalidParamException(INVALID_PARAMETER, "User.email");
+		if (platform == null)
+			throw new InvalidParamException(INVALID_PARAMETER, "User.platform");
 
 		this.email = email;
 		this.platform = platform;
@@ -114,9 +117,8 @@ public class User extends BaseTimeEntity {
 		this.termAgreeHistoryList.add(new TermAgreeHistory(this, term, status));
 	}
 
-	public void updatePushConsent(boolean consent) {
-		if (this.pushConsent == consent)
-			throw new InvalidParamException(INVALID_PARAMETER, "updatePushConsent.pushConsent");
+	public void updatePushConsent(boolean consent, String fcmToken) {
+		if (consent && StringUtils.isEmpty(fcmToken)) throw new InvalidParamException(INVALID_PARAMETER, "updatePushConsent.fcmToken");
 		this.pushConsent = consent;
 	}
 

@@ -34,6 +34,7 @@ public class AvatarCommand {
 	@AllArgsConstructor
 	public static class ChangePushConsent {
 		private boolean consent;
+		private String fcmToken;
 	}
 
 }

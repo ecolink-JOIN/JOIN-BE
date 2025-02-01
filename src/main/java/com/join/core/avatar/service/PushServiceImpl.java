@@ -20,7 +20,7 @@ public class PushServiceImpl implements PushService {
 	@Override
 	public void updatePushConsent(Long userId, AvatarCommand.ChangePushConsent command) {
 		User user = userReader.getUser(userId);
-		user.updatePushConsent(command.isConsent());
+		user.updatePushConsent(command.isConsent(), command.getFcmToken());
 	}
 
 }

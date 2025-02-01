@@ -13,14 +13,14 @@ import java.util.List;
 
 public interface MyPageControllerSpecification {
 
-    @Tag(name = "${swagger.tag.user}")
+    @Tag(name = "${swagger.tag.my-page}")
     @Operation(summary = "마이페이지 조회 - 인증 필수",
             description = "마이페이지 조회",
             security = {@SecurityRequirement(name = "session-token")})
     ApiResponse<MyPageInfoResponse> getMyPageInfo(
             @AuthenticationPrincipal UserPrincipal principal);
 
-    @Tag(name = "${swagger.tag.user}")
+    @Tag(name = "${swagger.tag.my-page}")
     @Operation(summary = "마이페이지 운영중인 스터디 목록 조회 - 인증 필수",
             description = "마이페이지 운영중인 스터디 목록을 조회해옵니다.",
             security = {@SecurityRequirement(name = "session-token")})

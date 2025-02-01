@@ -10,9 +10,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,5 +39,10 @@ public class Preference {
 	private String province;
 
 	private String city;
+
+	@DynamoDbPartitionKey
+	public String getAvatarToken() {
+		return avatarToken;
+	}
 
 }

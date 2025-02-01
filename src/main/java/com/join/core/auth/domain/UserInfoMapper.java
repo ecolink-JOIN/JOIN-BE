@@ -20,6 +20,7 @@ public interface UserInfoMapper {
 	@Mapping(constant = "true", target = "registered")
 	@Mapping(source = "newUser", target = "newUser")
 	@Mapping(expression = "java(user.isTermsAgreed())", target = "termsAgreed")
+	@Mapping(expression = "java(user.isPushConsent())", target = "pushConsent")
 	@Mapping(expression = "java(user.getAvatar().isNicknameSet())", target = "nicknameSet")
 	UserInfo.SigIn of(User user, boolean newUser);
 

@@ -130,4 +130,14 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                 )
                 .fetch();
     }
+
+    @Override
+    public List<Study> findJoinedStudyByAvatarId(Long avatarId) {
+        return queryFactory.selectFrom(study)
+                .leftJoin(enrollment).on(
+                        enrollment.avatar.id.eq(avatarId),
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
+                )
+                .fetch();
+    }
 }

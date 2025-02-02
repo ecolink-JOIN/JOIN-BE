@@ -56,6 +56,11 @@ public class StudyReaderImpl implements StudyReader {
     }
 
     @Override
+    public List<Study> getJoinedStudiesByAvatarId(Long avatarId) {
+        return studyQueryRepository.findJoinedStudyByAvatarId(avatarId);
+    }
+
+    @Override
     public Page<Study> getStudiesByTitleContaining(String keyword, Pageable pageable) {
         return studyRepository.findAllByTitleContaining(keyword, pageable);
     }

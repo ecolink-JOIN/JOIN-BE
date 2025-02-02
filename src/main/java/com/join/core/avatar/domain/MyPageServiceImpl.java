@@ -1,6 +1,7 @@
 package com.join.core.avatar.domain;
 
 import com.join.core.attendance.service.AttendanceRateService;
+import com.join.core.avatar.dto.response.MyJoinedStudyResponse;
 import com.join.core.avatar.dto.response.MyManagedStudyInfoResponse;
 import com.join.core.avatar.dto.response.MyPageInfoResponse;
 import com.join.core.proof.service.ProofRateService;
@@ -50,6 +51,12 @@ public class MyPageServiceImpl implements MyPageService {
                     return MyManagedStudyInfoResponse.of(study, teamAttendanceRateForStudy, teamProofRateForStudy, achievementDtos);
                 }
         ).toList();
+    }
+
+    @Override
+    public MyJoinedStudyResponse getMyJoinedStudies(Long avatarId) {
+        List<Study> joinedStudiesByAvatarId = studyReader.getJoinedStudiesByAvatarId(avatarId);
+        return MyJoinedStudyResponse.of(joinedStudiesByAvatarId);
     }
 
     private List<MyManagedStudyInfoResponse.StudyMemberAchievementDto> getMembersRatesAndApprovedStatus(Study study) {

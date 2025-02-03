@@ -3,7 +3,8 @@ package com.join.core.avatar.domain;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class AvatarCommand {
 
@@ -11,6 +12,8 @@ public class AvatarCommand {
 	}
 
 	@Getter
+	@Setter
+	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class ChangeNickname {
 		@NotBlank
@@ -18,10 +21,11 @@ public class AvatarCommand {
 
 	}
 
-	@RequiredArgsConstructor
 	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
 	public static class ChangePhoto {
-		private final boolean defaultPhoto;
+		private boolean defaultPhoto;
 	}
 
 }

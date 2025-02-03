@@ -1,6 +1,8 @@
 package com.join.core.study.repository;
 
 import com.join.core.enrollment.constant.EnrollmentStatus;
+import com.join.core.study.constant.StudyStatus;
+import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
@@ -19,7 +21,7 @@ import static com.join.core.bookmark.domain.QBookmark.bookmark;
 import static com.join.core.enrollment.domain.QEnrollment.enrollment;
 import static com.join.core.history.domain.QViewHistory.viewHistory;
 import static com.join.core.schedule.domain.QStudySchedule.studySchedule;
-import static com.join.core.study.domain.QStudy.*;
+import static com.join.core.study.domain.QStudy.study;
 
 @RequiredArgsConstructor
 @Repository
@@ -98,6 +100,34 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                         study.studyName.asc()
                 )
                 .limit(20)
+                .fetch();
+    }
+
+    @Override
+    public boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken) {
+        return queryFactory.selectFrom(study)
+                .leftJoin(enrollment).on(
+                        enrollment.study.id.eq(study.id),
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
+                )
+                .where(
+                        study.status.eq(StudyStatus.ACTIVE),
+                        enrollment.avatar.avatarToken.eq(subjectToken)
+                                .or(enrollment.avatar.avatarToken.eq(targetToken))
+                )
+                .groupBy(study.id)
+                .having(enrollment.avatar.avatarToken.countDistinct().eq(2L))
+                .fetchFirst() != null;
+    }
+
+
+    @Override
+    public List<Study> findAllByAvatarIdAndRole(Long avatarId, StudyRole status) {
+        return queryFactory.selectFrom(study)
+                .leftJoin(enrollment).on(
+                        enrollment.avatar.id.eq(avatarId),
+                        enrollment.role.eq(status)
+                )
                 .fetch();
     }
 }

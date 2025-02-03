@@ -7,10 +7,9 @@ import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.meeting.domain.Meeting;
 import com.join.core.meeting.domain.MeetingReader;
-import com.join.core.proof.domain.Proof;
 import com.join.core.proof.dto.response.CheckProofResponse;
 import com.join.core.proof.dto.response.ProofStatusResponse;
-import com.join.core.proof.service.dto.CheckProofCommand;
+import com.join.core.proof.service.dto.CheckProofParams;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
@@ -28,15 +27,14 @@ public class ProofReadService {
     private final MeetingReader meetingReader;
 
     @Transactional
-    public CheckProofResponse getProofStatus(CheckProofCommand command) {
-        Avatar avatar = avatarReader.getAvatarById(command.avatarId());
-        Study study = studyReader.getStudyByToken(command.studyToken());
+    public CheckProofResponse getProofStatus(CheckProofParams params) {
+        Avatar avatar = avatarReader.getAvatarById(params.avatarId());
+        Study study = studyReader.getStudyByToken(params.studyToken());
         checkAuthorization(avatar.getId(), study.getId());
 
-        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), command.meetingNo());
-        Proof proof = proofReader.findLastProof(avatar.getId(), meeting.getId());
+        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), params.meetingNo());
 
-        return getProofResponse(proof);
+        return findProof(avatar.getId(), meeting.getId());
     }
 
     private void checkAuthorization(Long avatarId, Long studyId) {
@@ -45,13 +43,12 @@ public class ProofReadService {
         }
     }
 
-    private CheckProofResponse getProofResponse(Proof proof) {
-        if (proof == null) {
-            return new CheckProofResponse(ProofStatusResponse.NONE, null);
-        }
-        return new CheckProofResponse(
-                ProofStatusResponse.getProofStatusRequest(proof.getProofStatus()),
-                proof.getProvenDate()
-        );
+    private CheckProofResponse findProof(Long avatarId, Long meetingId) {
+        return proofReader.findLastProof(avatarId, meetingId)
+                .map(proof -> new CheckProofResponse(
+                        ProofStatusResponse.getProofStatusRequest(proof.getStatus()),
+                        proof.getProvenDate()
+                ))
+                .orElse(new CheckProofResponse(ProofStatusResponse.NONE, null));
     }
 }

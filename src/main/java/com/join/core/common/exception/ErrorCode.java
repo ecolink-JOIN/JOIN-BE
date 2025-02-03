@@ -22,7 +22,7 @@ public enum ErrorCode {
 	/**
 	 * 아바타 관련 오류
 	 */
-	AVATAR_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "A-001", "주어진 식별자로 아바타를 찾을 수 없습니다."),
+	AVATAR_NOT_FOUND(HttpStatus.NOT_FOUND, "A-001", "주어진 식별자로 아바타를 찾을 수 없습니다."),
 
 	/**
 	 * 유저 관련 오류
@@ -65,7 +65,7 @@ public enum ErrorCode {
 	/**
 	 * 카테고리 선택 관련 오류
 	 */
-	CATEGORY_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "C-001", "카테고리 선택이 누락되었습니다."),
+	CATEGORY_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "CA-001", "카테고리 선택이 누락되었습니다."),
 
 	/**
 	 * 스터디 관련 오류
@@ -108,10 +108,28 @@ public enum ErrorCode {
 	ALREADY_CHECK_PROOF(HttpStatus.CONFLICT, "PR-007", "이미 수락 또는 반려된 인증입니다."),
 
 	/**
-	 * 스터디 참여자 관련 오류
-	 */
+	* 스터디 참여자 관련 오류
+	*/
 	NOT_MEMBER_OF_STUDY(HttpStatus.FORBIDDEN, "EN-001", "스터디에 참여중인 사용자가 아닙니다."),
-	LEADER_ONLY_ACCESS(HttpStatus.FORBIDDEN, "EN-002", "해당 기능은 스터디 리더만 사용할 수 있습니다.");
+    LEADER_ONLY_ACCESS(HttpStatus.FORBIDDEN, "EN-002", "해당 기능은 스터디 리더만 사용할 수 있습니다."),
+
+	/**
+	* 북마크 관련 오류
+	*/
+	BOOKMARK_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "B-001", "북마크가 이미 존재합니다."),
+    BOOKMARK_NOT_FOUND(HttpStatus.BAD_REQUEST, "B-002", "취소할 북마크를 찾을 수 없습니다."),
+
+	/**
+	 * 평가 관련 오류
+	 */
+	EVALUATION_PERIOD_INVALID(HttpStatus.BAD_REQUEST, "EV-001", "스터디원 평가 기간이 아닙니다."),
+
+	/**
+	 * 차단 관련 오류
+	 */
+	BLOCK_ALREADY_EXISTS(HttpStatus.CONFLICT, "BL-001", "이미 존재하는 차단 내역입니다."),
+	SELF_BLOCK_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "BL-002", "자기 자신을 차단할 수 없습니다."),
+	ACTIVE_STUDY_EXISTS(HttpStatus.BAD_REQUEST, "BL-003", "함께 진행 중인 스터디가 존재합니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

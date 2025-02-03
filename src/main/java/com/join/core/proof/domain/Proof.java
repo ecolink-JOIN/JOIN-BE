@@ -87,6 +87,6 @@ public class Proof extends BaseTimeEntity {
 
     public void reject() {
         checkStatus();
-        this.proofStatus = ProofStatus.REJECTED;
+        this.status = ProofStatus.REJECTED;
     }
 }

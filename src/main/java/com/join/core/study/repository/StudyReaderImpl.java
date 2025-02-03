@@ -2,6 +2,8 @@ package com.join.core.study.repository;
 
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.EntityNotFoundException;
+import com.join.core.common.exception.impl.InvalidStateException;
+import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import com.join.core.study.constant.StudyStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,8 +51,19 @@ public class StudyReaderImpl implements StudyReader {
     }
 
     @Override
+    public List<Study> getStudiesByLeaderAvatarId(Long avatarId) {
+        return studyQueryRepository.findAllByAvatarIdAndRole(avatarId, StudyRole.LEADER);
+    }
+
+    @Override
     public Page<Study> getStudiesByTitleContaining(String keyword, Pageable pageable) {
         return studyRepository.findAllByTitleContaining(keyword, pageable);
+    }
+
+    @Override
+    public Study validateStudyCompletion(Long studyId) {
+        return studyRepository.findByIdAndStatus(studyId, StudyStatus.COMPLETED)
+                .orElseThrow(() -> new InvalidStateException(ErrorCode.EVALUATION_PERIOD_INVALID));
     }
 
     @Override

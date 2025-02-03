@@ -46,7 +46,7 @@ public class ProofReadService {
     private CheckProofResponse findProof(Long avatarId, Long meetingId) {
         return proofReader.findLastProof(avatarId, meetingId)
                 .map(proof -> new CheckProofResponse(
-                        ProofStatusResponse.getProofStatusRequest(proof.getProofStatus()),
+                        ProofStatusResponse.getProofStatusRequest(proof.getStatus()),
                         proof.getProvenDate()
                 ))
                 .orElse(new CheckProofResponse(ProofStatusResponse.NONE, null));

@@ -2,6 +2,7 @@ package com.join.core.study.repository;
 
 import com.join.core.enrollment.constant.EnrollmentStatus;
 import com.join.core.study.constant.StudyStatus;
+import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
@@ -119,4 +120,14 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                 .fetchFirst() != null;
     }
 
+
+    @Override
+    public List<Study> findAllByAvatarIdAndRole(Long avatarId, StudyRole status) {
+        return queryFactory.selectFrom(study)
+                .leftJoin(enrollment).on(
+                        enrollment.avatar.id.eq(avatarId),
+                        enrollment.role.eq(status)
+                )
+                .fetch();
+    }
 }

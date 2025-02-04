@@ -19,9 +19,10 @@ public class BookmarkService {
     private final BookmarkStore bookmarkStore;
     private final AvatarReader avatarReader;
     private final StudyReader studyReader;
+    private final BookmarkDeleter bookmarkDeleter;
 
     private boolean existsBookmark(Long avatarId, Long studyId) {
-        return bookmarkReader.findBookmarkByAvatarAndStudy(avatarId, studyId).isPresent();
+        return bookmarkReader.existsByAvatarAndStudy(avatarId, studyId);
     }
 
     @Transactional
@@ -39,6 +40,20 @@ public class BookmarkService {
         study.addBookmarkCount();
 
         return bookmark;
+    }
+
+    public Bookmark getBookmark(Long storeId, Long avatarId) {
+        return bookmarkReader.findBookmarkByAvatarAndStudy(avatarId, storeId);
+    }
+
+    @Transactional
+    public void deleteBookmark(Long storeId, Long avatarId) {
+        Bookmark bookmark = getBookmark(storeId, avatarId);
+        Study study = bookmark.getStudy();
+
+        bookmarkDeleter.deleteBookmark(bookmark);
+
+        study.deleteBookmarkCount();
     }
 
 }

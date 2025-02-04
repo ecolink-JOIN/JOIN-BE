@@ -118,6 +118,8 @@ public class Study {
     @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudySchedule> schedules;
 
+    private String kakaoUrl;
+
     public Study(StudyRecruitRequest recruitRequest, Avatar writer, Address address, Category category) {
         if (writer == null)
             throw new InvalidParamException(INVALID_PARAMETER, "Study.writer");
@@ -187,4 +189,10 @@ public class Study {
         }
     }
 
+    public void deleteBookmarkCount() {
+        if (this.bookmarkCnt <= 0) {
+            throw new IllegalStateException("북마크 수는 음수가 될 수 없습니다.");
+        }
+        this.bookmarkCnt--;
+    }
 }

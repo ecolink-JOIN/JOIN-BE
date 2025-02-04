@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.join.core.avatar.dto.ChangePreferenceRequest;
+import com.join.core.avatar.service.PreferenceStore;
 import com.join.core.common.exception.impl.InvalidNicknameException;
 
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ public class AvatarServiceImpl implements AvatarService {
 	private final List<NicknameValidator> nicknameValidatorList;
 	private final AvatarReader avatarReader;
 	private final ProfilePhotoFactory profilePhotoFactory;
+	private final PreferenceStore preferenceStore;
 
 	@Override
 	public AvatarInfo.ValidNickname isValid(AvatarCommand.ChangeNickname command) {
@@ -53,6 +56,12 @@ public class AvatarServiceImpl implements AvatarService {
 	@Override
 	public AvatarInfo.Self getAvatarInfo(Long avatarId) {
 		return avatarReader.getInfo(avatarId);
+	}
+
+	@Override
+	public void changePreference(Long avatarId, ChangePreferenceRequest request) {
+		Avatar avatar = avatarReader.getAvatarById(avatarId);
+		preferenceStore.changePreferenceOf(avatar, request);
 	}
 
 }

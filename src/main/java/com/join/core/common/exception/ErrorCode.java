@@ -120,6 +120,11 @@ public enum ErrorCode {
     BOOKMARK_NOT_FOUND(HttpStatus.BAD_REQUEST, "B-002", "취소할 북마크를 찾을 수 없습니다."),
 
 	/**
+	 * 신고 관련 오류
+	 */
+	REPORT_TIME_LIMIT(HttpStatus.BAD_REQUEST, "R-001", "신고자는 30분 내에 동일한 신고를 할 수 없습니다."),
+
+  /**
 	 * 평가 관련 오류
 	 */
 	EVALUATION_PERIOD_INVALID(HttpStatus.BAD_REQUEST, "EV-001", "스터디원 평가 기간이 아닙니다."),

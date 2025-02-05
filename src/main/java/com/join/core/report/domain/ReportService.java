@@ -15,6 +15,7 @@ public class ReportService {
 
     private final StudyReader studyReader;
     private final AvatarReader avatarReader;
+    private final ReportReader reportReader;
     private final ReportStore reportStore;
 
     @Transactional
@@ -22,6 +23,8 @@ public class ReportService {
         Study study = studyReader.getStudyById(studyId);
         Avatar reporter = avatarReader.getAvatarById(reporterId);
         Avatar writer = study.getWriter();
+
+        reportReader.validateReportTimeLimit(reporter, study);
 
         reportStore.store(reportRequest, study, writer, reporter);
     }

@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -36,12 +39,17 @@ public class Report {
     @Column(nullable = false, length = 300)
     private String reason;
 
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
     public Report(ReportType reportType, Study study, Avatar writer, Avatar reporter, String reason) {
         this.reportType = reportType;
         this.study = study;
         this.writer = writer;
         this.reporter = reporter;
         this.reason = reason;
+        this.createdAt = LocalDateTime.now();
     }
 
 }

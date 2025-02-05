@@ -113,7 +113,12 @@ public enum ErrorCode {
 	* 북마크 관련 오류
 	*/
 	BOOKMARK_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "B-001", "북마크가 이미 존재합니다."),
-  BOOKMARK_NOT_FOUND(HttpStatus.BAD_REQUEST, "B-002", "취소할 북마크를 찾을 수 없습니다.");
+    BOOKMARK_NOT_FOUND(HttpStatus.BAD_REQUEST, "B-002", "취소할 북마크를 찾을 수 없습니다."),
+
+	/**
+	 * 신고 관련 오류
+	 */
+	REPORT_TIME_LIMIT(HttpStatus.BAD_REQUEST, "R-001", "신고자는 30분 내에 동일한 신고를 할 수 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

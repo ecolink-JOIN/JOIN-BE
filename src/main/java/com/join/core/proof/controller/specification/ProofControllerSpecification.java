@@ -24,4 +24,26 @@ public interface ProofControllerSpecification {
             @PathVariable Integer meetingNo,
             @Valid @RequestBody CreateProofRequest createProofRequest
     );
+
+    @Tag(name = "${swagger.tag.proof}")
+    @Operation(summary = "회차 인증 수락 - 인증 필수",
+            description = "회차 인증 수락 - 인증 필수",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<Void> approve(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable String studyToken,
+            @PathVariable Integer meetingNo,
+            @PathVariable Long proofId
+    );
+
+    @Tag(name = "${swagger.tag.proof}")
+    @Operation(summary = "회차 인증 반려 - 인증 필수",
+            description = "회차 인증 반려 - 인증 필수",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<Void> reject(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable String studyToken,
+            @PathVariable Integer meetingNo,
+            @PathVariable Long proofId
+    );
 }

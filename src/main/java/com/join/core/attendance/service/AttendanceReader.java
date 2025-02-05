@@ -14,4 +14,12 @@ public interface AttendanceReader {
     List<Attendance> findAttendanceForJoinedStudy(Long avatarId);
 
     List<Attendance> findAttendanceForLeftStudy(Long avatarId);
+
+    List<Attendance> findByStudyIdForJoinedStudy(Long studyId);
+
+    List<Attendance> findByStudyIdForLeftStudy(Long studyId);
+
+    List<Attendance> findByAvatarIdAndStudyIdForJoinedStudy(Long avatarId, Long studyId);
+
+    List<Attendance> findByAvatarIdAndStudyIdForLeftStudy(Long avatarId, Long studyId);
 }

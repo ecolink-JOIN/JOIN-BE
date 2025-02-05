@@ -2,6 +2,8 @@ package com.join.core.proof.domain;
 
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.domain.BaseTimeEntity;
+import com.join.core.common.exception.ErrorCode;
+import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.meeting.domain.Meeting;
 import com.join.core.proof.constant.ProofStatus;
 import com.join.core.proof.constant.ProofType;
@@ -70,5 +72,21 @@ public class Proof extends BaseTimeEntity {
         this.photo = photo;
         this.meeting = meeting;
         this.avatar = avatar;
+    }
+
+    public void approve() {
+        checkStatus();
+        this.status = ProofStatus.APPROVED;
+    }
+
+    private void checkStatus() {
+        if (!status.isPending()) {
+            throw new BadRequestException(ErrorCode.ALREADY_CHECK_PROOF);
+        }
+    }
+
+    public void reject() {
+        checkStatus();
+        this.status = ProofStatus.REJECTED;
     }
 }

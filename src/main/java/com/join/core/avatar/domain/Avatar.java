@@ -5,7 +5,6 @@ import com.join.core.common.domain.BaseTimeEntity;
 import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.common.util.TokenGenerator;
 import com.join.core.file.domain.SinglePhotoContainer;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -96,5 +95,9 @@ public class Avatar extends BaseTimeEntity implements SinglePhotoContainer<Profi
 		DecimalFormat df = new DecimalFormat("#.0");
 		double averageEvaluation = ratingCnt == 0 ? 0.0 : (double) totalRating / (double) ratingCnt / 3;
 		return Double.parseDouble(df.format(averageEvaluation));
+	}
+
+	public boolean isSameAvatar(Long id) {
+		return id.equals(this.id);
 	}
 }

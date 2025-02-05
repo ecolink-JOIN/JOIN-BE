@@ -8,4 +8,5 @@ import java.util.List;
 public interface MeetingQueryRepository {
 
     List<Meeting> findMeetingsByAvatarIdAndEnrollmentStatuses(Long avatarId, List<EnrollmentStatus> statuses);
+    List<Meeting> findMeetingsByStudyId(Long studyId);
 }

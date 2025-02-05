@@ -9,10 +9,13 @@ import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.meeting.domain.Meeting;
 import com.join.core.meeting.domain.MeetingReader;
 import com.join.core.proof.constant.ProofType;
+import com.join.core.proof.domain.Proof;
 import com.join.core.proof.domain.ProofPhoto;
 import com.join.core.proof.dto.response.CreateProofResponse;
 import com.join.core.proof.mapper.ProofMapper;
+import com.join.core.proof.service.dto.ApproveParams;
 import com.join.core.proof.service.dto.CreateProofCommand;
+import com.join.core.proof.service.dto.RejectCommand;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
@@ -64,5 +67,35 @@ public class ProofService {
         if (proofReader.hasOngoingProof(avatarId, meetingId)) {
             throw new BadRequestException(ErrorCode.DUPLICATED_PROOF);
         }
+    }
+
+    @Transactional
+    public void approve(ApproveParams params) {
+        Avatar avatar = avatarReader.getAvatarById(params.avatarId());
+        Study study = studyReader.getStudyByToken(params.studyToken());
+        Avatar leader = enrollmentReader.getLeaderByStudyId(study.getId());
+        checkPermission(avatar.getId(), study.getId());
+        checkLeaderAuthorization(avatar, leader);
+
+        Proof proof = proofReader.getProofById(params.proofId());
+        proof.approve();
+    }
+
+    private void checkLeaderAuthorization(Avatar avatar, Avatar leader) {
+        if (!leader.isSameAvatar(avatar.getId())) {
+            throw new NoPermissionException(ErrorCode.LEADER_ONLY_ACCESS);
+        }
+    }
+
+    @Transactional
+    public void reject(RejectCommand command) {
+        Avatar avatar = avatarReader.getAvatarById(command.avatarId());
+        Study study = studyReader.getStudyByToken(command.studyToken());
+        Avatar leader = enrollmentReader.getLeaderByStudyId(study.getId());
+        checkPermission(avatar.getId(), study.getId());
+        checkLeaderAuthorization(avatar, leader);
+
+        Proof proof = proofReader.getProofById(command.proofId());
+        proof.reject();
     }
 }

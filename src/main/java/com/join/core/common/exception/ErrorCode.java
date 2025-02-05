@@ -22,7 +22,7 @@ public enum ErrorCode {
 	/**
 	 * 아바타 관련 오류
 	 */
-	AVATAR_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "A-001", "주어진 식별자로 아바타를 찾을 수 없습니다."),
+	AVATAR_NOT_FOUND(HttpStatus.NOT_FOUND, "A-001", "주어진 식별자로 아바타를 찾을 수 없습니다."),
 
 	/**
 	 * 유저 관련 오류
@@ -65,7 +65,7 @@ public enum ErrorCode {
 	/**
 	 * 카테고리 선택 관련 오류
 	 */
-	CATEGORY_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "C-001", "카테고리 선택이 누락되었습니다."),
+	CATEGORY_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "CA-001", "카테고리 선택이 누락되었습니다."),
 
 	/**
 	 * 스터디 관련 오류
@@ -89,6 +89,7 @@ public enum ErrorCode {
 	 */
 	UNAUTHORIZED_ACCESS(HttpStatus.INTERNAL_SERVER_ERROR, "AU-001", "해당 요청에 대한 권한이 없습니다."),
 
+
 	/**
 	 * 출석 관련 오류
 	 */
@@ -96,18 +97,21 @@ public enum ErrorCode {
 	ATTENDANCE_ALREADY_COMPLETED(HttpStatus.CONFLICT, "AT-003", "이미 출석이 완료되었습니다."),
 
 	/**
-	* 인증 관련 오류
-	*/
+	 * 인증 관련 오류
+	 */
 	PROOF_PHOTO_NOT_FOUND(HttpStatus.NOT_FOUND, "PR-001", "해당 파일을 찾을 수 없습니다."),
 	EMPTY_PROOF_PHOTO(HttpStatus.BAD_REQUEST, "PR-002", "사진 인증을 위해 이미지를 업로드해야 합니다."),
 	DUPLICATED_PROOF(HttpStatus.CONFLICT, "PR-003", "이미 진행 중인 인증이 존재합니다."),
 	OUT_OF_PROOF_TIME(HttpStatus.BAD_REQUEST, "PR-004", "인증 시간이 아닙니다."),
 	INVALID_PROOF_STATUS(HttpStatus.INTERNAL_SERVER_ERROR, "PR-005", "인증 상태를 조회하는 과정에서 오류가 발생하였습니다."),
+	INVALID_PROOF_ID(HttpStatus.BAD_REQUEST, "PR-006", "존재하지 않는 인증 정보입니다,"),
+	ALREADY_CHECK_PROOF(HttpStatus.CONFLICT, "PR-007", "이미 수락 또는 반려된 인증입니다."),
 
 	/**
 	* 스터디 참여자 관련 오류
 	*/
-	NOT_MEMBER_OF_STUDY(HttpStatus.FORBIDDEN, "EN-002", "스터디에 참여중인 사용자가 아닙니다."),
+	NOT_MEMBER_OF_STUDY(HttpStatus.FORBIDDEN, "EN-001", "스터디에 참여중인 사용자가 아닙니다."),
+    LEADER_ONLY_ACCESS(HttpStatus.FORBIDDEN, "EN-002", "해당 기능은 스터디 리더만 사용할 수 있습니다."),
 
 	/**
 	* 북마크 관련 오류
@@ -118,7 +122,19 @@ public enum ErrorCode {
 	/**
 	 * 신고 관련 오류
 	 */
-	REPORT_TIME_LIMIT(HttpStatus.BAD_REQUEST, "R-001", "신고자는 30분 내에 동일한 신고를 할 수 없습니다.");
+	REPORT_TIME_LIMIT(HttpStatus.BAD_REQUEST, "R-001", "신고자는 30분 내에 동일한 신고를 할 수 없습니다."),
+
+  /**
+	 * 평가 관련 오류
+	 */
+	EVALUATION_PERIOD_INVALID(HttpStatus.BAD_REQUEST, "EV-001", "스터디원 평가 기간이 아닙니다."),
+
+	/**
+	 * 차단 관련 오류
+	 */
+	BLOCK_ALREADY_EXISTS(HttpStatus.CONFLICT, "BL-001", "이미 존재하는 차단 내역입니다."),
+	SELF_BLOCK_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "BL-002", "자기 자신을 차단할 수 없습니다."),
+	ACTIVE_STUDY_EXISTS(HttpStatus.BAD_REQUEST, "BL-003", "함께 진행 중인 스터디가 존재합니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

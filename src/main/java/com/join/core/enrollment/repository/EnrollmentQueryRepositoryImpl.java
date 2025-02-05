@@ -7,7 +7,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import static com.join.core.enrollment.domain.QEnrollment.enrollment;
+import java.util.List;
+
+import static com.join.core.enrollment.domain.QEnrollment.*;
 
 @RequiredArgsConstructor
 @Repository
@@ -39,5 +41,17 @@ public class EnrollmentQueryRepositoryImpl implements EnrollmentQueryRepository 
                         enrollment.status.eq(EnrollmentStatus.JOINED)
                 )
                 .fetchOne();
+    }
+
+    @Override
+    public List<Avatar> findAvatarsExceptPendingByStudyId(Long studyId) {
+        return queryFactory
+                .select(enrollment.avatar)
+                .from(enrollment)
+                .where(
+                        enrollment.study.id.eq(studyId),
+                        enrollment.status.in(EnrollmentStatus.JOINED, EnrollmentStatus.LEFT, EnrollmentStatus.REQUEST_LEAVE)
+                )
+                .fetch();
     }
 }

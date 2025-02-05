@@ -7,9 +7,11 @@ swagger:
     notification: '05. 공지'
     meeting: '06. 회차'
     bookmark: "07. 북마크"
-    view: "08. 최근 조회한 스터디"
+    view: '08. 최근 조회한 스터디'
     attendance: '09. 출석'
     profile-update: '10. 프로필 수정'
     proof: '11. 회차 인증'
-
-    report: '13. 신고'
+    evaluation: '12. 평가'
+    block: '13. 차단'
+    my-page: '14. 마이페이지'
+    report: '15. 신고'

@@ -1,6 +1,8 @@
 package com.join.core.avatar.controller.specification;
 
 import com.join.core.auth.domain.UserPrincipal;
+import com.join.core.avatar.dto.response.MyJoinedStudyResponse;
+import com.join.core.avatar.dto.response.MyManagedStudyInfoResponse;
 import com.join.core.avatar.dto.response.MyPageInfoResponse;
 import com.join.core.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,12 +10,28 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
+import java.util.List;
+
 public interface MyPageControllerSpecification {
 
-    @Tag(name = "${swagger.tag.user}")
+    @Tag(name = "${swagger.tag.my-page}")
     @Operation(summary = "마이페이지 조회 - 인증 필수",
             description = "마이페이지 조회",
             security = {@SecurityRequirement(name = "session-token")})
     ApiResponse<MyPageInfoResponse> getMyPageInfo(
+            @AuthenticationPrincipal UserPrincipal principal);
+
+    @Tag(name = "${swagger.tag.my-page}")
+    @Operation(summary = "마이페이지 운영중인 스터디 목록 조회 - 인증 필수",
+            description = "마이페이지 운영중인 스터디 목록을 조회해옵니다.",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<List<MyManagedStudyInfoResponse>> getMyManagedStudies(
+            @AuthenticationPrincipal UserPrincipal principal);
+
+    @Tag(name = "${swagger.tag.my-page}")
+    @Operation(summary = "마이페이지 가입 스터디 목록 조회 - 인증 필수",
+            description = "마이페이지 가입 스터디 목록을 조회해옵니다.",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<MyJoinedStudyResponse> getMyJoinedStudies(
             @AuthenticationPrincipal UserPrincipal principal);
 }

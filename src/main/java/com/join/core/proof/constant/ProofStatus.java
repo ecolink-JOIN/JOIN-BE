@@ -14,4 +14,8 @@ public enum ProofStatus {
     ProofStatus(double reflectionRate) {
         this.reflectionRate = reflectionRate;
     }
+
+    public boolean isPending() {
+        return this == PENDING;
+    }
 }

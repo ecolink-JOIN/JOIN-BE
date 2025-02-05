@@ -28,8 +28,4 @@ public class ReportRequest {
     @Schema(description = "신고 사유", example = "스터디 모집 게시글이 아니에요.")
     private String reason;
 
-    @NotNull
-    @Schema(description = "신고자 ID", example = "1")
-    private Long reporterId;
-
 }

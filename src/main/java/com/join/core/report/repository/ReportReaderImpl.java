@@ -20,7 +20,7 @@ public class ReportReaderImpl implements ReportReader {
     @Override
     public void validateReportTimeLimit(Avatar reporter, Study study) {
         LocalDateTime timeLimit = LocalDateTime.now().minusMinutes(30);
-        Report recentReport = reportRepository.findRecent(reporter, study, timeLimit);
+        Report recentReport = reportRepository.findRecentReport(reporter, study, timeLimit);
 
         if (recentReport != null) {
             throw new BadRequestException(ErrorCode.REPORT_TIME_LIMIT);

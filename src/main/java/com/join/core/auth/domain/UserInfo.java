@@ -35,6 +35,7 @@ public class UserInfo {
 		private final boolean registered;
 		private final boolean newUser;
 		private final boolean termsAgreed;
+		private final boolean pushConsent;
 		private final boolean nicknameSet;
 
 		public static SigIn unregistered() {

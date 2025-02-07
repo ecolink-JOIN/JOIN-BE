@@ -3,6 +3,8 @@ package com.join.core.study.domain;
 import com.join.core.address.domain.Address;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.category.domain.Category;
+import com.join.core.common.exception.ErrorCode;
+import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.common.util.TokenGenerator;
 import com.join.core.schedule.domain.StudySchedule;
@@ -181,11 +183,16 @@ public class Study {
         return getWriter().getId().equals(avatarId);
     }
 
+    public void checkActiveStatus() {
+        if (status != StudyStatus.ACTIVE) {
+            throw new BadRequestException(ErrorCode.NOT_ACTIVE_STUDY);
+        }
+    }
+
     public void deleteBookmarkCount() {
         if (this.bookmarkCnt <= 0) {
             throw new IllegalStateException("북마크 수는 음수가 될 수 없습니다.");
         }
         this.bookmarkCnt--;
     }
-
 }

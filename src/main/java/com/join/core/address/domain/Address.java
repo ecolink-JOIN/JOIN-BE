@@ -30,4 +30,9 @@ public class Address {
 	@NotNull
 	private String city;
 
+	public Address(String province, String city) {
+		this.province = province;
+		this.city = city;
+	}
+
 }

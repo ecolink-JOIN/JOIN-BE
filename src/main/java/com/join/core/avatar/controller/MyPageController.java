@@ -43,4 +43,5 @@ public class MyPageController implements MyPageControllerSpecification {
             @AuthenticationPrincipal UserPrincipal principal) {
         return ApiResponse.ok(myPageService.getMyJoinedStudies(principal.getAvatarId()));
     }
+    //
 }

@@ -56,4 +56,10 @@ public class AvatarReaderImpl implements AvatarReader {
     public List<Avatar> findAvatarsExceptPendingByStudyId(Long studyId) {
         return enrollmentQueryRepository.findAvatarsExceptPendingByStudyId(studyId);
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Avatar> findJoinedStudyAvatarsByStudyId(Long studyId) {
+        return enrollmentQueryRepository.findAvatarsJoinedByStudyId(studyId);
+    }
 }

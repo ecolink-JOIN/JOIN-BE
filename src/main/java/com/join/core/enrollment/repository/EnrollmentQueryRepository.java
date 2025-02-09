@@ -9,4 +9,6 @@ public interface EnrollmentQueryRepository {
     Double getMemberAverageByStudyId(Long studyId);
     Avatar getLeaderByStudyId(Long studyId);
     List<Avatar> findAvatarsExceptPendingByStudyId(Long studyId);
+
+    List<Avatar> findAvatarsJoinedByStudyId(Long studyId);
 }

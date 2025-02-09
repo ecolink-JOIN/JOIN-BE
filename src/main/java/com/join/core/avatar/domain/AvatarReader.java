@@ -1,5 +1,7 @@
 package com.join.core.avatar.domain;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 public interface AvatarReader {
@@ -14,4 +16,7 @@ public interface AvatarReader {
 	Avatar getAvatarByAvatarToken(String avatarToken);
 
 	List<Avatar> findAvatarsExceptPendingByStudyId(Long studyId);
+
+	@Transactional(readOnly = true)
+	List<Avatar> findJoinedStudyAvatarsByStudyId(Long studyId);
 }

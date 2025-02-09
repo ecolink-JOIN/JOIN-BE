@@ -1,6 +1,7 @@
 package com.join.core.avatar.domain;
 
 import com.join.core.attendance.service.AttendanceRateService;
+import com.join.core.avatar.dto.response.MyInterestStudyResponse;
 import com.join.core.avatar.dto.response.MyJoinedStudyResponse;
 import com.join.core.avatar.dto.response.MyManagedStudyInfoResponse;
 import com.join.core.avatar.dto.response.MyPageInfoResponse;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -53,6 +56,7 @@ public class MyPageServiceImpl implements MyPageService {
         ).toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public MyJoinedStudyResponse getMyJoinedStudies(Long avatarId) {
         List<Study> joinedStudiesByAvatarId = studyReader.getJoinedStudiesByAvatarId(avatarId);
@@ -68,5 +72,21 @@ public class MyPageServiceImpl implements MyPageService {
                     boolean isFullyApproved = proofReader.isFullyApproved(avatar.getId(), study.getId());
                     return MyManagedStudyInfoResponse.StudyMemberAchievementDto.of(avatar, attendanceRate, proofRate, isFullyApproved);
                 }).toList();
+    }
+
+    @Transactional(readOnly = true)
+//    @Override
+    public MyInterestStudyResponse getMyInterestStudies(Long avatarId) {
+        //관심 스터디 목록
+        List<Study> interestStudies = studyReader.getInterestStudiesByAvatarId(avatarId);
+        //관심 스터디 각각 팀원들 조회
+        Map<Study, List<Avatar>> interestStudyAvatars = interestStudies.stream()
+                .collect(Collectors.toMap(
+                        study -> study,
+                        study -> avatarReader.findJoinedStudyAvatarsByStudyId(study.getId())
+                ));
+
+
+        return new MyInterestStudyResponse();
     }
 }

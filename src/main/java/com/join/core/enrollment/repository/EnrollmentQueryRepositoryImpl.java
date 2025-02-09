@@ -54,4 +54,16 @@ public class EnrollmentQueryRepositoryImpl implements EnrollmentQueryRepository 
                 )
                 .fetch();
     }
+
+    @Override
+    public List<Avatar> findAvatarsJoinedByStudyId(Long studyId) {
+        return queryFactory
+                .select(enrollment.avatar)
+                .from(enrollment)
+                .where(
+                        enrollment.study.id.eq(studyId),
+                        enrollment.status.in(EnrollmentStatus.JOINED)
+                )
+                .fetch();
+    }
 }

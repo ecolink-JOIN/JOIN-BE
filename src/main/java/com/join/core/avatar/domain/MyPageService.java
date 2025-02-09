@@ -11,4 +11,5 @@ public interface MyPageService {
 	MyPageInfoResponse getMyPageInfo(Long avatarId);
 	List<MyManagedStudyInfoResponse> getMyManagedStudies(Long avatarId);
 	MyJoinedStudyResponse getMyJoinedStudies(Long avatarId);
+//	MyInterestStudyResponse getMyInterestStudies(Long avatarId);
 }

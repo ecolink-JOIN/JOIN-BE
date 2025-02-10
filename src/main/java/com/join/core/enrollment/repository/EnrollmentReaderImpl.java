@@ -4,9 +4,12 @@ import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.enrollment.constant.EnrollmentStatus;
+import com.join.core.enrollment.domain.Enrollment;
 import com.join.core.enrollment.service.EnrollmentReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -23,6 +26,11 @@ public class EnrollmentReaderImpl implements EnrollmentReader {
     @Override
     public Avatar getLeaderByStudyId(Long studyId) {
         return enrollmentQueryRepository.getLeaderByStudyId(studyId);
+    }
+
+    @Override
+    public List<Enrollment> findJoinedEnrollmentByStudyId(Long studyId) {
+        return enrollmentRepository.findEnrollmentByStudyIdAndStatus(studyId, EnrollmentStatus.JOINED);
     }
 
     @Override

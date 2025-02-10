@@ -140,4 +140,14 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                 )
                 .fetch();
     }
+
+    @Override
+    public List<Study> findBookmarkStudyByAvatarId(Long avatarId) {
+        return queryFactory.selectFrom(study)
+                .leftJoin(bookmark).on(
+                        bookmark.avatar.id.eq(avatarId)
+                )
+                .orderBy(bookmark.updatedDate.desc())
+                .fetch();
+    }
 }

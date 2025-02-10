@@ -16,6 +16,7 @@ public interface StudyReader {
     List<Study> getStudiesOrderByRecommendations(EssentialStudyCondition condition, CustomStudyCondition customStudyCondition);
     List<Study> getStudiesByLeaderAvatarId(Long avatarId);
     List<Study> getJoinedStudiesByAvatarId(Long avatarId);
+    List<Study> getInterestStudiesByAvatarId(Long avatarId);
     Page<Study> getStudiesByTitleContaining(String keyword, Pageable pageable);
     Study validateStudyCompletion(Long studyId);
     boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken);

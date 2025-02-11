@@ -195,4 +195,8 @@ public class Study {
         }
         this.bookmarkCnt--;
     }
+
+    public boolean isActive() {
+        return status == StudyStatus.ACTIVE;
+    }
 }

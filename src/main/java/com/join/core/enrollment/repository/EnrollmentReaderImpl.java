@@ -1,5 +1,9 @@
 package com.join.core.enrollment.repository;
 
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.EntityNotFoundException;
@@ -7,8 +11,8 @@ import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.enrollment.constant.EnrollmentStatus;
 import com.join.core.enrollment.domain.Enrollment;
 import com.join.core.enrollment.service.EnrollmentReader;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
@@ -36,6 +40,11 @@ public class EnrollmentReaderImpl implements EnrollmentReader {
     public Enrollment getEnrollmentByAvatarIdAndStudyId(Long avatarId, Long studyId) {
         return enrollmentRepository.findByAvatarIdAndStudyId(avatarId, studyId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_MEMBER_OF_STUDY));
+    }
+
+    @Override
+    public List<Enrollment> getByStudyId(Long studyId) {
+        return enrollmentRepository.findByStudyId(studyId);
     }
 
     @Override

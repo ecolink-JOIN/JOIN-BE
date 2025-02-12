@@ -132,6 +132,7 @@ public class Study {
         this.title = recruitRequest.getTitle();
         this.capacity = recruitRequest.getCapacity();
         this.isRegular = recruitRequest.isRegular();
+        this.form = recruitRequest.getForm();
         this.recruitEndDate = recruitRequest.getRecruitEndDate();
         this.stDate = recruitRequest.getStDate();
         this.endDate = recruitRequest.getEndDate();

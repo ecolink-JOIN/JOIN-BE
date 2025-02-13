@@ -7,7 +7,6 @@ import com.join.core.bookmark.domain.BookmarkReader;
 import com.join.core.category.domain.Category;
 import com.join.core.category.service.CategoryReader;
 import com.join.core.enrollment.service.EnrollmentReader;
-import com.join.core.schedule.dto.response.StudyScheduleResponse;
 import com.join.core.study.domain.Study;
 import com.join.core.study.dto.response.CustomStudyResponse;
 import com.join.core.study.dto.response.PopularStudyReadResponse;
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -38,32 +36,9 @@ public class StudyReadService {
     private final StudyMapper studyMapper;
 
     @Transactional(readOnly = true)
-    public StudyDetailResponse getStudyDetails(Long studyId) {
-        Study study = studyReader.getStudyById(studyId);
-
-        List<StudyScheduleResponse> schedules = study.getSchedules().stream()
-                .map(schedule -> new StudyScheduleResponse(
-                        schedule.getWeekOfDay(),
-                        schedule.getStTime(),
-                        schedule.getEndTime()))
-                .toList();
-
-        return new StudyDetailResponse(
-                study.getStudyName(),
-                study.getTitle(),
-                study.getIntroduction(),
-                study.getContent(),
-                study.getCapacity(),
-                study.isRegular(),
-                study.getRecruitEndDate(),
-                study.getStDate(),
-                study.getEndDate(),
-                study.getWriter().getId(),
-                study.getWriter().getNickname(),
-                schedules,
-                study.getRuleExp(),
-                study.getQualificationExp()
-        );
+    public StudyDetailResponse getStudyDetails(String studyToken) {
+        Study study = studyReader.getStudyByToken(studyToken);
+        return StudyDetailResponse.from(study);
     }
 
     @Transactional(readOnly = true)

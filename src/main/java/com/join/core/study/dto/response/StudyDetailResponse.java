@@ -1,7 +1,10 @@
 package com.join.core.study.dto.response;
 
 import com.join.core.schedule.dto.response.StudyScheduleResponse;
+import com.join.core.study.constant.StudyForm;
+import com.join.core.study.domain.Study;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -30,6 +33,10 @@ public class StudyDetailResponse {
     @Schema(description = "정기 모임 여부", example = "true")
     private boolean isRegular;
 
+    @Schema(description = "모집 방법", example = "ONLINE")
+    @NotNull
+    private StudyForm form;
+
     @Schema(description = "모집 종료 날짜", example = "2024-08-31")
     private LocalDate recruitEndDate;
 
@@ -54,4 +61,30 @@ public class StudyDetailResponse {
     @Schema(description = "지원 자격", example = "열정 있는 사람이라면 누구나")
     private String qualificationExp;
 
+    public static StudyDetailResponse from(Study study) {
+        List<StudyScheduleResponse> schedules = study.getSchedules().stream()
+                .map(schedule -> new StudyScheduleResponse(
+                        schedule.getWeekOfDay(),
+                        schedule.getStTime(),
+                        schedule.getEndTime()))
+                .toList();
+
+        return new StudyDetailResponse(
+                study.getStudyName(),
+                study.getTitle(),
+                study.getIntroduction(),
+                study.getContent(),
+                study.getCapacity(),
+                study.isRegular(),
+                study.getForm(),
+                study.getRecruitEndDate(),
+                study.getStDate(),
+                study.getEndDate(),
+                study.getWriter().getId(),
+                study.getWriter().getNickname(),
+                schedules,
+                study.getRuleExp(),
+                study.getQualificationExp()
+        );
+    }
 }

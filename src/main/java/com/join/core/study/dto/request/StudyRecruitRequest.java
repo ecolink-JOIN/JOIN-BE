@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.join.core.schedule.dto.request.StudyScheduleRequest;
+import com.join.core.study.constant.StudyForm;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -26,15 +27,19 @@ public class StudyRecruitRequest {
     @NotNull
     private boolean isRegular;
 
-    @Schema(description = "모집 종료 날짜", example = "2024-08-31")
+    @Schema(description = "모집 종료 날짜", example = "2025-08-31")
     @NotNull
     private LocalDate recruitEndDate;
 
-    @Schema(description = "시작 날짜", example = "2024-09-01")
+    @Schema(description = "모집 방법", example = "ONLINE")
+    @NotNull
+    private StudyForm form;
+
+    @Schema(description = "시작 날짜", example = "2025-09-01")
     @NotNull
     private LocalDate stDate;
 
-    @Schema(description = "종료 날짜", example = "2024-12-31")
+    @Schema(description = "종료 날짜", example = "2025-12-31")
     @NotNull
     private LocalDate endDate;
 

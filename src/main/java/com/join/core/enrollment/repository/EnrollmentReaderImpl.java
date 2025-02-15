@@ -2,6 +2,7 @@ package com.join.core.enrollment.repository;
 
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.exception.ErrorCode;
+import com.join.core.common.exception.impl.EntityNotFoundException;
 import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.enrollment.constant.EnrollmentStatus;
 import com.join.core.enrollment.domain.Enrollment;
@@ -39,11 +40,16 @@ public class EnrollmentReaderImpl implements EnrollmentReader {
     }
 
     @Override
+    public Enrollment getEnrollmentByAvatarIdAndStudyId(Long avatarId, Long studyId) {
+        return enrollmentRepository.findByAvatarIdAndStudyId(avatarId, studyId)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_MEMBER_OF_STUDY));
+    }
+
+    @Override
     public void validateEnrollment(Long avatarId, Long studyId) {
         boolean exists = enrollmentRepository.existsByAvatarIdAndStudyIdAndStatusNot(avatarId, studyId, EnrollmentStatus.PENDING);
         if (!exists) {
             throw new InvalidParamException(ErrorCode.INVALID_PARAMETER, "스터디 참여자가 아닙니다.");
         }
     }
-
 }

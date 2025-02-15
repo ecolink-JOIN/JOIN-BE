@@ -1,21 +1,23 @@
 package com.join.core.study.repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
+
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.EntityNotFoundException;
 import com.join.core.common.exception.impl.InvalidStateException;
 import com.join.core.enrollment.constant.StudyRole;
+import com.join.core.study.constant.StudyStatus;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.join.core.study.service.StudyReader;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
-import com.join.core.study.constant.StudyStatus;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
@@ -79,5 +81,10 @@ public class StudyReaderImpl implements StudyReader {
     @Override
     public boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken) {
         return studyQueryRepository.existsByEnrollmentsAvatarToken(subjectToken, targetToken);
+    }
+
+    @Override
+    public List<Study> getActiveStudyByTokens(Long subjectId, Long targetId) {
+        return studyQueryRepository.getActiveStudiesByTokens(subjectId, targetId);
     }
 }

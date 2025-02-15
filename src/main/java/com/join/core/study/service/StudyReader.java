@@ -1,13 +1,14 @@
 package com.join.core.study.service;
 
-import com.join.core.study.domain.Study;
-import com.join.core.study.repository.condition.CustomStudyCondition;
-import com.join.core.study.repository.condition.EssentialStudyCondition;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.join.core.study.domain.Study;
+import com.join.core.study.repository.condition.CustomStudyCondition;
+import com.join.core.study.repository.condition.EssentialStudyCondition;
 
 public interface StudyReader {
     Study getStudyByToken(String studyToken);
@@ -20,4 +21,5 @@ public interface StudyReader {
     Page<Study> getStudiesByTitleContaining(String keyword, Pageable pageable);
     Study validateStudyCompletion(Long studyId);
     boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken);
+    List<Study> getActiveStudyByTokens(Long subjectId, Long targetId);
 }

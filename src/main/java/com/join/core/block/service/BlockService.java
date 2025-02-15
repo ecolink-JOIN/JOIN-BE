@@ -1,5 +1,10 @@
 package com.join.core.block.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.block.domain.Block;
@@ -15,9 +20,8 @@ import com.join.core.enrollment.domain.Enrollment;
 import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -70,7 +74,7 @@ public class BlockService {
         study.checkActiveStatus();
         checkEnrollment(avatar.getId(), target.getId(), study.getId());
 
-        withdrawFromStudy(avatar.getId(), study.getId());
+        withdrawFromAllActiveStudies(avatar.getId(), target.getId());
         Block block = blockMapper.toEntity(avatar, target, params.blockDate());
 
         return blockMapper.toCreateBlockResponse(blockStore.save(block));
@@ -85,8 +89,11 @@ public class BlockService {
         }
     }
 
-    private void withdrawFromStudy(Long avatarId, Long studyId) {
-        Enrollment enrollment = enrollmentReader.getEnrollmentByAvatarIdAndStudyId(avatarId, studyId);
-        enrollment.withdraw();
+    private void withdrawFromAllActiveStudies(Long subjectId, Long targetId) {
+        List<Study> studies = studyReader.getActiveStudyByTokens(subjectId, targetId);
+        studies.forEach(study -> {
+            Enrollment enrollment = enrollmentReader.getEnrollmentByAvatarIdAndStudyId(subjectId, study.getId());
+            enrollment.withdraw();
+        });
     }
 }

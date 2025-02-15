@@ -10,6 +10,8 @@ import com.join.core.enrollment.service.EnrollmentReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Component
 public class EnrollmentReaderImpl implements EnrollmentReader {
@@ -25,6 +27,11 @@ public class EnrollmentReaderImpl implements EnrollmentReader {
     @Override
     public Avatar getLeaderByStudyId(Long studyId) {
         return enrollmentQueryRepository.getLeaderByStudyId(studyId);
+    }
+
+    @Override
+    public List<Enrollment> findJoinedEnrollmentByStudyId(Long studyId) {
+        return enrollmentRepository.findEnrollmentByStudyIdAndStatus(studyId, EnrollmentStatus.JOINED);
     }
 
     @Override

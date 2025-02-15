@@ -137,7 +137,8 @@ public enum ErrorCode {
 	SELF_BLOCK_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "BL-002", "자기 자신을 차단할 수 없습니다."),
 	ACTIVE_STUDY_EXISTS(HttpStatus.BAD_REQUEST, "BL-003", "함께 진행 중인 스터디가 존재합니다."),
 	ONGOING_STUDY_MEMBER_ONLY(HttpStatus.BAD_REQUEST, "BL-004", "해당 기능은 진행 중인 스터디의 팀원만 차단할 수 있습니다."),
-	TARGET_IS_NOT_MEMBER_OF_STUDY(HttpStatus.BAD_REQUEST, "BL-005", "차단하려는 상대가 스터디의 팀원이 아닙니다.");
+	STUDY_LEADER_CAN_NOT_WITDRAW(HttpStatus.BAD_REQUEST, "BL-005", "함께 진행 중인 스터디 중 팀장인 스터디가 존재합니다,"),
+	TARGET_IS_NOT_MEMBER_OF_STUDY(HttpStatus.BAD_REQUEST, "BL-006", "차단하려는 상대가 스터디의 팀원이 아닙니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

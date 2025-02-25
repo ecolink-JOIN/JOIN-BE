@@ -35,4 +35,11 @@ public class BatchJob extends BaseTimeEntity {
     @JoinColumn(name = "study_id", nullable = false)
     private Study study;
 
+    public BatchJob(String content, DayType day, LocalTime time, Study study) {
+        this.content = content;
+        this.day = day;
+        this.time = time;
+        this.study = study;
+    }
+
 }

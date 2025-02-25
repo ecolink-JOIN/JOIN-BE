@@ -16,5 +16,5 @@ public interface BlockReadControllerSpecification {
     @Operation(summary = "차단 목록 조회 - 인증 필수",
             description = "차단 목록 조회",
             security = {@SecurityRequirement(name = "session-token")})
-    public ApiResponse<Collection<BlockMemberResponse>> getBlocks(@AuthenticationPrincipal UserPrincipal userPrincipal);
+    ApiResponse<Collection<BlockMemberResponse>> getBlocks(@AuthenticationPrincipal UserPrincipal userPrincipal);
 }

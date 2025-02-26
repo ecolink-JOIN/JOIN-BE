@@ -7,6 +7,8 @@ import com.join.core.bookmark.domain.BookmarkReader;
 import com.join.core.category.domain.Category;
 import com.join.core.category.service.CategoryReader;
 import com.join.core.enrollment.service.EnrollmentReader;
+import com.join.core.evaluation.domain.EvaluationReader;
+import com.join.core.evaluation.dto.response.EvaluationScore;
 import com.join.core.study.domain.Study;
 import com.join.core.study.dto.response.CustomStudyResponse;
 import com.join.core.study.dto.response.PopularStudyReadResponse;
@@ -34,11 +36,16 @@ public class StudyReadService {
     private final BookmarkReader bookmarkReader;
     private final AvatarReader avatarReader;
     private final StudyMapper studyMapper;
+    private final EvaluationReader evaluationReader;
 
     @Transactional(readOnly = true)
     public StudyDetailResponse getStudyDetails(String studyToken) {
         Study study = studyReader.getStudyByToken(studyToken);
-        return StudyDetailResponse.from(study);
+        Long writerId = study.getWriter().getId();
+
+        EvaluationScore evaluationScore = evaluationReader.getEvaluationScores(study.getId(), writerId);
+
+        return StudyDetailResponse.from(study, evaluationScore);
     }
 
     @Transactional(readOnly = true)

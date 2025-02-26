@@ -96,6 +96,8 @@ public enum ErrorCode {
 	 */
 	OUT_OF_ATTENDANCE_TIME(HttpStatus.BAD_REQUEST, "AT-001", "출석 시간이 아닙니다."),
 	ATTENDANCE_ALREADY_COMPLETED(HttpStatus.CONFLICT, "AT-003", "이미 출석이 완료되었습니다."),
+	ATTENDANCE_NOT_FOUND(HttpStatus.NOT_FOUND, "AT-004", "존재하지 않는 출석 내역입니다."),
+	ATTENDANCE_UPDATE_FORBIDDEN(HttpStatus.FORBIDDEN, "AT-005", "출석 수정 권한이 없습니다."),
 
 	/**
 	 * 인증 관련 오류

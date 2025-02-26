@@ -11,9 +11,9 @@ import com.join.core.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,7 +45,7 @@ public class AttendanceController implements AttendanceControllerSpecification {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PutMapping("/{attendanceId}")
+    @PatchMapping("/{attendanceId}")
     public ApiResponse<Void> updateAttendance(
             @AuthenticationPrincipal UserPrincipal principal,
             @PathVariable String studyToken,

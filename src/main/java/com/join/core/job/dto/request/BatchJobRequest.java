@@ -28,9 +28,9 @@ public class BatchJobRequest {
     @NotNull
     private LocalTime time;
 
-    @Schema(description = "스터디 ID", example = "1")
+    @Schema(description = "스터디 토큰", example = "std_abc")
     @NotNull
-    private Long studyId;
+    private String studyToken;
 
     public BatchJob toEntity(Study study) {
         return new BatchJob(content, day, time, study);

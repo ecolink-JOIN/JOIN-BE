@@ -26,11 +26,11 @@ public class BookmarkService {
     }
 
     @Transactional
-    public Bookmark addBookmark(Long studyId, Long avatarId) {
+    public Bookmark addBookmark(String studyToken, Long avatarId) {
         Avatar avatar = avatarReader.getAvatarById(avatarId);
-        Study study = studyReader.getStudyById(studyId);
+        Study study = studyReader.getStudyByToken(studyToken);
 
-        if (existsBookmark(avatarId, studyId)) {
+        if (existsBookmark(avatarId, study.getId())) {
             throw new EntityAlreadyExistsException(ErrorCode.BOOKMARK_ALREADY_EXISTS);
         }
 
@@ -42,13 +42,13 @@ public class BookmarkService {
         return bookmark;
     }
 
-    public Bookmark getBookmark(Long storeId, Long avatarId) {
-        return bookmarkReader.findBookmarkByAvatarAndStudy(avatarId, storeId);
+    public Bookmark getBookmark(String studyToken, Long avatarId) {
+        return bookmarkReader.findBookmarkByAvatarAndStudy(avatarId, studyToken);
     }
 
     @Transactional
-    public void deleteBookmark(Long storeId, Long avatarId) {
-        Bookmark bookmark = getBookmark(storeId, avatarId);
+    public void deleteBookmark(String studyToken, Long avatarId) {
+        Bookmark bookmark = getBookmark(studyToken, avatarId);
         Study study = bookmark.getStudy();
 
         bookmarkDeleter.deleteBookmark(bookmark);

@@ -7,8 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record BookmarkRequest(
-        @Schema(description = "스터디 ID", example = "1")
-        Long studyId
+        @Schema(description = "스터디 토큰", example = "std_abc")
+        String studyToken
 ) {
 
 }

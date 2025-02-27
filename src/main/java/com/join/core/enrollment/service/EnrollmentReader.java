@@ -11,6 +11,6 @@ public interface EnrollmentReader {
     Avatar getLeaderByStudyId(Long studyId);
     List<Enrollment> findJoinedEnrollmentByStudyId(Long studyId);
     boolean existEnrollmentByAvatarIdAndStudyId(Long avatarId, Long studyId);
-    void validateEnrollment(Long avatarId, Long studyId);
+    void validateEnrollment(Long avatarId, String studyToken);
     Enrollment getEnrollmentByAvatarIdAndStudyId(Long avatarId, Long studyId);
 }

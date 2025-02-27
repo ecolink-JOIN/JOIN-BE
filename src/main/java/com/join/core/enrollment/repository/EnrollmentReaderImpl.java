@@ -46,8 +46,8 @@ public class EnrollmentReaderImpl implements EnrollmentReader {
     }
 
     @Override
-    public void validateEnrollment(Long avatarId, Long studyId) {
-        boolean exists = enrollmentRepository.existsByAvatarIdAndStudyIdAndStatusNot(avatarId, studyId, EnrollmentStatus.PENDING);
+    public void validateEnrollment(Long avatarId, String studyToken) {
+        boolean exists = enrollmentRepository.existsByAvatarIdAndStudyStudyTokenAndStatusNot(avatarId, studyToken, EnrollmentStatus.PENDING);
         if (!exists) {
             throw new InvalidParamException(ErrorCode.INVALID_PARAMETER, "스터디 참여자가 아닙니다.");
         }

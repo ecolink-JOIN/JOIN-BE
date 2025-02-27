@@ -71,8 +71,8 @@ public class StudyReaderImpl implements StudyReader {
     }
 
     @Override
-    public Study validateStudyCompletion(Long studyId) {
-        return studyRepository.findByIdAndStatus(studyId, StudyStatus.COMPLETED)
+    public Study validateStudyCompletion(String studyToken) {
+        return studyRepository.findByStudyTokenAndStatus(studyToken, StudyStatus.COMPLETED)
                 .orElseThrow(() -> new InvalidStateException(ErrorCode.EVALUATION_PERIOD_INVALID));
     }
 

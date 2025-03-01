@@ -1,5 +1,6 @@
 package com.join.core.study.dto.response;
 
+import com.join.core.rule.dto.response.RuleResponse;
 import com.join.core.schedule.dto.response.StudyScheduleResponse;
 import com.join.core.study.constant.StudyForm;
 import com.join.core.study.domain.Study;
@@ -55,7 +56,10 @@ public class StudyDetailResponse {
     @Schema(description = "정기 모임 스케줄")
     private List<StudyScheduleResponse> schedules;
 
-    @Schema(description = "스터디 규칙", example = "지각 시 벌금 1,000원 부과")
+    @Schema(description = "스터디 규칙 유형")
+    private List<RuleResponse> rules;
+
+    @Schema(description = "스터디 규칙 설명", example = "지각 시 벌금 1,000원 부과")
     private String ruleExp;
 
     @Schema(description = "지원 자격", example = "열정 있는 사람이라면 누구나")
@@ -67,6 +71,10 @@ public class StudyDetailResponse {
                         schedule.getWeekOfDay(),
                         schedule.getStTime(),
                         schedule.getEndTime()))
+                .toList();
+
+        List<RuleResponse> rules = study.getRules().stream()
+                .map(rule -> new RuleResponse(rule.getType()))
                 .toList();
 
         return new StudyDetailResponse(
@@ -83,6 +91,7 @@ public class StudyDetailResponse {
                 study.getWriter().getId(),
                 study.getWriter().getNickname(),
                 schedules,
+                rules,
                 study.getRuleExp(),
                 study.getQualificationExp()
         );

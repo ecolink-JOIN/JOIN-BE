@@ -1,5 +1,6 @@
 package com.join.core.study.domain;
 
+import com.join.core.rule.domain.Rule;
 import com.join.core.address.domain.Address;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.category.domain.Category;
@@ -64,7 +65,6 @@ public class Study {
     @NotNull
     private int capacity;
 
-    @NotNull
     private String ruleExp;
 
     @NotNull
@@ -117,6 +117,9 @@ public class Study {
 
     @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudySchedule> schedules;
+
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rule> rules;
 
     private String kakaoUrl;
 
@@ -196,4 +199,12 @@ public class Study {
         }
         this.bookmarkCnt--;
     }
+
+    public void addRules(List<Rule> rules) {
+        this.rules = rules;
+        for (Rule rule : rules) {
+            rule.setStudy(this);
+        }
+    }
+
 }

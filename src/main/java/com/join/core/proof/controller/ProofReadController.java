@@ -40,9 +40,11 @@ public class ProofReadController implements ProofReadControllerSpecification {
     }
 
     @GetMapping("/{proofId}")
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<ProofDetailResponse> getProofDetail(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @PathVariable String studyToken,
+            @PathVariable Integer meetingNo,
             @PathVariable Long proofId
     ) {
         return ApiResponse.ok(

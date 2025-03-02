@@ -61,29 +61,18 @@ public class ProofReadService {
         Avatar avatar = avatarReader.getAvatarByAvatarToken(params.avatarToken());
         checkPermission(avatar, params.studyToken());
         Proof proof = proofReader.getProofById(params.proofId());
-        return mapToProofDetailResponse(proof);
+        return new ProofDetailResponse(
+                proof.getId(),
+                proof.getPhotoUrl(),
+                proof.getProvenDate()
+        );
     }
 
     public void checkPermission(Avatar avatar, String studyToken) {
         Study study = studyReader.getStudyByToken(studyToken);
         Avatar leader = enrollmentReader.getLeaderByStudyId(study.getId());
         if (!leader.isSameAvatar(avatar.getId())) {
-            throw new LeaderForbiddenException(ErrorCode.NOT_LEADER_OF_STUDY);
+            throw new LeaderForbiddenException(ErrorCode.LEADER_ONLY_ACCESS);
         }
-    }
-
-    private ProofDetailResponse mapToProofDetailResponse(Proof proof) {
-        if (proof.hasPhoto()) {
-            return new ProofDetailResponse(
-                    proof.getId(),
-                    proof.getPhoto().getFile().getUrl(),
-                    proof.getProvenDate()
-            );
-        }
-        return new ProofDetailResponse(
-                proof.getId(),
-                null,
-                proof.getProvenDate()
-        );
     }
 }

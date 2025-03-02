@@ -90,7 +90,10 @@ public class Proof extends BaseTimeEntity {
         this.status = ProofStatus.REJECTED;
     }
 
-    public boolean hasPhoto() {
-        return photo != null;
+    public String getPhotoUrl() {
+        if (photo == null) {
+            return null;
+        }
+        return photo.getFile().getUrl();
     }
 }

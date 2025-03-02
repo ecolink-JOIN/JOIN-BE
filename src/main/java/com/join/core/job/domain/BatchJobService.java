@@ -19,13 +19,13 @@ public class BatchJobService {
 
     @Transactional
     public BatchJob createBatchJob(BatchJobRequest request, Long userId) {
-        Study study = studyReader.getStudyById(request.getStudyId());
+        Study study = studyReader.getStudyByToken(request.getStudyToken());
 
         if (!study.isWriter(userId)) {
             throw new BadRequestException(ErrorCode.UNAUTHORIZED_ACCESS);
         }
 
-        batchJobReader.validateUniqueBatchJob(request.getStudyId(), request.getDay(), request.getTime());
+        batchJobReader.validateUniqueBatchJob(request.getStudyToken(), request.getDay(), request.getTime());
 
         return batchJobStore.store(request.toEntity(study));
     }

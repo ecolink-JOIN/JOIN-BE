@@ -15,7 +15,8 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
     Page<Bookmark> findAllByAvatar(Pageable pageable, Avatar avatar);
     boolean existsByAvatarAndStudy(Avatar avatar, Study study);
-    Optional<Bookmark> findBookmarkByAvatarIdAndStudyId(Long avatarId, Long studyId);
+    @Query("SELECT b FROM Bookmark b WHERE b.avatar.id = :avatarId AND b.study.studyToken = :studyToken")
+    Optional<Bookmark> findBookmarkByAvatarIdAndStudyToken(@Param("avatarId") Long avatarId, @Param("studyToken") String studyToken);
     @Query("SELECT COUNT(b) > 0 FROM Bookmark b WHERE b.avatar.id = :avatarId AND b.study.id = :studyId")
     boolean existsByAvatarIdAndStudyId(@Param("avatarId") Long avatarId, @Param("studyId") Long studyId);
 

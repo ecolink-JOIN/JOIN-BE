@@ -19,8 +19,8 @@ public class ReportService {
     private final ReportStore reportStore;
 
     @Transactional
-    public void createReport(Long reporterId, Long studyId, ReportRequest reportRequest) {
-        Study study = studyReader.getStudyById(studyId);
+    public void createReport(Long reporterId, String studyToken, ReportRequest reportRequest) {
+        Study study = studyReader.getStudyByToken(studyToken);
         Avatar reporter = avatarReader.getAvatarById(reporterId);
         Avatar writer = study.getWriter();
 

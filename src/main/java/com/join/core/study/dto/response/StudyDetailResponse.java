@@ -3,6 +3,7 @@ package com.join.core.study.dto.response;
 import com.join.core.schedule.dto.response.StudyScheduleResponse;
 import com.join.core.study.constant.StudyForm;
 import com.join.core.study.domain.Study;
+import com.join.core.evaluation.dto.response.EvaluationScore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -61,7 +62,10 @@ public class StudyDetailResponse {
     @Schema(description = "지원 자격", example = "열정 있는 사람이라면 누구나")
     private String qualificationExp;
 
-    public static StudyDetailResponse from(Study study) {
+    @Schema(description = "스터디 평가 점수", example = "스터디장, 스터디원 평가 점수")
+    private EvaluationScore evaluationScore;
+
+    public static StudyDetailResponse from(Study study, EvaluationScore evaluationScore) {
         List<StudyScheduleResponse> schedules = study.getSchedules().stream()
                 .map(schedule -> new StudyScheduleResponse(
                         schedule.getWeekOfDay(),
@@ -84,7 +88,8 @@ public class StudyDetailResponse {
                 study.getWriter().getNickname(),
                 schedules,
                 study.getRuleExp(),
-                study.getQualificationExp()
+                study.getQualificationExp(),
+                evaluationScore
         );
     }
 }

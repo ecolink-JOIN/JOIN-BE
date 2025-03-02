@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface StudyRepository extends JpaRepository<Study, Long> {
     Optional<Study> findByStudyToken(String studyToken);
     Page<Study> findAllByTitleContaining(String title, Pageable pageable);
-    Optional<Study> findByIdAndStatus(Long studyId, StudyStatus status);
+    Optional<Study> findByStudyTokenAndStatus(String studyToken, StudyStatus status);
 
 }

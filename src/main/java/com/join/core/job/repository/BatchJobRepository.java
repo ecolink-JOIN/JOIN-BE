@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalTime;
 
 public interface BatchJobRepository extends JpaRepository<BatchJob, Long> {
-    boolean existsByStudyIdAndDayAndTime(Long studyId, DayType day, LocalTime time);
+    boolean existsByStudyStudyTokenAndDayAndTime(String studyToken, DayType day, LocalTime time);
 
 }

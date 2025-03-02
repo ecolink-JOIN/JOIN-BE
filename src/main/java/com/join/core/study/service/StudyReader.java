@@ -18,6 +18,6 @@ public interface StudyReader {
     List<Study> getJoinedStudiesByAvatarId(Long avatarId);
     List<Study> getInterestStudiesByAvatarId(Long avatarId);
     Page<Study> getStudiesByTitleContaining(String keyword, Pageable pageable);
-    Study validateStudyCompletion(Long studyId);
+    Study validateStudyCompletion(String studyToken);
     boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken);
 }

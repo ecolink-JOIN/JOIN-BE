@@ -24,7 +24,7 @@ public class ReportController implements ReportApiSpecification {
             @AuthenticationPrincipal UserPrincipal principal,
             @RequestBody ReportRequest reportRequest
     ) {
-        reportService.createReport(principal.getAvatarId(), reportRequest.getStudyId(), reportRequest);
+        reportService.createReport(principal.getAvatarId(), reportRequest.getStudyToken(), reportRequest);
         return ApiResponse.ok();
     }
 

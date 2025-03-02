@@ -16,12 +16,12 @@ public class BatchJobReaderImpl implements BatchJobReader {
     private final BatchJobRepository batchJobRepository;
 
     @Override
-    public boolean existsByStudyIdAndDayAndTime(Long studyId, DayType day, LocalTime time) {
-        return batchJobRepository.existsByStudyIdAndDayAndTime(studyId, day, time);
+    public boolean existsByStudyStudyTokenAndDayAndTime(String studyToken, DayType day, LocalTime time) {
+        return batchJobRepository.existsByStudyStudyTokenAndDayAndTime(studyToken, day, time);
     }
 
-    public void validateUniqueBatchJob(Long studyId, DayType day, LocalTime time) {
-        if (existsByStudyIdAndDayAndTime(studyId, day, time.withNano(0))) {
+    public void validateUniqueBatchJob(String studyToken, DayType day, LocalTime time) {
+        if (existsByStudyStudyTokenAndDayAndTime(studyToken, day, time.withNano(0))) {
             throw new BadRequestException(ErrorCode.BATCHJOB_ALREADY_EXISTS);
         }
     }

@@ -9,7 +9,7 @@ public interface BookmarkReader {
 
     Page<Bookmark> getBookmarksByAvatar(Pageable pageable, Avatar avatar);
     boolean isBookmark(Study study, Avatar avatar);
-    Bookmark findBookmarkByAvatarAndStudy(Long avatarId, Long studyId);
+    Bookmark findBookmarkByAvatarAndStudy(Long avatarId, String studyToken);
     boolean existsByAvatarAndStudy(Long avatarId, Long studyId);
 
 }

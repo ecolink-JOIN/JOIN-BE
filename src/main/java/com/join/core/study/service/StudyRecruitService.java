@@ -9,6 +9,7 @@ import com.join.core.category.service.CategoryReader;
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.common.exception.impl.NoPermissionException;
+import com.join.core.rule.domain.Rule;
 import com.join.core.schedule.domain.StudySchedule;
 import com.join.core.study.domain.Study;
 import com.join.core.study.dto.request.StudyReRecruitRequest;
@@ -60,6 +61,13 @@ public class StudyRecruitService {
                     .map(scheduleRequest -> new StudySchedule(scheduleRequest.getWeekOfDay(), scheduleRequest.getStTime(), scheduleRequest.getEndTime()))
                     .toList();
             study.addSchedules(studySchedules);
+        }
+
+        if (recruitRequest.getRules() != null) {
+            List<Rule> rules = recruitRequest.getRules().stream()
+                    .map(ruleRequest -> new Rule(ruleRequest.getType()))
+                    .toList();
+            study.addRules(rules);
         }
 
         studyStore.store(study);

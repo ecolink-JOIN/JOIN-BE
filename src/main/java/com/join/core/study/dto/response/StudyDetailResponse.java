@@ -2,6 +2,7 @@ package com.join.core.study.dto.response;
 
 import com.join.core.schedule.dto.response.StudyScheduleResponse;
 import com.join.core.study.constant.StudyForm;
+import com.join.core.study.constant.StudyStatus;
 import com.join.core.study.domain.Study;
 import com.join.core.evaluation.dto.response.EvaluationScore;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -65,6 +66,18 @@ public class StudyDetailResponse {
     @Schema(description = "스터디 평가 점수", example = "스터디장, 스터디원 평가 점수")
     private EvaluationScore evaluationScore;
 
+    @Schema(description = "스터디 상태", example = "모집중")
+    private StudyStatus status;
+
+    @Schema(description = "시/도", example = "서울특별시 (form=ONLINE의 경우 제외)")
+    private String province;
+
+    @Schema(description = "시/군/구", example = "도봉구 (form=ONLINE의 경우 제외)")
+    private String city;
+
+    @Schema(description = "카테고리 이름", example = "입시")
+    private String categoryName;
+
     public static StudyDetailResponse from(Study study, EvaluationScore evaluationScore) {
         List<StudyScheduleResponse> schedules = study.getSchedules().stream()
                 .map(schedule -> new StudyScheduleResponse(
@@ -72,6 +85,9 @@ public class StudyDetailResponse {
                         schedule.getStTime(),
                         schedule.getEndTime()))
                 .toList();
+
+        String province = (study.getAddress() != null) ? study.getAddress().getProvince() : null;
+        String city = (study.getAddress() != null) ? study.getAddress().getCity() : null;
 
         return new StudyDetailResponse(
                 study.getStudyName(),
@@ -89,7 +105,11 @@ public class StudyDetailResponse {
                 schedules,
                 study.getRuleExp(),
                 study.getQualificationExp(),
-                evaluationScore
+                evaluationScore,
+                study.getStatus(),
+                province,
+                city,
+                study.getCategory().getCategoryName()
         );
     }
 }

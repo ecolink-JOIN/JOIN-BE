@@ -4,8 +4,10 @@ import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
 import com.join.core.proof.controller.specification.ProofReadControllerSpecification;
 import com.join.core.proof.dto.response.CheckProofResponse;
+import com.join.core.proof.dto.response.ProofDetailResponse;
 import com.join.core.proof.service.ProofReadService;
 import com.join.core.proof.service.dto.CheckProofParams;
+import com.join.core.proof.service.dto.ProofDetailParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,6 +36,23 @@ public class ProofReadController implements ProofReadControllerSpecification {
                         studyToken,
                         meetingNo
                 ))
+        );
+    }
+
+    @GetMapping("/{proofId}")
+    public ApiResponse<ProofDetailResponse> getProofDetail(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable String studyToken,
+            @PathVariable Long proofId
+    ) {
+        return ApiResponse.ok(
+                proofReadService.getProofDetail(
+                        new ProofDetailParams(
+                                userPrincipal.getAvatarToken(),
+                                proofId,
+                                studyToken
+                        )
+                )
         );
     }
 }

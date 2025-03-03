@@ -28,4 +28,15 @@ public class BatchJobController implements BatchJobApiSpecification {
         return ApiResponse.ok();
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/{batchJobId}")
+    public ApiResponse<Void> updateBatchJob(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable Long batchJobId,
+            @RequestBody BatchJobRequest request
+    ) {
+        batchJobService.updateBatchJob(batchJobId, request, principal.getUserId());
+        return ApiResponse.ok();
+    }
+
 }

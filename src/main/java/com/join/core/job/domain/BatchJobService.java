@@ -30,4 +30,18 @@ public class BatchJobService {
         return batchJobStore.store(request.toEntity(study));
     }
 
+    @Transactional
+    public BatchJob updateBatchJob(Long batchJobId, BatchJobRequest request, Long userId) {
+        BatchJob batchJob = batchJobReader.getBatchJobById(batchJobId);
+
+        if (!batchJob.getStudy().isWriter(userId)) {
+            throw new BadRequestException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
+
+        batchJobReader.validateUniqueBatchJob(request.getStudyToken(), request.getDay(), request.getTime());
+
+        batchJob.update(request.getContent(), request.getDay(), request.getTime());
+        return batchJobStore.store(batchJob);
+    }
+
 }

@@ -42,4 +42,10 @@ public class BatchJob extends BaseTimeEntity {
         this.study = study;
     }
 
+    public void update(String content, DayType day, LocalTime time) {
+        this.content = content;
+        this.day = day;
+        this.time = time;
+    }
+
 }

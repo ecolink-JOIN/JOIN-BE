@@ -4,6 +4,7 @@ import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
 import com.join.core.proof.dto.response.CheckProofResponse;
 import com.join.core.proof.dto.response.ProofDetailResponse;
+import com.join.core.proof.dto.response.ProofsResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,5 +32,15 @@ public interface ProofReadControllerSpecification {
             @PathVariable String studyToken,
             @PathVariable Integer meetingNo,
             @PathVariable Long proofId
+    );
+
+    @Tag(name = "${swagger.tag.proof}")
+    @Operation(summary = "사용자별 인증 승인 목록 조회 - 인증 필수",
+            description = "사용자별 인증 승인 목록 조회 - 팀장만 조회 가능",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<ProofsResponse> getProofs(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable String studyToken,
+            @PathVariable String targetAvatarToken
     );
 }

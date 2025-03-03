@@ -22,7 +22,7 @@ public class BatchJobReaderImpl implements BatchJobReader {
     }
 
     public void validateUniqueBatchJob(String studyToken, DayType day, LocalTime time) {
-        if (existsByStudyStudyTokenAndDayAndTime(studyToken, day, time.withNano(0))) {
+        if (time != null && existsByStudyStudyTokenAndDayAndTime(studyToken, day, time.withNano(0))) {
             throw new BadRequestException(ErrorCode.BATCHJOB_ALREADY_EXISTS);
         }
     }

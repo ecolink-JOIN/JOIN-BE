@@ -3,6 +3,7 @@ package com.join.core.job.controller.specification;
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
 import com.join.core.job.dto.request.BatchJobRequest;
+import com.join.core.job.dto.request.BatchJobUpdateRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,7 +29,7 @@ public interface BatchJobApiSpecification {
     ApiResponse<Void> updateBatchJob(
             @AuthenticationPrincipal UserPrincipal principal,
             @PathVariable Long batchJobId,
-            @RequestBody BatchJobRequest batchJobRequest
+            @RequestBody BatchJobUpdateRequest batchJobUpdateRequest
     );
 
 }

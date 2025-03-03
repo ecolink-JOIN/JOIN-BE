@@ -5,6 +5,7 @@ import com.join.core.common.response.ApiResponse;
 import com.join.core.job.controller.specification.BatchJobApiSpecification;
 import com.join.core.job.domain.BatchJobService;
 import com.join.core.job.dto.request.BatchJobRequest;
+import com.join.core.job.dto.request.BatchJobUpdateRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +34,9 @@ public class BatchJobController implements BatchJobApiSpecification {
     public ApiResponse<Void> updateBatchJob(
             @AuthenticationPrincipal UserPrincipal principal,
             @PathVariable Long batchJobId,
-            @RequestBody BatchJobRequest request
+            @RequestBody BatchJobUpdateRequest updateRequest
     ) {
-        batchJobService.updateBatchJob(batchJobId, request, principal.getUserId());
+        batchJobService.updateBatchJob(batchJobId, updateRequest, principal.getUserId());
         return ApiResponse.ok();
     }
 

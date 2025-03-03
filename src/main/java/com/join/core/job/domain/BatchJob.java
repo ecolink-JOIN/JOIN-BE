@@ -20,14 +20,11 @@ public class BatchJob extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private String content;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private DayType day;
 
-    @NotNull
     private LocalTime time;
 
     @NotNull
@@ -43,9 +40,9 @@ public class BatchJob extends BaseTimeEntity {
     }
 
     public void update(String content, DayType day, LocalTime time) {
-        this.content = content;
-        this.day = day;
-        this.time = time;
+        this.content = (content != null) ? content : this.content;
+        this.day = (day != null) ? day : this.day;
+        this.time = (time != null) ? time : this.time;
     }
 
 }

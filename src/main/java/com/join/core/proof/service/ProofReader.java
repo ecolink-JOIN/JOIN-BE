@@ -18,4 +18,5 @@ public interface ProofReader {
     List<Proof> findByAvatarIdAndStudyIdForLeftStudy(Long avatarId, Long studyId);
     boolean isFullyApproved(Long avatarId, Long studyId);
     List<Proof> findByAvatarIdAndMeetingId(Long avatarId, Long meetingId);
+    boolean existedPendingProofByAvatarIdAndMeetingId(Long avatarId, Long meetingId);
 }

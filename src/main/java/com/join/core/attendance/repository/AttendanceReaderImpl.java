@@ -2,6 +2,8 @@ package com.join.core.attendance.repository;
 
 import com.join.core.attendance.domain.Attendance;
 import com.join.core.attendance.service.AttendanceReader;
+import com.join.core.common.exception.ErrorCode;
+import com.join.core.common.exception.impl.EntityNotFoundException;
 import com.join.core.enrollment.constant.EnrollmentStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -54,5 +56,11 @@ public class AttendanceReaderImpl implements AttendanceReader {
     @Override
     public List<Attendance> findByAvatarIdAndStudyIdForLeftStudy(Long avatarId, Long studyId) {
         return attendanceQueryRepository.findAttendancesByAvatarIdAndStudyIdInEnrollmentStatuses(avatarId, studyId, List.of(EnrollmentStatus.LEFT));
+    }
+
+    @Override
+    public Attendance findByMeetingIdAndAvatarId(Long meetingId, Long avatarId) {
+        return attendanceRepository.findByMeetingIdAndAvatarId(meetingId, avatarId)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.APPLICATION_NOT_FOUND));
     }
 }

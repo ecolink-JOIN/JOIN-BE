@@ -52,4 +52,8 @@ public class Attendance extends BaseTimeEntity {
         this.meeting = meeting;
         this.avatar = avatar;
     }
+
+    public void updateStatus(AttendanceStatus status) {
+        this.status = status;
+    }
 }

@@ -141,8 +141,8 @@ public class ProofReadService {
         boolean isProofCompleted = isAllProofsCompleted(enrolledAvatar.getId(), meetings);
 
         return new ProofSubject(
-                enrolledAvatar.getNickname(),
                 enrolledAvatar.getAvatarToken(),
+                enrolledAvatar.getNickname(),
                 enrolledAvatar.getPhoto().getFile().getUrl(),
                 isProofCompleted
         );

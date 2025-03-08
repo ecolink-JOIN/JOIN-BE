@@ -1,11 +1,12 @@
 package com.join.core.study.repository;
 
 import com.join.core.enrollment.constant.EnrollmentStatus;
-import com.join.core.study.constant.StudyStatus;
 import com.join.core.enrollment.constant.StudyRole;
+import com.join.core.study.constant.StudyStatus;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
+import com.join.core.study.repository.condition.SearchCondition;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -148,6 +149,28 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                         bookmark.avatar.id.eq(avatarId)
                 )
                 .orderBy(bookmark.updatedDate.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<Study> searchByConditions(SearchCondition condition) {
+        return queryFactory.selectFrom(study)
+                .innerJoin(enrollment).on(
+                        enrollment.study.id.eq(study.id),
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
+                )
+                .innerJoin(studySchedule).on(
+                        studySchedule.study.id.eq(study.id)
+                )
+                .where(
+                        condition.toBooleanBuilder()
+                )
+                .groupBy(study.id)
+                .having(condition.getHavingClause())
+                .orderBy(
+                        study.studyName.asc()
+                )
+                .limit(20)
                 .fetch();
     }
 }

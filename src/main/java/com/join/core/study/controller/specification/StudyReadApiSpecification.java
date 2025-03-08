@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface StudyReadApiSpecification {
 
@@ -38,7 +39,7 @@ public interface StudyReadApiSpecification {
     @Tag(name = "${swagger.tag.study}")
     @Operation(summary = "스터디 검색",
             description = "입력한 키워드가 제목에 포함된 스터디 목록을 반환")
-    ApiResponse<Page<SearchResponse>> searchStudy(
+    ApiResponse<List<SearchResponse>> searchStudy(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             SearchParameter searchParameter,
             PageParameterRequest pageParameterRequest

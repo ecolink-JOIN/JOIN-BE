@@ -7,6 +7,7 @@ import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
+import com.join.core.study.repository.condition.SearchCondition;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -66,8 +67,8 @@ public class StudyReaderImpl implements StudyReader {
     }
 
     @Override
-    public Page<Study> getStudiesByTitleContaining(String keyword, Pageable pageable) {
-        return studyRepository.findAllByTitleContaining(keyword, pageable);
+    public List<Study> getStudiesByTitleContaining(SearchCondition condition, Pageable pageable) {
+        return studyQueryRepository.searchByConditions(condition);
     }
 
     @Override

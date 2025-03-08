@@ -4,6 +4,7 @@ import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
+import com.join.core.study.repository.condition.SearchCondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,4 +19,5 @@ public interface StudyQueryRepository {
     List<Study> findAllByAvatarIdAndRole(Long avatarId, StudyRole status);
     List<Study> findJoinedStudyByAvatarId(Long avatarId);
     List<Study> findBookmarkStudyByAvatarId(Long avatarId);
+    List<Study> searchByConditions(SearchCondition condition);
 }

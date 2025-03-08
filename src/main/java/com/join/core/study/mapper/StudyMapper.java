@@ -2,19 +2,28 @@ package com.join.core.study.mapper;
 
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.category.domain.Category;
+import com.join.core.category.service.CategoryReader;
 import com.join.core.study.constant.StudyForm;
 import com.join.core.study.domain.Study;
+import com.join.core.study.dto.request.SearchParameter;
 import com.join.core.study.dto.response.AvatarRatingResponse;
 import com.join.core.study.dto.response.CustomStudyResponse;
 import com.join.core.study.dto.response.PopularStudyReadResponse;
 import com.join.core.study.dto.response.SearchResponse;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
+import com.join.core.study.repository.condition.SearchCondition;
 import com.join.core.study.service.dto.CustomStudyCommand;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StudyMapper {
+
+    private final CategoryReader categoryReader;
+
+    public StudyMapper(CategoryReader categoryReader) {
+        this.categoryReader = categoryReader;
+    }
 
     public PopularStudyReadResponse toPopularStudyReadResponse(Study study, Avatar studyLeader, boolean isBookmark, double averageRating) {
         return new PopularStudyReadResponse(
@@ -70,6 +79,20 @@ public class StudyMapper {
                         studyLeader.getTotalRating()
                 ),
                 averageRating
+        );
+    }
+
+    public SearchCondition toSearchCondition(SearchParameter parameter, Category category) {
+        return new SearchCondition(
+                parameter.keyword(),
+                category,
+                parameter.form(),
+                parameter.possibleDays(),
+                parameter.timeZone(),
+                parameter.minParticipationCount(),
+                parameter.maxParticipationCount(),
+                parameter.province(),
+                parameter.city()
         );
     }
 }

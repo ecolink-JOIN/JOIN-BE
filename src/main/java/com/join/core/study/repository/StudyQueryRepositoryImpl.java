@@ -1,19 +1,5 @@
 package com.join.core.study.repository;
 
-import static com.join.core.bookmark.domain.QBookmark.*;
-import static com.join.core.enrollment.domain.QEnrollment.*;
-import static com.join.core.history.domain.QViewHistory.*;
-import static com.join.core.schedule.domain.QStudySchedule.*;
-import static com.join.core.study.domain.QStudy.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
-
 import com.join.core.enrollment.constant.EnrollmentStatus;
 import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.study.constant.StudyStatus;
@@ -22,8 +8,20 @@ import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static com.join.core.bookmark.domain.QBookmark.bookmark;
+import static com.join.core.enrollment.domain.QEnrollment.enrollment;
+import static com.join.core.history.domain.QViewHistory.viewHistory;
+import static com.join.core.schedule.domain.QStudySchedule.studySchedule;
+import static com.join.core.study.domain.QStudy.study;
 
 @RequiredArgsConstructor
 @Repository
@@ -136,9 +134,10 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
     @Override
     public List<Study> findByAvatarId(Long avatarId) {
         return queryFactory.selectFrom(study)
-            .leftJoin(enrollment).on(
-                enrollment.avatar.id.eq(avatarId),
-                enrollment.status.eq(EnrollmentStatus.JOINED)
+            .leftJoin(enrollment).on(enrollment.study.id.eq(study.id))
+            .where(
+                    enrollment.avatar.id.eq(avatarId),
+                    enrollment.status.eq(EnrollmentStatus.JOINED)
             )
             .fetch();
     }

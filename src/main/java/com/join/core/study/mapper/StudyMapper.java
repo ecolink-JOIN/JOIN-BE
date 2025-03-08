@@ -1,10 +1,5 @@
 package com.join.core.study.mapper;
 
-import java.util.Collection;
-import java.util.List;
-
-import org.springframework.stereotype.Component;
-
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.category.domain.Category;
 import com.join.core.study.constant.StudyForm;
@@ -18,6 +13,9 @@ import com.join.core.study.dto.response.StudyListForBlockResponse;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.join.core.study.service.dto.CustomStudyCommand;
+import org.springframework.stereotype.Component;
+
+import java.util.Collection;
 
 @Component
 public class StudyMapper {
@@ -79,12 +77,7 @@ public class StudyMapper {
         );
     }
 
-    public StudyListForBlockResponse toStudyListForBlockResponse(Study study, Collection<Avatar> enrollments, Long avatarId) {
-        List<AvatarResponse> avatarResponses = enrollments.stream()
-            .filter(enrollment -> enrollment.isSameAvatar(avatarId))
-            .map(avatar -> new AvatarResponse(avatar.getNickname(), avatar.getAvatarToken()))
-            .toList();
-
+    public StudyListForBlockResponse toStudyListForBlockResponse(Study study, Collection<AvatarResponse> avatarResponses) {
         return new StudyListForBlockResponse(
                 study.getTitle(),
                 study.getStudyToken(),

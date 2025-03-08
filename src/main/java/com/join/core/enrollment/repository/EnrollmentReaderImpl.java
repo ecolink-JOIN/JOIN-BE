@@ -1,9 +1,5 @@
 package com.join.core.enrollment.repository;
 
-import java.util.List;
-
-import org.springframework.stereotype.Component;
-
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.EntityNotFoundException;
@@ -11,8 +7,10 @@ import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.enrollment.constant.EnrollmentStatus;
 import com.join.core.enrollment.domain.Enrollment;
 import com.join.core.enrollment.service.EnrollmentReader;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component

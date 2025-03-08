@@ -1,22 +1,15 @@
 package com.join.core.study.service;
 
-import java.util.Collection;
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.bookmark.domain.BookmarkReader;
 import com.join.core.category.domain.Category;
 import com.join.core.category.service.CategoryReader;
-import com.join.core.enrollment.domain.Enrollment;
 import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.schedule.dto.response.StudyScheduleResponse;
 import com.join.core.study.domain.Study;
+import com.join.core.study.dto.response.AvatarResponse;
 import com.join.core.study.dto.response.CustomStudyResponse;
 import com.join.core.study.dto.response.PopularStudyReadResponse;
 import com.join.core.study.dto.response.SearchResponse;
@@ -27,8 +20,13 @@ import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.join.core.study.service.dto.CustomStudyCommand;
 import com.join.core.study.service.dto.SearchCommand;
 import com.join.core.study.service.dto.StudyOrderByPopularityCommand;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -140,10 +138,11 @@ public class StudyReadService {
         Avatar avatar = avatarReader.getAvatarByAvatarToken(avatarToken);
         return studyReader.getStudiesByAvatarId(avatar.getId()).stream()
             .map(study -> {
-                List<Avatar> enrollments = enrollmentReader.getByStudyId(study.getId()).stream()
-                    .map(Enrollment::getAvatar)
+                List<AvatarResponse> enrollments = enrollmentReader.getByStudyId(study.getId()).stream()
+                    .map(a -> new AvatarResponse(a.getAvatar().getNickname(), a.getAvatar().getAvatarToken()))
+                    .filter(avatarResponse -> !avatar.isSameAvatar(avatarResponse.avatarToken()))
                     .toList();
-                return studyMapper.toStudyListForBlockResponse(study, enrollments, avatar.getId());
+                return studyMapper.toStudyListForBlockResponse(study, enrollments);
             }).toList();
     }
 }

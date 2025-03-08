@@ -1,5 +1,6 @@
 package com.join.core.study.domain;
 
+import com.join.core.rule.domain.Rule;
 import com.join.core.address.domain.Address;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.category.domain.Category;
@@ -13,17 +14,7 @@ import com.join.core.study.constant.StudyForm;
 import com.join.core.study.constant.StudyStatus;
 import com.join.core.study.dto.request.StudyReRecruitRequest;
 import com.join.core.study.dto.request.StudyRecruitRequest;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -61,10 +52,9 @@ public class Study {
     @NotNull
     private String content;
 
-    @NotNull
-    private int capacity;
+    @Column(nullable = true)
+    private Integer capacity;
 
-    @NotNull
     private String ruleExp;
 
     @NotNull
@@ -118,6 +108,9 @@ public class Study {
     @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudySchedule> schedules;
 
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rule> rules;
+
     private String kakaoUrl;
 
     public Study(StudyRecruitRequest recruitRequest, Avatar writer, Address address, Category category) {
@@ -132,6 +125,7 @@ public class Study {
         this.title = recruitRequest.getTitle();
         this.capacity = recruitRequest.getCapacity();
         this.isRegular = recruitRequest.isRegular();
+        this.form = recruitRequest.getForm();
         this.recruitEndDate = recruitRequest.getRecruitEndDate();
         this.stDate = recruitRequest.getStDate();
         this.endDate = recruitRequest.getEndDate();
@@ -195,6 +189,14 @@ public class Study {
         }
         this.bookmarkCnt--;
     }
+
+    public void addRules(List<Rule> rules) {
+        this.rules = rules;
+        for (Rule rule : rules) {
+            rule.setStudy(this);
+        }
+    }
+
 
     public boolean isActive() {
         return status == StudyStatus.ACTIVE;

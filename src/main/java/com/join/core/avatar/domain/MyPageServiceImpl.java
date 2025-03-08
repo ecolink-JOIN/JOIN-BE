@@ -1,8 +1,12 @@
 package com.join.core.avatar.domain;
 
 import com.join.core.attendance.service.AttendanceRateService;
+import com.join.core.avatar.dto.response.MyInterestStudyResponse;
+import com.join.core.avatar.dto.response.MyJoinedStudyResponse;
 import com.join.core.avatar.dto.response.MyManagedStudyInfoResponse;
 import com.join.core.avatar.dto.response.MyPageInfoResponse;
+import com.join.core.enrollment.domain.Enrollment;
+import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.proof.service.ProofRateService;
 import com.join.core.proof.service.ProofReader;
 import com.join.core.study.domain.Study;
@@ -11,7 +15,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -20,6 +27,7 @@ public class MyPageServiceImpl implements MyPageService {
 
     private final AvatarReader avatarReader;
     private final StudyReader studyReader;
+    private final EnrollmentReader enrollmentReader;
     private final AttendanceRateService attendanceRateService;
     private final ProofReader proofReader;
     private final ProofRateService proofRateService;
@@ -52,6 +60,13 @@ public class MyPageServiceImpl implements MyPageService {
         ).toList();
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public MyJoinedStudyResponse getMyJoinedStudies(Long avatarId) {
+        List<Study> joinedStudiesByAvatarId = studyReader.getJoinedStudiesByAvatarId(avatarId);
+        return MyJoinedStudyResponse.of(joinedStudiesByAvatarId);
+    }
+
     private List<MyManagedStudyInfoResponse.StudyMemberAchievementDto> getMembersRatesAndApprovedStatus(Study study) {
         List<Avatar> avatars = avatarReader.findAvatarsExceptPendingByStudyId(study.getId());
         return avatars.stream()
@@ -61,5 +76,36 @@ public class MyPageServiceImpl implements MyPageService {
                     boolean isFullyApproved = proofReader.isFullyApproved(avatar.getId(), study.getId());
                     return MyManagedStudyInfoResponse.StudyMemberAchievementDto.of(avatar, attendanceRate, proofRate, isFullyApproved);
                 }).toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public MyInterestStudyResponse getMyInterestStudies(Long avatarId) {
+        //관심 스터디 목록
+        List<Study> interestStudies = studyReader.getInterestStudiesByAvatarId(avatarId);
+        //관심 스터디 각각 팀원들 조회
+        Map<Study, List<Enrollment>> collect = interestStudies.stream().collect(Collectors.toMap(
+                study -> study,
+                study -> enrollmentReader.findJoinedEnrollmentByStudyId(avatarId))
+        );
+
+        List<MyInterestStudyResponse.InterestStudyInfoDto> interestStudyInfos = new ArrayList<>();
+
+        collect.forEach((study, enrollments) -> {
+
+            List<MyInterestStudyResponse.StudyMemberInfoDto> studyMemberInfoDtos = enrollments.stream()
+                    .map(enrollment ->
+                            MyInterestStudyResponse.StudyMemberInfoDto.of(
+                                    enrollment.getRole(),
+                                    enrollment.getAvatar().getNickname(),
+                                    enrollment.getAvatar().getAverageEvaluation()))
+                    .toList();
+
+            MyInterestStudyResponse.InterestStudyInfoDto interestStudyInfoDto = MyInterestStudyResponse.InterestStudyInfoDto.of(study, studyMemberInfoDtos);
+
+            interestStudyInfos.add(interestStudyInfoDto);
+        });
+
+        return new MyInterestStudyResponse(interestStudyInfos);
     }
 }

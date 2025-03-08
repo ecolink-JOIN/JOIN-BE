@@ -132,6 +132,26 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
     }
 
     @Override
+    public List<Study> findJoinedStudyByAvatarId(Long avatarId) {
+        return queryFactory.selectFrom(study)
+                .leftJoin(enrollment).on(
+                        enrollment.avatar.id.eq(avatarId),
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
+                )
+                .fetch();
+    }
+
+    @Override
+    public List<Study> findBookmarkStudyByAvatarId(Long avatarId) {
+        return queryFactory.selectFrom(study)
+                .join(bookmark).on(
+                        bookmark.avatar.id.eq(avatarId)
+                )
+                .orderBy(bookmark.updatedDate.desc())
+                .fetch();
+    }
+
+    @Override
     public List<Study> findByAvatarId(Long avatarId) {
         return queryFactory.selectFrom(study)
             .leftJoin(enrollment).on(enrollment.study.id.eq(study.id))

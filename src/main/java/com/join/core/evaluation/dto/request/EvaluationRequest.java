@@ -19,8 +19,8 @@ public class EvaluationRequest {
     }
 
     @NotNull
-    @Schema(description = "스터디 ID", example = "1")
-    private Long studyId;
+    @Schema(description = "스터디 토큰", example = "std_abc")
+    private String studyToken;
 
     @NotNull
     @Schema(description = "평가대상자 ID", example = "2")

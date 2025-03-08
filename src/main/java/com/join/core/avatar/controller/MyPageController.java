@@ -3,6 +3,8 @@ package com.join.core.avatar.controller;
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.avatar.controller.specification.MyPageControllerSpecification;
 import com.join.core.avatar.domain.MyPageService;
+import com.join.core.avatar.dto.response.MyInterestStudyResponse;
+import com.join.core.avatar.dto.response.MyJoinedStudyResponse;
 import com.join.core.avatar.dto.response.MyManagedStudyInfoResponse;
 import com.join.core.avatar.dto.response.MyPageInfoResponse;
 import com.join.core.common.response.ApiResponse;
@@ -34,5 +36,19 @@ public class MyPageController implements MyPageControllerSpecification {
     public ApiResponse<List<MyManagedStudyInfoResponse>> getMyManagedStudies(
             @AuthenticationPrincipal UserPrincipal principal) {
         return ApiResponse.ok(myPageService.getMyManagedStudies(principal.getAvatarId()));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/join-study")
+    public ApiResponse<MyJoinedStudyResponse> getMyJoinedStudies(
+            @AuthenticationPrincipal UserPrincipal principal) {
+        return ApiResponse.ok(myPageService.getMyJoinedStudies(principal.getAvatarId()));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/interest-study")
+    public ApiResponse<MyInterestStudyResponse> getMyInterestStudies(
+            @AuthenticationPrincipal UserPrincipal principal) {
+        return ApiResponse.ok(myPageService.getMyInterestStudies(principal.getAvatarId()));
     }
 }

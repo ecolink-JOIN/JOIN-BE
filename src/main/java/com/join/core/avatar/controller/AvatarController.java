@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -17,6 +18,7 @@ import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.avatar.domain.AvatarCommand;
 import com.join.core.avatar.domain.AvatarInfo;
 import com.join.core.avatar.domain.AvatarService;
+import com.join.core.avatar.dto.ChangePreferenceRequest;
 import com.join.core.common.config.swagger.SwaggerBody;
 import com.join.core.common.response.ApiResponse;
 
@@ -85,6 +87,20 @@ public class AvatarController {
 	@GetMapping
 	public ApiResponse<AvatarInfo.Self> getAvatarInfo(@AuthenticationPrincipal UserPrincipal principal) {
 		return ApiResponse.ok(avatarService.getAvatarInfo(principal.getAvatarId()));
+	}
+
+	@Tag(name = "${swagger.tag.sign-up}")
+	@Tag(name = "${swagger.tag.user}")
+	@Operation(summary = "유저 선호 변경 API - 인증 필요",
+		description = "유저 선호 변경 API - 인증 필요",
+		security = {@SecurityRequirement(name = "session-token")})
+	@PreAuthorize("isAuthenticated()")
+	@PutMapping("/preference")
+	public ApiResponse<Void> changePreference(
+		@AuthenticationPrincipal UserPrincipal principal,
+		@RequestBody ChangePreferenceRequest request) {
+		avatarService.changePreference(principal.getAvatarId(), request);
+		return ApiResponse.ok();
 	}
 
 }

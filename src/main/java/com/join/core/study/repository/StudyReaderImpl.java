@@ -58,13 +58,23 @@ public class StudyReaderImpl implements StudyReader {
     }
 
     @Override
+    public List<Study> getJoinedStudiesByAvatarId(Long avatarId) {
+        return studyQueryRepository.findJoinedStudyByAvatarId(avatarId);
+    }
+
+    @Override
+    public List<Study> getInterestStudiesByAvatarId(Long avatarId) {
+        return studyQueryRepository.findBookmarkStudyByAvatarId(avatarId);
+    }
+
+    @Override
     public Page<Study> getStudiesByTitleContaining(String keyword, Pageable pageable) {
         return studyRepository.findAllByTitleContaining(keyword, pageable);
     }
 
     @Override
-    public Study validateStudyCompletion(Long studyId) {
-        return studyRepository.findByIdAndStatus(studyId, StudyStatus.COMPLETED)
+    public Study validateStudyCompletion(String studyToken) {
+        return studyRepository.findByStudyTokenAndStatus(studyToken, StudyStatus.COMPLETED)
                 .orElseThrow(() -> new InvalidStateException(ErrorCode.EVALUATION_PERIOD_INVALID));
     }
 

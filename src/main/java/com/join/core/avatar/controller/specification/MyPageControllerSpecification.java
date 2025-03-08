@@ -1,6 +1,8 @@
 package com.join.core.avatar.controller.specification;
 
 import com.join.core.auth.domain.UserPrincipal;
+import com.join.core.avatar.dto.response.MyInterestStudyResponse;
+import com.join.core.avatar.dto.response.MyJoinedStudyResponse;
 import com.join.core.avatar.dto.response.MyManagedStudyInfoResponse;
 import com.join.core.avatar.dto.response.MyPageInfoResponse;
 import com.join.core.common.response.ApiResponse;
@@ -25,5 +27,19 @@ public interface MyPageControllerSpecification {
             description = "마이페이지 운영중인 스터디 목록을 조회해옵니다.",
             security = {@SecurityRequirement(name = "session-token")})
     ApiResponse<List<MyManagedStudyInfoResponse>> getMyManagedStudies(
+            @AuthenticationPrincipal UserPrincipal principal);
+
+    @Tag(name = "${swagger.tag.my-page}")
+    @Operation(summary = "마이페이지 가입 스터디 목록 조회 - 인증 필수",
+            description = "마이페이지 가입 스터디 목록을 조회해옵니다.",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<MyJoinedStudyResponse> getMyJoinedStudies(
+            @AuthenticationPrincipal UserPrincipal principal);
+
+    @Tag(name = "${swagger.tag.my-page}")
+    @Operation(summary = "마이페이지 관심 스터디 목록 조회 - 인증 필수",
+            description = "마이페이지 관심 스터디 목록을 조회해옵니다. 최근 관심 표시한 스터디가 상단으로 보이게 됩니다.",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<MyInterestStudyResponse> getMyInterestStudies(
             @AuthenticationPrincipal UserPrincipal principal);
 }

@@ -1,7 +1,12 @@
 package com.join.core.study.dto.response;
 
+import com.join.core.rule.dto.response.RuleResponse;
 import com.join.core.schedule.dto.response.StudyScheduleResponse;
+import com.join.core.study.constant.StudyForm;
+import com.join.core.study.domain.Study;
+import com.join.core.evaluation.dto.response.EvaluationScore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -30,6 +35,10 @@ public class StudyDetailResponse {
     @Schema(description = "정기 모임 여부", example = "true")
     private boolean isRegular;
 
+    @Schema(description = "모집 방법", example = "ONLINE")
+    @NotNull
+    private StudyForm form;
+
     @Schema(description = "모집 종료 날짜", example = "2024-08-31")
     private LocalDate recruitEndDate;
 
@@ -48,10 +57,48 @@ public class StudyDetailResponse {
     @Schema(description = "정기 모임 스케줄")
     private List<StudyScheduleResponse> schedules;
 
-    @Schema(description = "스터디 규칙", example = "지각 시 벌금 1,000원 부과")
+    @Schema(description = "스터디 규칙 유형")
+    private List<RuleResponse> rules;
+
+    @Schema(description = "스터디 규칙 설명", example = "지각 시 벌금 1,000원 부과")
     private String ruleExp;
 
     @Schema(description = "지원 자격", example = "열정 있는 사람이라면 누구나")
     private String qualificationExp;
 
+    @Schema(description = "스터디 평가 점수", example = "스터디장, 스터디원 평가 점수")
+    private EvaluationScore evaluationScore;
+
+    public static StudyDetailResponse from(Study study, EvaluationScore evaluationScore) {
+        List<StudyScheduleResponse> schedules = study.getSchedules().stream()
+                .map(schedule -> new StudyScheduleResponse(
+                        schedule.getWeekOfDay(),
+                        schedule.getStTime(),
+                        schedule.getEndTime()))
+                .toList();
+
+        List<RuleResponse> rules = study.getRules().stream()
+                .map(rule -> new RuleResponse(rule.getType()))
+                .toList();
+
+        return new StudyDetailResponse(
+                study.getStudyName(),
+                study.getTitle(),
+                study.getIntroduction(),
+                study.getContent(),
+                study.getCapacity(),
+                study.isRegular(),
+                study.getForm(),
+                study.getRecruitEndDate(),
+                study.getStDate(),
+                study.getEndDate(),
+                study.getWriter().getId(),
+                study.getWriter().getNickname(),
+                schedules,
+                rules,
+                study.getRuleExp(),
+                study.getQualificationExp(),
+                evaluationScore
+        );
+    }
 }

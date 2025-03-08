@@ -24,7 +24,7 @@ public class BookmarkController implements BookmarkApiSpecification {
             @AuthenticationPrincipal UserPrincipal principal,
             @RequestBody BookmarkRequest bookmarkRequest
     ) {
-        bookmarkService.addBookmark(bookmarkRequest.studyId(), principal.getAvatarId());
+        bookmarkService.addBookmark(bookmarkRequest.studyToken(), principal.getAvatarId());
         return ApiResponse.ok();
     }
 
@@ -35,7 +35,7 @@ public class BookmarkController implements BookmarkApiSpecification {
             @AuthenticationPrincipal UserPrincipal principal,
             @RequestBody BookmarkRequest bookmarkRequest
     ) {
-        bookmarkService.deleteBookmark(bookmarkRequest.studyId(), principal.getAvatarId());
+        bookmarkService.deleteBookmark(bookmarkRequest.studyToken(), principal.getAvatarId());
         return ApiResponse.ok();
     }
 

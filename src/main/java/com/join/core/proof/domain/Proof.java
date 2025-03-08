@@ -84,4 +84,9 @@ public class Proof extends BaseTimeEntity {
             throw new BadRequestException(ErrorCode.ALREADY_CHECK_PROOF);
         }
     }
+
+    public void reject() {
+        checkStatus();
+        this.status = ProofStatus.REJECTED;
+    }
 }

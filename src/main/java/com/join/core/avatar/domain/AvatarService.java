@@ -2,6 +2,8 @@ package com.join.core.avatar.domain;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.join.core.avatar.dto.ChangePreferenceRequest;
+
 public interface AvatarService {
 
 	AvatarInfo.ValidNickname isValid(AvatarCommand.ChangeNickname command);
@@ -12,4 +14,5 @@ public interface AvatarService {
 
 	AvatarInfo.Self getAvatarInfo(Long avatarId);
 
+	void changePreference(Long avatarId, ChangePreferenceRequest request);
 }

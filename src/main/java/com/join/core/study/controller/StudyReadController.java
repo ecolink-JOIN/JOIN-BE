@@ -43,9 +43,9 @@ public class StudyReadController implements StudyReadApiSpecification {
             description = "스터디 상세 조회 - 인증 필수",
             security = {@SecurityRequirement(name = "session-token")})
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{studyId}")
-    public ApiResponse<StudyDetailResponse> getStudyDetails(@PathVariable Long studyId) {
-        StudyDetailResponse studyDetail = studyReadService.getStudyDetails(studyId);
+    @GetMapping("/{studyToken}")
+    public ApiResponse<StudyDetailResponse> getStudyDetails(@PathVariable String studyToken) {
+        StudyDetailResponse studyDetail = studyReadService.getStudyDetails(studyToken);
         return ApiResponse.ok(studyDetail);
     }
 

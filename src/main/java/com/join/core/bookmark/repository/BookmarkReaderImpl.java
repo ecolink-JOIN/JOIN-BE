@@ -11,8 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @RequiredArgsConstructor
 @Component
 public class BookmarkReaderImpl implements BookmarkReader {
@@ -30,8 +28,8 @@ public class BookmarkReaderImpl implements BookmarkReader {
     }
 
     @Override
-    public Bookmark findBookmarkByAvatarAndStudy(Long avatarId, Long studyId) {
-        return bookmarkRepository.findBookmarkByAvatarIdAndStudyId(avatarId, studyId)
+    public Bookmark findBookmarkByAvatarAndStudy(Long avatarId, String studyToken) {
+        return bookmarkRepository.findBookmarkByAvatarIdAndStudyToken(avatarId, studyToken)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.BOOKMARK_NOT_FOUND));
     }
 

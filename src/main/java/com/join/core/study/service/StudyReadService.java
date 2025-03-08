@@ -7,7 +7,8 @@ import com.join.core.bookmark.domain.BookmarkReader;
 import com.join.core.category.domain.Category;
 import com.join.core.category.service.CategoryReader;
 import com.join.core.enrollment.service.EnrollmentReader;
-import com.join.core.schedule.dto.response.StudyScheduleResponse;
+import com.join.core.evaluation.domain.EvaluationReader;
+import com.join.core.evaluation.dto.response.EvaluationScore;
 import com.join.core.study.domain.Study;
 import com.join.core.study.dto.response.AvatarResponse;
 import com.join.core.study.dto.response.CustomStudyResponse;
@@ -38,34 +39,16 @@ public class StudyReadService {
     private final BookmarkReader bookmarkReader;
     private final AvatarReader avatarReader;
     private final StudyMapper studyMapper;
+    private final EvaluationReader evaluationReader;
 
     @Transactional(readOnly = true)
-    public StudyDetailResponse getStudyDetails(Long studyId) {
-        Study study = studyReader.getStudyById(studyId);
+    public StudyDetailResponse getStudyDetails(String studyToken) {
+        Study study = studyReader.getStudyByToken(studyToken);
+        Long writerId = study.getWriter().getId();
 
-        List<StudyScheduleResponse> schedules = study.getSchedules().stream()
-            .map(schedule -> new StudyScheduleResponse(
-                schedule.getWeekOfDay(),
-                schedule.getStTime(),
-                schedule.getEndTime()))
-            .toList();
+        EvaluationScore evaluationScore = evaluationReader.getEvaluationScores(study.getId(), writerId);
 
-        return new StudyDetailResponse(
-            study.getStudyName(),
-            study.getTitle(),
-            study.getIntroduction(),
-            study.getContent(),
-            study.getCapacity(),
-            study.isRegular(),
-            study.getRecruitEndDate(),
-            study.getStDate(),
-            study.getEndDate(),
-            study.getWriter().getId(),
-            study.getWriter().getNickname(),
-            schedules,
-            study.getRuleExp(),
-            study.getQualificationExp()
-        );
+        return StudyDetailResponse.from(study, evaluationScore);
     }
 
     @Transactional(readOnly = true)

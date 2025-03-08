@@ -12,5 +12,6 @@ import com.join.core.study.domain.Study;
 public interface StudyRepository extends JpaRepository<Study, Long> {
     Optional<Study> findByStudyToken(String studyToken);
     Page<Study> findAllByTitleContaining(String title, Pageable pageable);
+    Optional<Study> findByStudyTokenAndStatus(String studyToken, StudyStatus status);
     Optional<Study> findByIdAndStatus(Long studyId, StudyStatus status);
 }

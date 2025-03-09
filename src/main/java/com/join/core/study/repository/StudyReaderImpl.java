@@ -67,8 +67,8 @@ public class StudyReaderImpl implements StudyReader {
     }
 
     @Override
-    public List<Study> getStudiesByTitleContaining(SearchCondition condition, Pageable pageable) {
-        return studyQueryRepository.searchByConditions(condition);
+    public Page<Study> getStudiesByTitleContaining(SearchCondition condition, Pageable pageable) {
+        return studyQueryRepository.searchByConditions(condition, pageable);
     }
 
     @Override

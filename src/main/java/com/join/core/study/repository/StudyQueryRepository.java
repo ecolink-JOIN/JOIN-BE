@@ -19,5 +19,5 @@ public interface StudyQueryRepository {
     List<Study> findAllByAvatarIdAndRole(Long avatarId, StudyRole status);
     List<Study> findJoinedStudyByAvatarId(Long avatarId);
     List<Study> findBookmarkStudyByAvatarId(Long avatarId);
-    List<Study> searchByConditions(SearchCondition condition);
+    Page<Study> searchByConditions(SearchCondition condition, Pageable pageable);
 }

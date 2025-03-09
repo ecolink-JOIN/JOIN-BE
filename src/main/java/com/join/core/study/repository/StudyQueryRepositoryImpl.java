@@ -153,7 +153,14 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
     }
 
     @Override
-    public List<Study> searchByConditions(SearchCondition condition) {
+    public Page<Study> searchByConditions(SearchCondition condition, Pageable pageable) {
+        List<Study> content = getSearchStudy(condition, pageable);
+        Long count = countSearchStudy(condition);
+        return new PageImpl<>(content, pageable, count);
+
+    }
+
+    private List<Study> getSearchStudy(SearchCondition condition, Pageable pageable) {
         return queryFactory.selectFrom(study)
                 .innerJoin(enrollment).on(
                         enrollment.study.id.eq(study.id),
@@ -170,7 +177,18 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                 .orderBy(
                         study.studyName.asc()
                 )
-                .limit(20)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
+    }
+
+    private Long countSearchStudy(SearchCondition condition) {
+        return queryFactory.select(study.count())
+                .from(study)
+                .where(
+                        condition.toBooleanBuilder()
+                )
+                .having(condition.getHavingClause())
+                .fetchOne();
     }
 }

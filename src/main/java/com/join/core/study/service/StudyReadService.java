@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -104,16 +103,16 @@ public class StudyReadService {
     }
 
     @Transactional(readOnly = true)
-    public List<SearchResponse> search(SearchCommand command) {
+    public Page<SearchResponse> search(SearchCommand command) {
         Avatar avatar = getAvatarById(command.userPrincipal());
         Category category = getCategoryByName(command.parameter().category());
         SearchCondition condition = studyMapper.toSearchCondition(command.parameter(), category);
-        return studyReader.getStudiesByTitleContaining(condition, command.pageable()).stream()
+        return studyReader.getStudiesByTitleContaining(condition, command.pageable())
                 .map(study -> {
                     double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
                     boolean isBookmark = isBookmark(avatar, study);
                     Avatar studyLeader = enrollmentReader.getLeaderByStudyId(study.getId());
                     return studyMapper.toSearchResponse(study, studyLeader, isBookmark, averageRating);
-                }).toList();
+                });
     }
 }

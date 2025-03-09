@@ -18,7 +18,7 @@ public interface StudyReader {
     List<Study> getStudiesByLeaderAvatarId(Long avatarId);
     List<Study> getJoinedStudiesByAvatarId(Long avatarId);
     List<Study> getInterestStudiesByAvatarId(Long avatarId);
-    List<Study> getStudiesByTitleContaining(SearchCondition condition, Pageable pageable);
+    Page<Study> getStudiesByTitleContaining(SearchCondition condition, Pageable pageable);
     Study validateStudyCompletion(String studyToken);
     boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken);
 }

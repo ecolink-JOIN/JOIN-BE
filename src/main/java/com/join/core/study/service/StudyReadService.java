@@ -10,10 +10,12 @@ import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.evaluation.domain.EvaluationReader;
 import com.join.core.evaluation.dto.response.EvaluationScore;
 import com.join.core.study.domain.Study;
+import com.join.core.study.dto.response.AvatarResponse;
 import com.join.core.study.dto.response.CustomStudyResponse;
 import com.join.core.study.dto.response.PopularStudyReadResponse;
 import com.join.core.study.dto.response.SearchResponse;
 import com.join.core.study.dto.response.StudyDetailResponse;
+import com.join.core.study.dto.response.StudyListForBlockResponse;
 import com.join.core.study.mapper.StudyMapper;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.join.core.study.repository.condition.SearchCondition;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -54,14 +57,14 @@ public class StudyReadService {
         Category category = getCategoryByName(command.categoryName());
         Avatar avatar = getAvatarById(command.userPrincipal());
         return studyReader.getStudyOrderByPopularity(
-                    new EssentialStudyCondition(category, command.form()), command.now(), command.pageable()
-                )
-                .map(study -> {
-                    double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
-                    boolean isBookmark = isBookmark(avatar, study);
-                    Avatar studyLeader = enrollmentReader.getLeaderByStudyId(study.getId());
-                    return studyMapper.toPopularStudyReadResponse(study, studyLeader, isBookmark, averageRating);
-                });
+                new EssentialStudyCondition(category, command.form()), command.now(), command.pageable()
+            )
+            .map(study -> {
+                double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
+                boolean isBookmark = isBookmark(avatar, study);
+                Avatar studyLeader = enrollmentReader.getLeaderByStudyId(study.getId());
+                return studyMapper.toPopularStudyReadResponse(study, studyLeader, isBookmark, averageRating);
+            });
     }
 
     private Category getCategoryByName(String categoryName) {
@@ -92,14 +95,14 @@ public class StudyReadService {
         return studyReader.getStudiesOrderByRecommendations(
                 studyMapper.toEssentialStudyCondition(category, command.form()),
                 studyMapper.toCustomStudyCondition(command)
-        ).stream()
-                .map(study -> {
-                    double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
-                    boolean isBookmark = isBookmark(avatar, study);
-                    Avatar studyLeader = enrollmentReader.getLeaderByStudyId(study.getId());
-                    return studyMapper.toCustomStudyResponse(study, studyLeader, isBookmark, averageRating);
-                })
-                .toList();
+            ).stream()
+            .map(study -> {
+                double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
+                boolean isBookmark = isBookmark(avatar, study);
+                Avatar studyLeader = enrollmentReader.getLeaderByStudyId(study.getId());
+                return studyMapper.toCustomStudyResponse(study, studyLeader, isBookmark, averageRating);
+            })
+            .toList();
     }
 
     @Transactional(readOnly = true)
@@ -114,5 +117,18 @@ public class StudyReadService {
                     Avatar studyLeader = enrollmentReader.getLeaderByStudyId(study.getId());
                     return studyMapper.toSearchResponse(study, studyLeader, isBookmark, averageRating);
                 });
+    }
+
+    @Transactional(readOnly = true)
+    public Collection<StudyListForBlockResponse> getStudiesForBlock(String avatarToken) {
+        Avatar avatar = avatarReader.getAvatarByAvatarToken(avatarToken);
+        return studyReader.getStudiesByAvatarId(avatar.getId()).stream()
+            .map(study -> {
+                List<AvatarResponse> enrollments = enrollmentReader.getByStudyId(study.getId()).stream()
+                    .map(a -> new AvatarResponse(a.getAvatar().getNickname(), a.getAvatar().getAvatarToken()))
+                    .filter(avatarResponse -> !avatar.isSameAvatar(avatarResponse.avatarToken()))
+                    .toList();
+                return studyMapper.toStudyListForBlockResponse(study, enrollments);
+            }).toList();
     }
 }

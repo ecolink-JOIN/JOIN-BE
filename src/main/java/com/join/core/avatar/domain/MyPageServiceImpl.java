@@ -1,24 +1,23 @@
 package com.join.core.avatar.domain;
 
 import com.join.core.attendance.service.AttendanceRateService;
-import com.join.core.avatar.dto.response.MyInterestStudyResponse;
 import com.join.core.avatar.dto.response.MyJoinedStudyResponse;
 import com.join.core.avatar.dto.response.MyManagedStudyInfoResponse;
 import com.join.core.avatar.dto.response.MyPageInfoResponse;
-import com.join.core.enrollment.domain.Enrollment;
+import com.join.core.bookmark.domain.BookmarkReader;
 import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.proof.service.ProofRateService;
 import com.join.core.proof.service.ProofReader;
 import com.join.core.study.domain.Study;
+import com.join.core.study.dto.response.CustomStudyResponse;
+import com.join.core.study.mapper.StudyMapper;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -26,7 +25,9 @@ import java.util.stream.Collectors;
 public class MyPageServiceImpl implements MyPageService {
 
     private final AvatarReader avatarReader;
+    private final BookmarkReader bookmarkReader;
     private final StudyReader studyReader;
+    private final StudyMapper studyMapper;
     private final EnrollmentReader enrollmentReader;
     private final AttendanceRateService attendanceRateService;
     private final ProofReader proofReader;
@@ -80,32 +81,24 @@ public class MyPageServiceImpl implements MyPageService {
 
     @Transactional(readOnly = true)
     @Override
-    public MyInterestStudyResponse getMyInterestStudies(Long avatarId) {
-        //관심 스터디 목록
+    public Collection<CustomStudyResponse> getMyInterestStudies(Long avatarId) {
+        Avatar avatar = avatarReader.getAvatarById(avatarId);
         List<Study> interestStudies = studyReader.getInterestStudiesByAvatarId(avatarId);
-        //관심 스터디 각각 팀원들 조회
-        Map<Study, List<Enrollment>> collect = interestStudies.stream().collect(Collectors.toMap(
-                study -> study,
-                study -> enrollmentReader.findJoinedEnrollmentByStudyId(avatarId))
-        );
 
-        List<MyInterestStudyResponse.InterestStudyInfoDto> interestStudyInfos = new ArrayList<>();
+        return interestStudies.stream()
+                .map(study -> {
+                    double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
+                    boolean isBookmark = isBookmark(avatar, study);
+                    Avatar studyLeader = enrollmentReader.getLeaderByStudyId(study.getId());
+                    return studyMapper.toCustomStudyResponse(study, studyLeader, isBookmark, averageRating);
+                })
+                .toList();
+    }
 
-        collect.forEach((study, enrollments) -> {
-
-            List<MyInterestStudyResponse.StudyMemberInfoDto> studyMemberInfoDtos = enrollments.stream()
-                    .map(enrollment ->
-                            MyInterestStudyResponse.StudyMemberInfoDto.of(
-                                    enrollment.getRole(),
-                                    enrollment.getAvatar().getNickname(),
-                                    enrollment.getAvatar().getAverageEvaluation()))
-                    .toList();
-
-            MyInterestStudyResponse.InterestStudyInfoDto interestStudyInfoDto = MyInterestStudyResponse.InterestStudyInfoDto.of(study, studyMemberInfoDtos);
-
-            interestStudyInfos.add(interestStudyInfoDto);
-        });
-
-        return new MyInterestStudyResponse(interestStudyInfos);
+    private boolean isBookmark(Avatar avatar, Study study) {
+        if (avatar == null) {
+            return false;
+        }
+        return bookmarkReader.isBookmark(study, avatar);
     }
 }

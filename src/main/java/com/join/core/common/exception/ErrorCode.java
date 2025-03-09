@@ -60,7 +60,7 @@ public enum ErrorCode {
 	/**
 	 * 주소 선택 관련 오류
 	 */
-	ADDRESS_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "AD-001", "주소 선택이 누락되었습니다."),
+	ADDRESS_INPUT_REQUIRED(HttpStatus.BAD_REQUEST, "AD-001", "주소 입력이 누락되었습니다."),
 
 	/**
 	 * 카테고리 선택 관련 오류
@@ -144,7 +144,8 @@ public enum ErrorCode {
 	/**
 	 * 자동 알림 관련 오류
 	 */
-	BATCHJOB_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "BJ-001", "해당 시간에 이미 등록된 자동 알림이 있습니다.");
+	BATCHJOB_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "BJ-001", "해당 시간에 이미 등록된 자동 알림이 있습니다."),
+	BATCHJOB_NOT_FOUND(HttpStatus.BAD_REQUEST, "BJ-002", "변경할 자동 알림을 찾을 수 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

@@ -153,6 +153,17 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
     }
 
     @Override
+    public List<Study> findByAvatarId(Long avatarId) {
+        return queryFactory.selectFrom(study)
+            .leftJoin(enrollment).on(enrollment.study.id.eq(study.id))
+            .where(
+                    enrollment.avatar.id.eq(avatarId),
+                    enrollment.status.eq(EnrollmentStatus.JOINED)
+            )
+            .fetch();
+    }
+
+    @Override
     public Page<Study> searchByConditions(SearchCondition condition, Pageable pageable) {
         List<Study> content = getSearchStudy(condition, pageable);
         Long count = countSearchStudy(condition);

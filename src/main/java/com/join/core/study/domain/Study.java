@@ -90,9 +90,8 @@ public class Study {
     @Enumerated(EnumType.STRING)
     private StudyForm form;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id", nullable = false)
+    @JoinColumn(name = "address_id", nullable = true)
     private Address address;
 
     @NotNull
@@ -116,8 +115,8 @@ public class Study {
     public Study(StudyRecruitRequest recruitRequest, Avatar writer, Address address, Category category) {
         if (writer == null)
             throw new InvalidParamException(INVALID_PARAMETER, "Study.writer");
-        if (address == null)
-            throw new InvalidParamException(INVALID_PARAMETER, "Study.address");
+        if (recruitRequest.getForm() == StudyForm.OFFLINE && address == null) {
+            throw new InvalidParamException(INVALID_PARAMETER, "Study.address");}
         if (category == null)
             throw new InvalidParamException(INVALID_PARAMETER, "Study.category");
 
@@ -197,4 +196,8 @@ public class Study {
         }
     }
 
+
+    public boolean isActive() {
+        return status == StudyStatus.ACTIVE;
+    }
 }

@@ -196,4 +196,8 @@ public class Study {
         }
     }
 
+
+    public boolean isActive() {
+        return status == StudyStatus.ACTIVE;
+    }
 }

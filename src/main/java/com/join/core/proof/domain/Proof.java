@@ -48,7 +48,6 @@ public class Proof extends BaseTimeEntity {
     @NotNull
     private LocalDateTime provenDate;
 
-    @NotNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private ProofPhoto photo;
 

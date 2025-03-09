@@ -16,6 +16,7 @@ import com.join.core.proof.mapper.ProofMapper;
 import com.join.core.proof.service.dto.ApproveParams;
 import com.join.core.proof.service.dto.CreateProofCommand;
 import com.join.core.proof.service.dto.RejectCommand;
+import com.join.core.proof.service.dto.UpdateProofParams;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
@@ -97,5 +98,24 @@ public class ProofService {
 
         Proof proof = proofReader.getProofById(command.proofId());
         proof.reject();
+    }
+
+    @Transactional
+    public void update(UpdateProofParams params) {
+        Avatar avatar = avatarReader.getAvatarByAvatarToken(params.avatarToken());
+        Study study = studyReader.getStudyByToken(params.studyToken());
+        checkLeaderPermission(avatar, study);
+
+        Avatar target = avatarReader.getAvatarByAvatarToken(params.targetToken());
+        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), params.meetingNo());
+        Proof proof = proofMapper.toEntity(params, target, meeting);
+        proofStore.save(proof);
+    }
+
+    private void checkLeaderPermission(Avatar avatar, Study study) {
+        Avatar leader = enrollmentReader.getLeaderByStudyId(study.getId());
+        if (!leader.isSameAvatar(avatar.getId())) {
+            throw new NoPermissionException(ErrorCode.NOT_LEADER_OF_STUDY);
+        }
     }
 }

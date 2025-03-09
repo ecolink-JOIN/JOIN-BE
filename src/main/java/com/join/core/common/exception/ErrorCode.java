@@ -60,7 +60,7 @@ public enum ErrorCode {
 	/**
 	 * 주소 선택 관련 오류
 	 */
-	ADDRESS_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "AD-001", "주소 선택이 누락되었습니다."),
+	ADDRESS_INPUT_REQUIRED(HttpStatus.BAD_REQUEST, "AD-001", "주소 입력이 누락되었습니다."),
 
 	/**
 	 * 카테고리 선택 관련 오류

@@ -89,4 +89,11 @@ public class Proof extends BaseTimeEntity {
         checkStatus();
         this.status = ProofStatus.REJECTED;
     }
+
+    public String getPhotoUrl() {
+        if (photo == null) {
+            return null;
+        }
+        return photo.getFile().getUrl();
+    }
 }

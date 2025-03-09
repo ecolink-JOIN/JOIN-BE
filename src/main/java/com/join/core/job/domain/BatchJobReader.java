@@ -7,5 +7,6 @@ import java.time.LocalTime;
 public interface BatchJobReader {
     boolean existsByStudyStudyTokenAndDayAndTime(String studyToken, DayType day, LocalTime time);
     void validateUniqueBatchJob(String studyToken, DayType day, LocalTime time);
+    BatchJob getBatchJobById(Long batchJobId);
 
 }

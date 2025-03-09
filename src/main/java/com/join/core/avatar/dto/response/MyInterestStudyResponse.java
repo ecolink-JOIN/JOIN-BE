@@ -12,6 +12,8 @@ public record MyInterestStudyResponse(
         List<InterestStudyInfoDto> interestStudyInfos
 ) {
     public record InterestStudyInfoDto(
+            @Schema(description = "스터디 토큰", example = "std_mfN0eg6IQI6k07ek")
+            String studyToken,
             @Schema(description = "스터디 이름", example = "직장인 영어 회화 스터디")
             String studyName,
             @Schema(description = "모집 상태", example = "RECRUITING, READY, ACTIVE, COMPLETED 중 하나(모집중, 모집완료, 활동중, 활동완료)")
@@ -22,7 +24,7 @@ public record MyInterestStudyResponse(
             int viewCount
     ) {
         public static InterestStudyInfoDto of(Study study, List<StudyMemberInfoDto> studyMemberInfos) {
-            return new InterestStudyInfoDto(study.getStudyName(), study.getStatus(), studyMemberInfos, study.getViewCnt());
+            return new InterestStudyInfoDto(study.getStudyToken(), study.getStudyName(), study.getStatus(), studyMemberInfos, study.getViewCnt());
         }
     }
     public record StudyMemberInfoDto(

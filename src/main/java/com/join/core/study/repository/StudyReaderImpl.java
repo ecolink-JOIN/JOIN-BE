@@ -31,12 +31,6 @@ public class StudyReaderImpl implements StudyReader {
     }
 
     @Override
-    public Study getStudyById(Long studyId) {
-        return studyRepository.findById(studyId)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.STUDY_NOT_FOUND));
-    }
-
-    @Override
     public Page<Study> getStudyOrderByPopularity(EssentialStudyCondition condition, LocalDateTime now, Pageable pageable) {
         return studyQueryRepository.getStudiesOrderByPopularity(
                 condition,
@@ -79,5 +73,10 @@ public class StudyReaderImpl implements StudyReader {
     @Override
     public boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken) {
         return studyQueryRepository.existsByEnrollmentsAvatarToken(subjectToken, targetToken);
+    }
+
+    @Override
+    public boolean isAvatarEnrolledInStudy(Long avatarId, String studyToken) {
+        return studyQueryRepository.existsByEnrollmentAvatarIdAndStudyToken(avatarId, studyToken);
     }
 }

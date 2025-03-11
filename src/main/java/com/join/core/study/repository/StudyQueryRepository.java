@@ -18,4 +18,5 @@ public interface StudyQueryRepository {
     List<Study> findAllByAvatarIdAndRole(Long avatarId, StudyRole status);
     List<Study> findJoinedStudyByAvatarId(Long avatarId);
     List<Study> findBookmarkStudyByAvatarId(Long avatarId);
+    boolean existsByEnrollmentAvatarIdAndStudyToken(Long avatarId, String studyToken);
 }

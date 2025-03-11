@@ -150,4 +150,19 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                 .orderBy(bookmark.updatedDate.desc())
                 .fetch();
     }
+
+    @Override
+    public boolean existsByEnrollmentAvatarIdAndStudyToken(Long avatarId, String studyToken) {
+        return queryFactory
+                .selectOne()
+                .from(enrollment)
+                .join(enrollment.study, study)
+                .where(
+                        study.studyToken.eq(studyToken),
+                        enrollment.avatar.id.eq(avatarId),
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
+                )
+                .fetchFirst() != null;
+    }
+
 }

@@ -11,7 +11,6 @@ import java.util.List;
 
 public interface StudyReader {
     Study getStudyByToken(String studyToken);
-    Study getStudyById(Long studyId);
     Page<Study> getStudyOrderByPopularity(EssentialStudyCondition condition, LocalDateTime now, Pageable pageable);
     List<Study> getStudiesOrderByRecommendations(EssentialStudyCondition condition, CustomStudyCondition customStudyCondition);
     List<Study> getStudiesByLeaderAvatarId(Long avatarId);
@@ -20,4 +19,5 @@ public interface StudyReader {
     Page<Study> getStudiesByTitleContaining(String keyword, Pageable pageable);
     Study validateStudyCompletion(String studyToken);
     boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken);
+    boolean isAvatarEnrolledInStudy(Long avatarId, String studyToken);
 }

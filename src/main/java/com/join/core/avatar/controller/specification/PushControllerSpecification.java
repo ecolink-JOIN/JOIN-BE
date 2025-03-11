@@ -1,8 +1,6 @@
 package com.join.core.avatar.controller.specification;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.join.core.auth.domain.UserPrincipal;
@@ -20,8 +18,6 @@ public interface PushControllerSpecification {
 	@Operation(summary = "푸시 알림 동의 API - 인증 필요",
 		description = "푸시 알림 동의 API - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
-	@PreAuthorize("isAuthenticated()")
-	@PutMapping
 	ApiResponse<Void> changePushConsent(@AuthenticationPrincipal UserPrincipal principal,
 		@RequestBody AvatarCommand.ChangePushConsent command);
 

@@ -23,7 +23,7 @@ public class EvaluationService {
 
     @Transactional
     public void evaluate(EvaluationRequest request, Long raterId) {
-        Study study = studyReader.validateStudyCompletion(request.getStudyId());
+        Study study = studyReader.validateStudyCompletion(request.getStudyToken());
         Avatar ratee = avatarReader.getAvatarById(request.getRateeId());
 
         Avatar rater = avatarReader.getAvatarById(raterId);
@@ -32,7 +32,7 @@ public class EvaluationService {
             throw new InvalidParamException(ErrorCode.INVALID_PARAMETER, "평가자와 평가대상자는 같을 수 없습니다.");
         }
 
-        enrollmentReader.validateEnrollment(ratee.getId(), request.getStudyId());
+        enrollmentReader.validateEnrollment(ratee.getId(), request.getStudyToken());
         evaluationStore.createEvaluation(study, rater, ratee, request);
     }
 

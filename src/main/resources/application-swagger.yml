@@ -15,3 +15,4 @@ swagger:
     block: '13. 차단'
     my-page: '14. 마이페이지'
     report: '15. 신고'
+    batch-job: '16. 자동 알림'

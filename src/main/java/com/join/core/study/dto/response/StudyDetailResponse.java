@@ -1,8 +1,11 @@
 package com.join.core.study.dto.response;
 
+import com.join.core.rule.dto.response.RuleResponse;
 import com.join.core.schedule.dto.response.StudyScheduleResponse;
 import com.join.core.study.constant.StudyForm;
+import com.join.core.study.constant.StudyStatus;
 import com.join.core.study.domain.Study;
+import com.join.core.evaluation.dto.response.EvaluationScore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -55,18 +58,43 @@ public class StudyDetailResponse {
     @Schema(description = "정기 모임 스케줄")
     private List<StudyScheduleResponse> schedules;
 
-    @Schema(description = "스터디 규칙", example = "지각 시 벌금 1,000원 부과")
+    @Schema(description = "스터디 규칙 유형")
+    private List<RuleResponse> rules;
+
+    @Schema(description = "스터디 규칙 설명", example = "지각 시 벌금 1,000원 부과")
     private String ruleExp;
 
     @Schema(description = "지원 자격", example = "열정 있는 사람이라면 누구나")
     private String qualificationExp;
 
-    public static StudyDetailResponse from(Study study) {
+    @Schema(description = "스터디 평가 점수", example = "스터디장, 스터디원 평가 점수")
+    private EvaluationScore evaluationScore;
+
+    @Schema(description = "스터디 상태", example = "모집중")
+    private StudyStatus status;
+
+    @Schema(description = "시/도", example = "서울특별시 (form=ONLINE의 경우 제외)")
+    private String province;
+
+    @Schema(description = "시/군/구", example = "도봉구 (form=ONLINE의 경우 제외)")
+    private String city;
+
+    @Schema(description = "카테고리 이름", example = "입시")
+    private String categoryName;
+
+    public static StudyDetailResponse from(Study study, EvaluationScore evaluationScore) {
         List<StudyScheduleResponse> schedules = study.getSchedules().stream()
                 .map(schedule -> new StudyScheduleResponse(
                         schedule.getWeekOfDay(),
                         schedule.getStTime(),
                         schedule.getEndTime()))
+                .toList();
+
+        String province = (study.getAddress() != null) ? study.getAddress().getProvince() : null;
+        String city = (study.getAddress() != null) ? study.getAddress().getCity() : null;
+
+        List<RuleResponse> rules = study.getRules().stream()
+                .map(rule -> new RuleResponse(rule.getType()))
                 .toList();
 
         return new StudyDetailResponse(
@@ -83,8 +111,14 @@ public class StudyDetailResponse {
                 study.getWriter().getId(),
                 study.getWriter().getNickname(),
                 schedules,
+                rules,
                 study.getRuleExp(),
-                study.getQualificationExp()
+                study.getQualificationExp(),
+                evaluationScore,
+                study.getStatus(),
+                province,
+                city,
+                study.getCategory().getCategoryName()
         );
     }
 }

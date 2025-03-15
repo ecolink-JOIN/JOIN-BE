@@ -11,6 +11,7 @@ import com.join.core.study.dto.response.CustomStudyResponse;
 import com.join.core.study.dto.response.PopularStudyReadResponse;
 import com.join.core.study.dto.response.SearchResponse;
 import com.join.core.study.dto.response.StudyDetailResponse;
+import com.join.core.study.dto.response.StudyListForBlockResponse;
 import com.join.core.study.service.StudyReadService;
 import com.join.core.study.service.dto.CustomStudyCommand;
 import com.join.core.study.service.dto.SearchCommand;
@@ -102,5 +103,11 @@ public class StudyReadController implements StudyReadApiSpecification {
                         )
                 )
         );
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/block")
+    public ApiResponse<Collection<StudyListForBlockResponse>> getStudiesForBlock(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return ApiResponse.ok(studyReadService.getStudiesForBlock(userPrincipal.getAvatarToken()));
     }
 }

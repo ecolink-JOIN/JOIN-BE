@@ -20,8 +20,8 @@ public class StudyEndService {
     private final StudyReader studyReader;
 
     @Transactional
-    public void endStudy(Long studyId, StudyEndRequest endRequest, UserPrincipal principal) {
-        Study study = studyReader.getStudyById(studyId);
+    public void endStudy(String studyToken, StudyEndRequest endRequest, UserPrincipal principal) {
+        Study study = studyReader.getStudyByToken(studyToken);
         Avatar writer = study.getWriter();
 
         if (!writer.getId().equals(principal.getAvatarId())) {

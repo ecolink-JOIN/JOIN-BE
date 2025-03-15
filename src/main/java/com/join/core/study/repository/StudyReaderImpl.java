@@ -73,8 +73,8 @@ public class StudyReaderImpl implements StudyReader {
     }
 
     @Override
-    public Study validateStudyCompletion(Long studyId) {
-        return studyRepository.findByIdAndStatus(studyId, StudyStatus.COMPLETED)
+    public Study validateStudyCompletion(String studyToken) {
+        return studyRepository.findByStudyTokenAndStatus(studyToken, StudyStatus.COMPLETED)
                 .orElseThrow(() -> new InvalidStateException(ErrorCode.EVALUATION_PERIOD_INVALID));
     }
 
@@ -86,5 +86,10 @@ public class StudyReaderImpl implements StudyReader {
     @Override
     public List<Study> getActiveStudyByTokens(Long subjectId, Long targetId) {
         return studyQueryRepository.getActiveStudiesByTokens(subjectId, targetId);
+    }
+
+    @Override
+    public List<Study> getStudiesByAvatarId(Long avatarId) {
+        return studyQueryRepository.findByAvatarId(avatarId);
     }
 }

@@ -3,6 +3,7 @@ package com.join.core.study.dto.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.join.core.rule.dto.request.RuleRequest;
 import com.join.core.schedule.dto.request.StudyScheduleRequest;
 import com.join.core.study.constant.StudyForm;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -31,7 +32,7 @@ public class StudyRecruitRequest {
     @NotNull
     private LocalDate recruitEndDate;
 
-    @Schema(description = "모집 방법", example = "ONLINE")
+    @Schema(description = "모집 방법", example = "OFFLINE")
     @NotNull
     private StudyForm form;
 
@@ -43,12 +44,10 @@ public class StudyRecruitRequest {
     @NotNull
     private LocalDate endDate;
 
-    @Schema(description = "시/도", example = "서울특별시")
-    @NotNull
+    @Schema(description = "시/도", example = "서울특별시 (form=ONLINE의 경우 제외)")
     private String province;
 
-    @Schema(description = "시/군/구", example = "도봉구")
-    @NotNull
+    @Schema(description = "시/군/구", example = "도봉구 (form=ONLINE의 경우 제외)")
     private String city;
 
     @Schema(description = "카테고리 이름", example = "입시")
@@ -71,8 +70,10 @@ public class StudyRecruitRequest {
     @NotNull
     private String content;
 
-    @Schema(description = "스터디 규칙", example = "지각 시 벌금 1,000원 부과")
-    @NotNull
+    @Schema(description = "스터디 규칙 유형")
+    private List<RuleRequest> rules;
+
+    @Schema(description = "스터디 규칙 설명", example = "지각 시 벌금 1,000원 부과")
     private String ruleExp;
 
     @Schema(description = "지원 자격", example = "열정 있는 사람이라면 누구나")

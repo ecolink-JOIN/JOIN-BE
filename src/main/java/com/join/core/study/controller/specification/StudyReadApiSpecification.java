@@ -9,7 +9,9 @@ import com.join.core.study.dto.request.StudyOrderByPopularityParameter;
 import com.join.core.study.dto.response.CustomStudyResponse;
 import com.join.core.study.dto.response.PopularStudyReadResponse;
 import com.join.core.study.dto.response.SearchResponse;
+import com.join.core.study.dto.response.StudyListForBlockResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -43,4 +45,10 @@ public interface StudyReadApiSpecification {
             SearchParameter searchParameter,
             PageParameterRequest pageParameterRequest
     );
+
+    @Tag(name = "${swagger.tag.block}")
+    @Operation(summary = "차단할 사용자 목록 - 인증 필수",
+            description = "스터디별 차단 가능한 사용자 목록",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<Collection<StudyListForBlockResponse>> getStudiesForBlock(@AuthenticationPrincipal UserPrincipal userPrincipal);
 }

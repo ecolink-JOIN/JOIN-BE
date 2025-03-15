@@ -20,8 +20,8 @@ public class ReportRequest {
     private ReportType reportType;
 
     @NotNull
-    @Schema(description = "스터디 ID", example = "1")
-    private Long studyId;
+    @Schema(description = "스터디 토큰", example = "std_abc")
+    private String studyToken;
 
     @NotBlank
     @Size(min = 10, max = 300)

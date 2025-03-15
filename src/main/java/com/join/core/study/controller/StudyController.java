@@ -53,11 +53,11 @@ public class StudyController {
             description = "스터디 종료 - 인증 필수",
             security = {@SecurityRequirement(name = "session-token")})
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/{studyId}/close")
+    @PostMapping("/{studyToken}/close")
     public ApiResponse<Void> closeStudy(@AuthenticationPrincipal UserPrincipal principal,
-                                      @PathVariable Long studyId,
+                                      @PathVariable String studyToken,
                                       @RequestBody StudyEndRequest endRequest) {
-        studyEndService.endStudy(studyId, endRequest, principal);
+        studyEndService.endStudy(studyToken, endRequest, principal);
         return ApiResponse.ok();
     }
 

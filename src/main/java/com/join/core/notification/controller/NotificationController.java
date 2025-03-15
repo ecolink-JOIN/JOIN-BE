@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/study/{studyId}/notice")
+@RequestMapping("${api.prefix}/study/{studyToken}/notice")
 public class NotificationController {
 
     private final NotificationService notificationService;
@@ -26,9 +26,9 @@ public class NotificationController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ApiResponse<Void> createNotice(@AuthenticationPrincipal UserPrincipal principal,
-                                          @PathVariable Long studyId,
+                                          @PathVariable String studyToken,
                                           @RequestBody NotificationRequest request) {
-        notificationService.postNotice(studyId, request, principal.getAvatarId());
+        notificationService.postNotice(studyToken, request, principal.getAvatarId());
         return ApiResponse.ok();
     }
 

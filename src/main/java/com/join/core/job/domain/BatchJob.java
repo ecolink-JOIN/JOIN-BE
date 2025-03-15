@@ -20,19 +20,29 @@ public class BatchJob extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private String content;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private DayType day;
 
-    @NotNull
     private LocalTime time;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id", nullable = false)
     private Study study;
+
+    public BatchJob(String content, DayType day, LocalTime time, Study study) {
+        this.content = content;
+        this.day = day;
+        this.time = time;
+        this.study = study;
+    }
+
+    public void update(String content, DayType day, LocalTime time) {
+        this.content = (content != null) ? content : this.content;
+        this.day = (day != null) ? day : this.day;
+        this.time = (time != null) ? time : this.time;
+    }
 
 }

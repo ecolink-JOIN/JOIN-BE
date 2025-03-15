@@ -4,6 +4,7 @@ import com.join.core.avatar.domain.Avatar;
 import com.join.core.category.domain.Category;
 import com.join.core.fine.constant.FineReason;
 import com.join.core.fine.domain.FineRule;
+import com.join.core.schedule.dto.response.StudyScheduleResponse;
 import com.join.core.study.constant.StudyForm;
 import com.join.core.study.domain.Study;
 import com.join.core.study.dto.response.*;
@@ -11,7 +12,6 @@ import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.join.core.study.service.dto.CustomStudyCommand;
 import com.join.core.study.service.dto.FineReasonAmountsDto;
-import com.join.core.study.service.dto.StudyScheduleDto;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -86,11 +86,11 @@ public class StudyMapper {
         );
     }
 
-    public List<StudyScheduleDto> toStudySchedulesDto(Study study) {
+    public List<StudyScheduleResponse> toStudyScheduleResponse(Study study) {
         return study.getSchedules().stream()
                 .map(studySchedule ->
-                     new StudyScheduleDto(
-                            studySchedule.getWeekOfDay().getName(),
+                     new StudyScheduleResponse(
+                            studySchedule.getWeekOfDay(),
                             studySchedule.getStTime(),
                             studySchedule.getEndTime()
                     )

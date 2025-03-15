@@ -17,7 +17,7 @@ public class StudyRuleService {
     @Transactional(readOnly = true)
     public StudyRuleResponse getRules(String studyToken) {
         Study study = studyReader.getStudyByToken(studyToken);
-        return StudyRuleResponse.of(study, studyMapper.toStudySchedulesDto(study), studyMapper.toFineReasonAmountsDto(study));
+        return StudyRuleResponse.of(study, studyMapper.toStudyScheduleResponse(study), studyMapper.toFineReasonAmountsDto(study));
     }
 
 }

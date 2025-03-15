@@ -9,9 +9,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record StudyRuleResponse(
-        @Schema(description = "스터디 시작 날짜", example = "avt_fhEUF7C2C5tS0OC1")
+        @Schema(description = "스터디 시작 날짜", example = "2025-09-01")
         LocalDate startDate,
-        @Schema(description = "스터디 종료 날짜", example = "avt_fhEUF7C2C5tS0OC1")
+        @Schema(description = "스터디 종료 날짜", example = "2025-12-31")
         LocalDate endDate,
         @Schema(description = "스터디 스케쥴")
         List<StudyScheduleDto> schedules,

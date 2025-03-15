@@ -1,5 +1,6 @@
 package com.join.core.study.domain;
 
+import com.join.core.fine.domain.FineRule;
 import com.join.core.rule.domain.Rule;
 import com.join.core.address.domain.Address;
 import com.join.core.avatar.domain.Avatar;
@@ -110,6 +111,9 @@ public class Study {
     @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rule> rules;
 
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FineRule> fineRules;
+
     private String kakaoUrl;
 
     public Study(StudyRecruitRequest recruitRequest, Avatar writer, Address address, Category category) {
@@ -194,6 +198,10 @@ public class Study {
         for (Rule rule : rules) {
             rule.setStudy(this);
         }
+    }
+
+    public List<String> getRuleNames() {
+        return this.rules.stream().map(rule -> rule.getType().name()).toList();
     }
 
 

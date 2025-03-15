@@ -5,8 +5,11 @@ import com.join.core.common.constant.DayType;
 import com.join.core.study.constant.StudyForm;
 import com.join.core.study.constant.StudyStatus;
 import com.join.core.study.constant.TimeZone;
+import com.join.core.study.domain.QStudy;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -89,9 +92,39 @@ public record SearchCondition(
             if (maxParticipationCount != null) {
                 return studySchedule.id.count().loe(maxParticipationCount);
             }
-            return null;
+            return studySchedule.id.count().between(0, 7);
         }
 
         return studySchedule.id.count().between(minParticipationCount, maxParticipationCount);
+    }
+
+    public BooleanExpression getWhereClause() {
+        QStudy study = QStudy.study;
+        if (minParticipationCount == null || maxParticipationCount == null) {
+            if (minParticipationCount == null && maxParticipationCount == null) {
+                return null;
+            }
+            if (minParticipationCount != null) {
+                return JPAExpressions
+                        .select(studySchedule.id.count())
+                        .from(studySchedule)
+                        .where(studySchedule.study.id.eq(study.id))
+                        .goe((long) minParticipationCount);
+            }
+            return JPAExpressions
+                    .select(studySchedule.id.count())
+                    .from(studySchedule)
+                    .where(studySchedule.study.id.eq(study.id))
+                    .loe((long) maxParticipationCount);
+        }
+        return Expressions.booleanTemplate(
+                "{0} BETWEEN ({1}) AND ({2})",
+                JPAExpressions
+                        .select(studySchedule.id.count())
+                        .from(studySchedule)
+                        .where(studySchedule.study.id.eq(study.id)),
+                minParticipationCount,
+                maxParticipationCount
+        );
     }
 }

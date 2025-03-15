@@ -110,7 +110,7 @@ public class StudyReadService {
         Avatar avatar = getAvatarById(command.userPrincipal());
         Category category = getCategoryByName(command.parameter().category());
         SearchCondition condition = studyMapper.toSearchCondition(command.parameter(), category);
-        return studyReader.getStudiesByTitleContaining(condition, command.pageable())
+        return studyReader.getStudiesByTitleAndConditions(condition, command.pageable())
                 .map(study -> {
                     double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
                     boolean isBookmark = isBookmark(avatar, study);

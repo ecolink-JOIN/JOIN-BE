@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.join.core.address.domain.QAddress.address;
 import static com.join.core.bookmark.domain.QBookmark.bookmark;
 import static com.join.core.enrollment.domain.QEnrollment.enrollment;
 import static com.join.core.history.domain.QViewHistory.viewHistory;
@@ -173,20 +174,17 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
 
     private List<Study> getSearchStudy(SearchCondition condition, Pageable pageable) {
         return queryFactory.selectFrom(study)
-                .innerJoin(enrollment).on(
-                        enrollment.study.id.eq(study.id),
-                        enrollment.status.eq(EnrollmentStatus.JOINED)
-                )
-                .innerJoin(studySchedule).on(
+                .leftJoin(studySchedule).on(
                         studySchedule.study.id.eq(study.id)
                 )
+                .innerJoin(address).on(address.id.eq(study.address.id))
                 .where(
                         condition.toBooleanBuilder()
                 )
-                .groupBy(study.id)
+                .groupBy(study.id, studySchedule.id)
                 .having(condition.getHavingClause())
                 .orderBy(
-                        study.studyName.asc()
+                        study.title.asc()
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -194,12 +192,14 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
     }
 
     private Long countSearchStudy(SearchCondition condition) {
-        return queryFactory.select(study.count())
+        return queryFactory.select(study.id.count().coalesce(0L))
                 .from(study)
+                .leftJoin(studySchedule).on(studySchedule.study.id.eq(study.id))
+                .join(address).on(address.id.eq(study.address.id))
                 .where(
-                        condition.toBooleanBuilder()
+                        condition.toBooleanBuilder(),
+                        condition.getWhereClause()
                 )
-                .having(condition.getHavingClause())
                 .fetchOne();
     }
 }

@@ -32,7 +32,7 @@ public class StudyRecruitRequest {
     @NotNull
     private LocalDate recruitEndDate;
 
-    @Schema(description = "모집 방법", example = "ONLINE")
+    @Schema(description = "모집 방법", example = "OFFLINE")
     @NotNull
     private StudyForm form;
 
@@ -44,12 +44,10 @@ public class StudyRecruitRequest {
     @NotNull
     private LocalDate endDate;
 
-    @Schema(description = "시/도", example = "서울특별시")
-    @NotNull
+    @Schema(description = "시/도", example = "서울특별시 (form=ONLINE의 경우 제외)")
     private String province;
 
-    @Schema(description = "시/군/구", example = "도봉구")
-    @NotNull
+    @Schema(description = "시/군/구", example = "도봉구 (form=ONLINE의 경우 제외)")
     private String city;
 
     @Schema(description = "카테고리 이름", example = "입시")

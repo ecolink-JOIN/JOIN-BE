@@ -1,5 +1,10 @@
 package com.join.core.enrollment.repository;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.join.core.enrollment.constant.EnrollmentStatus;
 import com.join.core.enrollment.domain.Enrollment;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +18,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     Optional<Enrollment> findByAvatarIdAndStudyId(Long avatarId, Long studyId);
     boolean existsByAvatarIdAndStudyStudyTokenAndStatusNot(Long avatarId, String studyToken, EnrollmentStatus enrollmentStatus);
     List<Enrollment> findEnrollmentByStudyIdAndStatus(Long studyId, EnrollmentStatus status);
+    boolean existsByAvatarIdAndStudyIdAndStatusNot(Long avatarId, Long studyId, EnrollmentStatus enrollmentStatus);
+    List<Enrollment> findByStudyId(Long studyId);
+
 }

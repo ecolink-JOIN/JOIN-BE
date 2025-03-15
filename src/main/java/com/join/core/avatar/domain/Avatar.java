@@ -100,4 +100,8 @@ public class Avatar extends BaseTimeEntity implements SinglePhotoContainer<Profi
 	public boolean isSameAvatar(Long id) {
 		return id.equals(this.id);
 	}
+
+	public boolean isSameAvatar(String token) {
+		return this.avatarToken.equals(token);
+	}
 }

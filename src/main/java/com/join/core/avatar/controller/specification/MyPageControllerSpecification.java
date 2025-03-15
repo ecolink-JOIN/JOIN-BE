@@ -1,16 +1,17 @@
 package com.join.core.avatar.controller.specification;
 
 import com.join.core.auth.domain.UserPrincipal;
-import com.join.core.avatar.dto.response.MyInterestStudyResponse;
 import com.join.core.avatar.dto.response.MyJoinedStudyResponse;
 import com.join.core.avatar.dto.response.MyManagedStudyInfoResponse;
 import com.join.core.avatar.dto.response.MyPageInfoResponse;
 import com.join.core.common.response.ApiResponse;
+import com.join.core.study.dto.response.CustomStudyResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface MyPageControllerSpecification {
@@ -40,6 +41,6 @@ public interface MyPageControllerSpecification {
     @Operation(summary = "마이페이지 관심 스터디 목록 조회 - 인증 필수",
             description = "마이페이지 관심 스터디 목록을 조회해옵니다. 최근 관심 표시한 스터디가 상단으로 보이게 됩니다.",
             security = {@SecurityRequirement(name = "session-token")})
-    ApiResponse<MyInterestStudyResponse> getMyInterestStudies(
+    ApiResponse<Collection<CustomStudyResponse>> getMyInterestStudies(
             @AuthenticationPrincipal UserPrincipal principal);
 }

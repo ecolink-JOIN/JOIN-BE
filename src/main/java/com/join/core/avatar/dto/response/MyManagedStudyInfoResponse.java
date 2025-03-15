@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 public record MyManagedStudyInfoResponse(
+        @Schema(description = "스터디 토큰", example = "std_mfN0eg6IQI6k07ek")
+        String studyToken,
         @Schema(description = "스터디 이름", example = "직장인 영어 회화 스터디")
         String name,
         @Schema(description = "모집 상태", example = "RECRUITING, READY, ACTIVE, COMPLETED 중 하나(모집중, 모집완료, 활동중, 활동완료)")
@@ -47,6 +49,7 @@ public record MyManagedStudyInfoResponse(
 
     public static MyManagedStudyInfoResponse of(Study study, double teamAverageAttendanceRate, double teamAverageProofRate, List<StudyMemberAchievementDto> achievementDtos) {
         return new MyManagedStudyInfoResponse(
+                study.getStudyToken(),
                 study.getStudyName(),
                 study.getStatus(),
                 teamAverageAttendanceRate,

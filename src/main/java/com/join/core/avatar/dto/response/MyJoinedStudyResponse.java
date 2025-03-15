@@ -15,21 +15,23 @@ public record MyJoinedStudyResponse(
         List<JoinStudyInfoDto> joinStudyInfos
 ) {
     public record JoinStudyInfoDto(
+            @Schema(description = "스터디 토큰", example = "std_mfN0eg6IQI6k07ek")
+            String studyToken,
             @Schema(description = "스터디 이름", example = "직장인 영어 회화 스터디")
             String name,
             @Schema(description = "모집 상태", example = "RECRUITING, READY, ACTIVE, COMPLETED 중 하나(모집중, 모집완료, 활동중, 활동완료)")
             StudyStatus status
     ) {
 
-        public static JoinStudyInfoDto of(String name, StudyStatus status) {
-            return new JoinStudyInfoDto(name, status);
+        public static JoinStudyInfoDto of(String studyToken, String name, StudyStatus status) {
+            return new JoinStudyInfoDto(studyToken, name, status);
         }
     }
 
     public static MyJoinedStudyResponse of(List<Study> studies) {
         long ongoingStudyCount = studies.stream().filter(study -> !study.getStatus().equals(StudyStatus.COMPLETED)).count();
         long completedStudyCount = studies.stream().filter(study -> study.getStatus().equals(StudyStatus.COMPLETED)).count();
-        List<JoinStudyInfoDto> joinStudyInfos = studies.stream().map(study -> JoinStudyInfoDto.of(study.getStudyName(), study.getStatus())).toList();
+        List<JoinStudyInfoDto> joinStudyInfos = studies.stream().map(study -> JoinStudyInfoDto.of(study.getStudyToken(), study.getStudyName(), study.getStatus())).toList();
 
         return new MyJoinedStudyResponse(
                 ongoingStudyCount,

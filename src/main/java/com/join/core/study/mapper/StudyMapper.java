@@ -2,6 +2,9 @@ package com.join.core.study.mapper;
 
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.category.domain.Category;
+import com.join.core.fine.constant.FineReason;
+import com.join.core.fine.domain.FineRule;
+import com.join.core.schedule.dto.response.StudyScheduleResponse;
 import com.join.core.study.constant.StudyForm;
 import com.join.core.study.domain.Study;
 import com.join.core.study.dto.request.SearchParameter;
@@ -15,9 +18,11 @@ import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.join.core.study.repository.condition.SearchCondition;
 import com.join.core.study.service.dto.CustomStudyCommand;
+import com.join.core.study.service.dto.FineReasonAmountsDto;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.List;
 
 @Component
 public class StudyMapper {
@@ -100,5 +105,36 @@ public class StudyMapper {
                 avatarResponses,
                 study.isActive()
         );
+    }
+
+    public List<StudyScheduleResponse> toStudyScheduleResponse(Study study) {
+        return study.getSchedules().stream()
+                .map(studySchedule ->
+                     new StudyScheduleResponse(
+                            studySchedule.getWeekOfDay(),
+                            studySchedule.getStTime(),
+                            studySchedule.getEndTime()
+                    )
+                ).toList();
+    }
+
+    public FineReasonAmountsDto toFineReasonAmountsDto(Study study) {
+        Integer tardiness = study.getFineRules().stream()
+                .filter(fineRule -> fineRule.getReason() == FineReason.TARDINESS)
+                .findFirst()
+                .map(FineRule::getAmount)
+                .orElse(0);
+        Integer absence = study.getFineRules().stream()
+                .filter(fineRule -> fineRule.getReason() == FineReason.ABSENCE)
+                .findFirst()
+                .map(FineRule::getAmount)
+                .orElse(0);
+        Integer nonProof = study.getFineRules().stream()
+                .filter(fineRule -> fineRule.getReason() == FineReason.NON_PROOF)
+                .findFirst()
+                .map(FineRule::getAmount)
+                .orElse(0);
+
+        return new FineReasonAmountsDto(tardiness, absence, nonProof);
     }
 }

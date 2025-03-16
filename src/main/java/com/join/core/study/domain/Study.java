@@ -1,6 +1,7 @@
 package com.join.core.study.domain;
 
 import com.join.core.fine.domain.FineRule;
+import com.join.core.meeting.domain.Meeting;
 import com.join.core.rule.domain.Rule;
 import com.join.core.address.domain.Address;
 import com.join.core.avatar.domain.Avatar;
@@ -23,6 +24,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.join.core.common.exception.ErrorCode.INVALID_PARAMETER;
@@ -113,6 +115,9 @@ public class Study {
 
     @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FineRule> fineRules;
+
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Meeting> meetings = new ArrayList<>();
 
     private String kakaoUrl;
 

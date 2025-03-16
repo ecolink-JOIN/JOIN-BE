@@ -48,4 +48,13 @@ public class MeetingReaderImpl implements MeetingReader {
     public List<Meeting> findMeetingsByStudyId(Long studyId) {
         return meetingQueryRepository.findMeetingsByStudyId(studyId);
     }
+
+    @Override
+    public int getNextMeetingNo(Study study) {
+        List<Meeting> meetings = meetingRepository.findByStudy(study);
+        return meetings.stream()
+                .mapToInt(Meeting::getMeetingNo)
+                .max()
+                .orElse(0) + 1;
+    }
 }

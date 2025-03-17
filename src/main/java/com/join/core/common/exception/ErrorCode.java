@@ -76,6 +76,11 @@ public enum ErrorCode {
 	NOT_ACTIVE_STUDY(HttpStatus.BAD_REQUEST, "S-004", "진행 중인 스터디가 아닙니다."),
 
 	/**
+	 * 벌금 관련 오류
+	 */
+	FINE_INPUT_REQUIRED(HttpStatus.BAD_REQUEST, "F-001", "벌금 관련 입력이 누락되었습니다."),
+
+	/**
 	 * 회차 관련 오류
 	 */
 	MEETING_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "M-001", "주어진 식별자로 회차를 찾을 수 없습니다."),

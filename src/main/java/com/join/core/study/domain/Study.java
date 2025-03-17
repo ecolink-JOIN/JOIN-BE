@@ -1,6 +1,5 @@
 package com.join.core.study.domain;
 
-import com.join.core.rule.domain.Rule;
 import com.join.core.address.domain.Address;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.category.domain.Category;
@@ -8,6 +7,10 @@ import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.common.util.TokenGenerator;
+import com.join.core.fine.constant.FineReason;
+import com.join.core.fine.domain.FineRule;
+import com.join.core.rule.constant.RuleType;
+import com.join.core.rule.domain.Rule;
 import com.join.core.schedule.domain.StudySchedule;
 import com.join.core.study.constant.StudyEndReason;
 import com.join.core.study.constant.StudyForm;
@@ -22,9 +25,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
-import static com.join.core.common.exception.ErrorCode.INVALID_PARAMETER;
+import static com.join.core.common.exception.ErrorCode.*;
 
 @Getter
 @Entity
@@ -110,13 +116,17 @@ public class Study {
     @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rule> rules;
 
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FineRule> fineRules;
+
     private String kakaoUrl;
 
     public Study(StudyRecruitRequest recruitRequest, Avatar writer, Address address, Category category) {
         if (writer == null)
             throw new InvalidParamException(INVALID_PARAMETER, "Study.writer");
         if (recruitRequest.getForm() == StudyForm.OFFLINE && address == null) {
-            throw new InvalidParamException(INVALID_PARAMETER, "Study.address");}
+            throw new InvalidParamException(INVALID_PARAMETER, "Study.address");
+        }
         if (category == null)
             throw new InvalidParamException(INVALID_PARAMETER, "Study.category");
 
@@ -139,6 +149,10 @@ public class Study {
         this.content = recruitRequest.getContent();
         this.ruleExp = recruitRequest.getRuleExp();
         this.qualificationExp = recruitRequest.getQualificationExp();
+        this.fineRules = new ArrayList<>();
+        fineRules.add(new FineRule(1000, FineReason.TARDINESS, this));
+        fineRules.add(new FineRule(3000, FineReason.ABSENCE, this));
+        fineRules.add(new FineRule(3000, FineReason.NON_PROOF, this));
     }
 
     public void updateRecruitDetails(StudyReRecruitRequest reRecruitRequest) {
@@ -149,6 +163,75 @@ public class Study {
         this.content = reRecruitRequest.getContent();
         this.qualificationExp = reRecruitRequest.getQualificationExp();
         this.status = StudyStatus.RECRUITING;
+    }
+
+    public void updateStudySchedule(LocalDate stDate, LocalDate endDate, List<StudySchedule> schedules) {
+        this.stDate = stDate;
+        this.endDate = endDate;
+        schedules.forEach(studySchedule -> studySchedule.setStudy(this));
+
+        Iterator<StudySchedule> iterator = this.schedules.iterator();
+        while (iterator.hasNext()) {
+            StudySchedule studySchedule = iterator.next();
+            studySchedule.setStudy(null);
+            iterator.remove();
+        }
+
+        this.schedules.addAll(schedules);
+    }
+
+    public void updateFormToOnline() {
+        this.form = StudyForm.ONLINE;
+    }
+
+    public void updateFormToOffline(Address address) {
+        this.form = StudyForm.OFFLINE;
+        this.address = address;
+    }
+
+    public void updateRuleExp(String ruleExp) {
+        this.ruleExp = ruleExp;
+    }
+
+    public void updateRules(List<String> newRuleNames) {
+        Iterator<Rule> iterator = this.rules.iterator();
+        while (iterator.hasNext()) {
+            Rule rule = iterator.next();
+            if (!newRuleNames.contains(rule.getType().name())) {
+                rule.setStudy(null);
+                iterator.remove();
+            }
+        }
+
+        newRuleNames.forEach(ruleName -> {
+            if (this.rules.stream().noneMatch(rule -> rule.getType().name().equals(ruleName))) {
+                Rule newRule = new Rule(RuleType.valueOf(ruleName));
+                newRule.setStudy(this);
+                this.rules.add(newRule);
+            }
+        });
+    }
+
+    public void addFineToRules(Integer tardinessAmount, Integer absenceAmount, Integer nonProofAmount) {
+        if (!rules.stream().map(Rule::getType).anyMatch(ruleType -> ruleType == RuleType.FINE)) {
+            Rule rule = new Rule(RuleType.FINE);
+            rule.setStudy(this);
+            rules.add(rule);
+        }
+        fineRules.forEach(rule -> {
+            if (Objects.requireNonNull(rule.getReason()) == FineReason.TARDINESS) {
+                rule.updateAmount(tardinessAmount);
+            } else if (rule.getReason() == FineReason.ABSENCE) {
+                rule.updateAmount(absenceAmount);
+            } else if (rule.getReason() == FineReason.NON_PROOF) {
+                rule.updateAmount(nonProofAmount);
+            }
+        });
+    }
+
+    public void disableFine() {
+        List<Rule> fines = rules.stream().filter(rule -> rule.getType() == RuleType.FINE).toList();
+        rules.removeAll(fines);
     }
 
     public void addSchedules(List<StudySchedule> schedules) {
@@ -194,6 +277,10 @@ public class Study {
         for (Rule rule : rules) {
             rule.setStudy(this);
         }
+    }
+
+    public List<String> getRuleNames() {
+        return this.rules.stream().map(rule -> rule.getType().name()).toList();
     }
 
 

@@ -95,4 +95,8 @@ public class Proof extends BaseTimeEntity {
         }
         return photo.getFile().getUrl();
     }
+
+    public boolean isCompleted() {
+        return status.isCompleted();
+    }
 }

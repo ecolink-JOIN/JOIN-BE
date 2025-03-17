@@ -1,6 +1,7 @@
 package com.join.core.schedule.dto.request;
 
 import com.join.core.common.constant.DayType;
+import com.join.core.schedule.domain.StudySchedule;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -24,4 +25,7 @@ public class StudyScheduleRequest {
     @NotNull
     private LocalTime endTime;
 
+    public StudySchedule toStudySchedule() {
+        return new StudySchedule(weekOfDay, stTime, endTime);
+    }
 }

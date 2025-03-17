@@ -18,4 +18,8 @@ public enum ProofStatus {
     public boolean isPending() {
         return this == PENDING;
     }
+
+    public boolean isCompleted() {
+        return this != PENDING;
+    }
 }

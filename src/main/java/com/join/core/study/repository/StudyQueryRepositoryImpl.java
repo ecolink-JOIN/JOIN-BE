@@ -6,6 +6,7 @@ import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
+import com.join.core.study.repository.condition.SearchCondition;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.join.core.address.domain.QAddress.address;
 import static com.join.core.bookmark.domain.QBookmark.bookmark;
 import static com.join.core.enrollment.domain.QEnrollment.enrollment;
 import static com.join.core.history.domain.QViewHistory.viewHistory;
@@ -178,5 +180,44 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                     enrollment.status.eq(EnrollmentStatus.JOINED)
             )
             .fetch();
+    }
+
+    @Override
+    public Page<Study> searchByConditions(SearchCondition condition, Pageable pageable) {
+        List<Study> content = getSearchStudy(condition, pageable);
+        Long count = countSearchStudy(condition);
+        return new PageImpl<>(content, pageable, count);
+
+    }
+
+    private List<Study> getSearchStudy(SearchCondition condition, Pageable pageable) {
+        return queryFactory.selectFrom(study)
+                .leftJoin(studySchedule).on(
+                        studySchedule.study.id.eq(study.id)
+                )
+                .innerJoin(address).on(address.id.eq(study.address.id))
+                .where(
+                        condition.toBooleanBuilder()
+                )
+                .groupBy(study.id, studySchedule.id)
+                .having(condition.getHavingClause())
+                .orderBy(
+                        study.title.asc()
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+    }
+
+    private Long countSearchStudy(SearchCondition condition) {
+        return queryFactory.select(study.id.count().coalesce(0L))
+                .from(study)
+                .leftJoin(studySchedule).on(studySchedule.study.id.eq(study.id))
+                .join(address).on(address.id.eq(study.address.id))
+                .where(
+                        condition.toBooleanBuilder(),
+                        condition.getWhereClause()
+                )
+                .fetchOne();
     }
 }

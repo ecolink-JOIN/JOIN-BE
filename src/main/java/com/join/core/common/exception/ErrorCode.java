@@ -142,6 +142,11 @@ public enum ErrorCode {
 	TARGET_IS_NOT_MEMBER_OF_STUDY(HttpStatus.BAD_REQUEST, "BL-005", "차단하려는 상대가 스터디의 팀원이 아닙니다."),
 
 	/**
+	 * 스터디장 위임 관련 오류
+	 */
+	ALREADY_STUDY_LEADER(HttpStatus.BAD_REQUEST, "DG-001", "이미 스터디장인 사용자입니다."),
+
+	/**
 	 * 자동 알림 관련 오류
 	 */
 	BATCHJOB_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "BJ-001", "해당 시간에 이미 등록된 자동 알림이 있습니다."),

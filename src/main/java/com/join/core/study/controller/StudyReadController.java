@@ -98,7 +98,7 @@ public class StudyReadController implements StudyReadApiSpecification {
                 studyReadService.search(
                         new SearchCommand(
                                 userPrincipal,
-                                searchParameter.keyword(),
+                                searchParameter,
                                 pageParameterRequest
                         )
                 )

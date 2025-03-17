@@ -18,6 +18,7 @@ import com.join.core.study.dto.response.StudyDetailResponse;
 import com.join.core.study.dto.response.StudyListForBlockResponse;
 import com.join.core.study.mapper.StudyMapper;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
+import com.join.core.study.repository.condition.SearchCondition;
 import com.join.core.study.service.dto.CustomStudyCommand;
 import com.join.core.study.service.dto.SearchCommand;
 import com.join.core.study.service.dto.StudyOrderByPopularityCommand;
@@ -107,13 +108,15 @@ public class StudyReadService {
     @Transactional(readOnly = true)
     public Page<SearchResponse> search(SearchCommand command) {
         Avatar avatar = getAvatarById(command.userPrincipal());
-        return studyReader.getStudiesByTitleContaining(command.keyword(), command.pageable())
-            .map(study -> {
-                double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
-                boolean isBookmark = isBookmark(avatar, study);
-                Avatar studyLeader = enrollmentReader.getLeaderByStudyId(study.getId());
-                return studyMapper.toSearchResponse(study, studyLeader, isBookmark, averageRating);
-            });
+        Category category = getCategoryByName(command.parameter().category());
+        SearchCondition condition = studyMapper.toSearchCondition(command.parameter(), category);
+        return studyReader.getStudiesByTitleAndConditions(condition, command.pageable())
+                .map(study -> {
+                    double averageRating = enrollmentReader.getAverageByStudyId(study.getId());
+                    boolean isBookmark = isBookmark(avatar, study);
+                    Avatar studyLeader = enrollmentReader.getLeaderByStudyId(study.getId());
+                    return studyMapper.toSearchResponse(study, studyLeader, isBookmark, averageRating);
+                });
     }
 
     @Transactional(readOnly = true)

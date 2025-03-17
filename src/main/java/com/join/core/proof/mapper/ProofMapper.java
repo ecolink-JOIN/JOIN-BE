@@ -6,10 +6,15 @@ import com.join.core.proof.constant.ProofStatus;
 import com.join.core.proof.constant.ProofType;
 import com.join.core.proof.domain.Proof;
 import com.join.core.proof.domain.ProofPhoto;
+import com.join.core.proof.dto.response.AvatarResponse;
 import com.join.core.proof.dto.response.CreateProofResponse;
+import com.join.core.proof.dto.response.ProofResponse;
+import com.join.core.proof.dto.response.ProofsResponse;
 import com.join.core.proof.service.dto.CreateProofCommand;
 import com.join.core.proof.service.dto.UpdateProofParams;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ProofMapper {
@@ -42,5 +47,22 @@ public class ProofMapper {
                 .meeting(meeting)
                 .status(ProofStatus.APPROVED)
                 .build();
+    }
+
+    public ProofResponse toProofResponse(Proof proof) {
+        return new ProofResponse(
+                proof.getMeeting().getMeetingNo(),
+                proof.getId(),
+                proof.isCompleted(),
+                proof.getProvenDate()
+        );
+    }
+
+    public ProofsResponse toProofsResponse(String studyToken, Avatar target, List<ProofResponse> proofs) {
+        return new ProofsResponse(
+                studyToken,
+                new AvatarResponse(target.getAvatarToken(), target.getNickname(), target.getPhoto().getFile().getUrl()),
+                proofs
+        );
     }
 }

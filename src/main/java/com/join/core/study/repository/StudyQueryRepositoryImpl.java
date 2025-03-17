@@ -124,7 +124,7 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
     }
 
     @Override
-    public List<Study> getActiveStudiesByTokens(Long subjectId, Long targetId) {
+    public List<Study> getActiveStudiesBySubjectIdAndTargetId(Long subjectId, Long targetId) {
         return queryFactory.selectFrom(study)
             .leftJoin(enrollment).on(
                 enrollment.study.id.eq(study.id),

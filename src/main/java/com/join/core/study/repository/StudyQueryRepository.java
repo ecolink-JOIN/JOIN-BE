@@ -1,16 +1,12 @@
 package com.join.core.study.repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.join.core.study.repository.condition.SearchCondition;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +20,6 @@ public interface StudyQueryRepository {
     List<Study> findByAvatarId(Long avatarId);
     List<Study> findJoinedStudyByAvatarId(Long avatarId);
     List<Study> findBookmarkStudyByAvatarId(Long avatarId);
-    List<Study> getActiveStudiesByTokens(Long subjectId, Long targetId);
+    List<Study> getActiveStudiesBySubjectIdAndTargetId(Long subjectId, Long targetId);
     Page<Study> searchByConditions(SearchCondition condition, Pageable pageable);
 }

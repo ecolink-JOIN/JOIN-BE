@@ -12,6 +12,7 @@ import com.join.core.study.domain.Study;
 import com.join.core.study.dto.response.CustomStudyResponse;
 import com.join.core.study.mapper.StudyMapper;
 import com.join.core.study.service.StudyReader;
+import com.join.core.study.service.dto.StudyMemberAchievementDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +55,7 @@ public class MyPageServiceImpl implements MyPageService {
                 study -> {
                     double teamAttendanceRateForStudy = attendanceRateService.calculateTeamAttendanceRateForStudy(study.getId());
                     double teamProofRateForStudy = proofRateService.calculateTeamAttendanceRateForStudy(study.getId());
-                    List<MyManagedStudyInfoResponse.StudyMemberAchievementDto> achievementDtos = getMembersRatesAndApprovedStatus(study);
+                    List<StudyMemberAchievementDto> achievementDtos = getMembersRatesAndApprovedStatus(study);
 
                     return MyManagedStudyInfoResponse.of(study, teamAttendanceRateForStudy, teamProofRateForStudy, achievementDtos);
                 }
@@ -68,14 +69,14 @@ public class MyPageServiceImpl implements MyPageService {
         return MyJoinedStudyResponse.of(joinedStudiesByAvatarId);
     }
 
-    private List<MyManagedStudyInfoResponse.StudyMemberAchievementDto> getMembersRatesAndApprovedStatus(Study study) {
+    private List<StudyMemberAchievementDto> getMembersRatesAndApprovedStatus(Study study) {
         List<Avatar> avatars = avatarReader.findAvatarsExceptPendingByStudyId(study.getId());
         return avatars.stream()
                 .map(avatar -> {
                     double attendanceRate = attendanceRateService.calculateMemberAttendanceRateForStudy(avatar.getId(), study.getId());
                     double proofRate = proofRateService.calculateMembersAttendanceRateForStudy(avatar.getId(), study.getId());
                     boolean isFullyApproved = proofReader.isFullyApproved(avatar.getId(), study.getId());
-                    return MyManagedStudyInfoResponse.StudyMemberAchievementDto.of(avatar, attendanceRate, proofRate, isFullyApproved);
+                    return StudyMemberAchievementDto.of(avatar, attendanceRate, proofRate, isFullyApproved);
                 }).toList();
     }
 

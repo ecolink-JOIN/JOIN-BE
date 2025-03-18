@@ -1,6 +1,9 @@
 package com.join.core.enrollment.domain;
 
 import com.join.core.avatar.domain.Avatar;
+import com.join.core.common.exception.ErrorCode;
+import com.join.core.common.exception.LeaderForbiddenException;
+import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.enrollment.constant.EnrollmentStatus;
 import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.study.domain.Study;
@@ -62,5 +65,19 @@ public class Enrollment extends BaseTimeEntity {
 
     public void withdraw() {
         this.status = EnrollmentStatus.LEFT;
+    }
+
+    public void delegateLeader() {
+        if (!role.isLeader()) {
+            throw new LeaderForbiddenException(ErrorCode.LEADER_ONLY_ACCESS);
+        }
+        this.role = StudyRole.MEMBER;
+    }
+
+    public void appointLeader() {
+        if (role.isLeader()) {
+            throw new BadRequestException(ErrorCode.ALREADY_STUDY_LEADER);
+        }
+        this.role = StudyRole.LEADER;
     }
 }

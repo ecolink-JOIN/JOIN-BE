@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -31,6 +32,11 @@ public class BatchJobReaderImpl implements BatchJobReader {
     public BatchJob getBatchJobById(Long batchJobId) {
         return batchJobRepository.findById(batchJobId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.BATCHJOB_NOT_FOUND));
+    }
+
+    @Override
+    public List<BatchJob> getBatchJobsByStudyToken(String studyToken) {
+        return batchJobRepository.findByStudyStudyToken(studyToken);
     }
 
 }

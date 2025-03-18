@@ -4,11 +4,15 @@ import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.job.dto.request.BatchJobRequest;
 import com.join.core.job.dto.request.BatchJobUpdateRequest;
+import com.join.core.job.dto.response.BatchJobResponse;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +47,15 @@ public class BatchJobService {
 
         batchJob.update(updateRequest.getContent(), updateRequest.getDay(), updateRequest.getTime());
         return batchJobStore.store(batchJob);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BatchJobResponse> getBatchJobsByStudy(String studyToken, Long userId) {
+        List<BatchJob> batchJobs = batchJobReader.getBatchJobsByStudyToken(studyToken);
+
+        return batchJobs.stream()
+                .map(job -> new BatchJobResponse(job.getContent(), job.getDay(), job.getTime()))
+                .collect(Collectors.toList());
     }
 
 }

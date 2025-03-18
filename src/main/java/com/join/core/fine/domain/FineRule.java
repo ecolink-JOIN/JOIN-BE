@@ -29,4 +29,14 @@ public class FineRule extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id", nullable = false)
     private Study study;
+
+    public FineRule(Integer amount, FineReason reason, Study study) {
+        this.amount = amount;
+        this.reason = reason;
+        this.study = study;
+    }
+
+    public void updateAmount(Integer amount) {
+        this.amount = amount;
+    }
 }

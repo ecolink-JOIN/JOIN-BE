@@ -76,6 +76,11 @@ public enum ErrorCode {
 	NOT_ACTIVE_STUDY(HttpStatus.BAD_REQUEST, "S-004", "진행 중인 스터디가 아닙니다."),
 
 	/**
+	 * 벌금 관련 오류
+	 */
+	FINE_INPUT_REQUIRED(HttpStatus.BAD_REQUEST, "F-001", "벌금 관련 입력이 누락되었습니다."),
+
+	/**
 	 * 회차 관련 오류
 	 */
 	MEETING_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "M-001", "주어진 식별자로 회차를 찾을 수 없습니다."),
@@ -140,6 +145,11 @@ public enum ErrorCode {
 	ACTIVE_STUDY_EXISTS(HttpStatus.BAD_REQUEST, "BL-003", "함께 진행 중인 스터디가 존재합니다."),
 	ONGOING_STUDY_MEMBER_ONLY(HttpStatus.BAD_REQUEST, "BL-004", "해당 기능은 진행 중인 스터디의 팀원만 차단할 수 있습니다."),
 	TARGET_IS_NOT_MEMBER_OF_STUDY(HttpStatus.BAD_REQUEST, "BL-005", "차단하려는 상대가 스터디의 팀원이 아닙니다."),
+
+	/**
+	 * 스터디장 위임 관련 오류
+	 */
+	ALREADY_STUDY_LEADER(HttpStatus.BAD_REQUEST, "DG-001", "이미 스터디장인 사용자입니다."),
 
 	/**
 	 * 자동 알림 관련 오류

@@ -1,4 +1,4 @@
-package com.join.core.avatar.dto.response;
+package com.join.core.study.dto.response;
 
 import com.join.core.study.constant.StudyStatus;
 import com.join.core.study.domain.Study;
@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
-public record MyManagedStudyInfoResponse(
+public record StudyStatusResponse(
         @Schema(description = "스터디 토큰", example = "std_mfN0eg6IQI6k07ek")
         String studyToken,
         @Schema(description = "스터디 이름", example = "직장인 영어 회화 스터디")
@@ -23,8 +23,8 @@ public record MyManagedStudyInfoResponse(
         @Schema(description = "스터디 카카오톡 링크", example = "https://open.kakao.com/o/joinjoinjoin")
         String kakaoUrl
 ) {
-    public static MyManagedStudyInfoResponse of(Study study, double teamAverageAttendanceRate, double teamAverageProofRate, List<StudyMemberAchievementDto> achievementDtos) {
-        return new MyManagedStudyInfoResponse(
+    public static StudyStatusResponse of(Study study, double teamAverageAttendanceRate, double teamAverageProofRate, List<StudyMemberAchievementDto> achievementDtos) {
+        return new StudyStatusResponse(
                 study.getStudyToken(),
                 study.getStudyName(),
                 study.getStatus(),

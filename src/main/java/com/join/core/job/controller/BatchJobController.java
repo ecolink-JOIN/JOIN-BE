@@ -52,4 +52,14 @@ public class BatchJobController implements BatchJobApiSpecification {
         return ApiResponse.ok(batchJobService.getBatchJobsByStudy(studyToken, principal.getUserId()));
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/{batchJobId}")
+    public ApiResponse<Void> deleteBatchJob(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable Long batchJobId
+    ) {
+        batchJobService.deleteBatchJob(batchJobId, principal.getUserId());
+        return ApiResponse.ok();
+    }
+
 }

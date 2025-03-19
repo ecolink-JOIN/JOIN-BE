@@ -1,5 +1,6 @@
 package com.join.core.study.domain;
 
+import com.join.core.meeting.domain.Meeting;
 import com.join.core.address.domain.Address;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.category.domain.Category;
@@ -118,6 +119,9 @@ public class Study {
 
     @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FineRule> fineRules;
+
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Meeting> meetings = new ArrayList<>();
 
     private String kakaoUrl;
 

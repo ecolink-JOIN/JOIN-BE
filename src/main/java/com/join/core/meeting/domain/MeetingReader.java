@@ -10,4 +10,5 @@ public interface MeetingReader {
     Meeting findByStudyIdAndMeetingNo(Long studyId, int meetingNo);
     List<Meeting> findMeetingsByAvatarIdForStudies(Long avatarId);
     List<Meeting> findMeetingsByStudyId(Long studyId);
+    int getNextMeetingNo(Study study);
 }

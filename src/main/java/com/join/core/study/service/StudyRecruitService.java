@@ -10,6 +10,7 @@ import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.common.exception.impl.NoPermissionException;
+import com.join.core.meeting.domain.MeetingAutoService;
 import com.join.core.rule.domain.Rule;
 import com.join.core.schedule.domain.StudySchedule;
 import com.join.core.study.constant.StudyForm;
@@ -40,6 +41,7 @@ public class StudyRecruitService {
     private final CategoryReader categoryReader;
     private final StudyReader studyReader;
     private final EnrollmentService enrollmentService;
+    private final MeetingAutoService meetingAutoService;
 
     @Transactional
     public void createStudy(Long avatarId, StudyRecruitRequest recruitRequest) {
@@ -80,6 +82,10 @@ public class StudyRecruitService {
         }
 
         studyStore.store(study);
+
+        if (study.isRegular()) {
+            meetingAutoService.createRegularMeetings(study);
+        }
 
         EnrollmentCreateRequest enrollmentRequest = new EnrollmentCreateRequest(
                 study.getId(),

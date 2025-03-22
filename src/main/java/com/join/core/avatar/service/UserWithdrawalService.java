@@ -6,4 +6,5 @@ public interface UserWithdrawalService {
 
 	WithdrawalAvailabilityResponse canWithdrawal(Long avatarId);
 
+	WithdrawalAvailabilityResponse withdraw(Long avatarId);
 }

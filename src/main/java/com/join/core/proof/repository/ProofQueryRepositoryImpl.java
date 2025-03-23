@@ -90,4 +90,18 @@ public class ProofQueryRepositoryImpl implements ProofQueryRepository {
 
         return countNonApproved == null || countNonApproved == 0;
     }
+
+    @Override
+    public boolean existedPendingProofByAvatarIdAndStudyId(Long avatarId, Long studyId) {
+        return queryFactory
+                .select(proof)
+                .from(proof)
+                .join(avatar).on(proof.avatar.id.eq(avatarId))
+                .join(meeting).on(proof.meeting.id.eq(meeting.id))
+                .join(study).on(study.id.eq(studyId))
+                .where(
+                        proof.status.eq(ProofStatus.PENDING)
+                )
+                .fetchFirst() != null;
+    }
 }

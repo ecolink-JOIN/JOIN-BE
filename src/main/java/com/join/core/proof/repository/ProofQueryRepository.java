@@ -10,4 +10,5 @@ public interface ProofQueryRepository {
     List<Proof> findProofsByStudyIdInEnrollmentStatuses(Long studyId, List<EnrollmentStatus> statuses);
     List<Proof> findByAvatarIdAndStudyIdInEnrollmentStatuses(Long avatarId, Long studyId, List<EnrollmentStatus> statuses);
     boolean allProofsHaveApprovedStatus(Long avatarId, Long studyId);
+    boolean existedPendingProofByAvatarIdAndStudyId(Long avatarId, Long studyId);
 }

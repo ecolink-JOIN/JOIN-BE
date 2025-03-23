@@ -6,8 +6,11 @@ import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.NoPermissionException;
 import com.join.core.enrollment.domain.Enrollment;
 import com.join.core.enrollment.dto.request.EnrollmentCreateRequest;
+import com.join.core.enrollment.exception.UnapprovedRemainingException;
 import com.join.core.enrollment.repository.EnrollmentRepository;
 import com.join.core.enrollment.service.dto.DelegateLeaderParams;
+import com.join.core.enrollment.service.dto.ForcedOutParams;
+import com.join.core.proof.service.ProofReader;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ public class EnrollmentService {
     private final AvatarReader avatarReader;
     private final StudyReader studyReader;
     private final EnrollmentReader enrollmentReader;
+    private final ProofReader proofReader;
 
     public void createEnrollment(EnrollmentCreateRequest request, Study study, Avatar avatar) {
         Enrollment enrollment = new Enrollment(
@@ -59,5 +63,24 @@ public class EnrollmentService {
 
         oldLeaderEnrollment.delegateLeader();
         newLeaderEnrollment.appointLeader();
+    }
+
+    @Transactional
+    public void forcedOut(ForcedOutParams params) {
+        Avatar avatar = avatarReader.getAvatarByAvatarToken(params.avatarToken());
+        Study study = studyReader.getStudyByToken(params.studyToken());
+        validateLeaderPermission(avatar, study.getId());
+
+        Avatar target = avatarReader.getAvatarByAvatarToken(params.targetToken());
+        validateRemainingProof(target.getId(), study.getId());
+
+        Enrollment enrollment = enrollmentReader.getEnrollmentByAvatarIdAndStudyId(target.getId(), study.getId());
+        enrollment.forcedOut();
+    }
+
+    private void validateRemainingProof(Long targetId, Long studyId) {
+        if (proofReader.existedPendingProofByAvatarIdAndStudyId(targetId, studyId)) {
+            throw new UnapprovedRemainingException();
+        }
     }
 }

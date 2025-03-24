@@ -68,8 +68,8 @@ public class ApplicationController {
     }
 
     @Tag(name = "${swagger.tag.application}")
-    @Operation(summary = "스터디 지원자 조회 - 인증 필수",
-            description = "스터디 지원자 조회 - 인증 필수",
+    @Operation(summary = "스터디 지원 현황 조회 - 인증 필수",
+            description = "스터디 지원 현황 조회 - 인증 필수",
             security = {@SecurityRequirement(name = "session-token")})
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{studyToken}")

@@ -55,7 +55,7 @@ public class BatchJobService {
         List<BatchJob> batchJobs = batchJobReader.getBatchJobsByStudyToken(studyToken);
 
         return batchJobs.stream()
-                .map(job -> new BatchJobResponse(job.getContent(), job.getDay(), job.getTime()))
+                .map(job -> new BatchJobResponse(job.getId(), job.getContent(), job.getDay(), job.getTime()))
                 .collect(Collectors.toList());
     }
 

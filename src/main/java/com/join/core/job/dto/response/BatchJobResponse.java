@@ -11,6 +11,9 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class BatchJobResponse {
 
+    @Schema(description = "자동 알림 ID", example = "1")
+    private Long batchJobId;
+
     @Schema(description = "알림 내용", example = "내일은 스터디 모임일입니다.")
     private String content;
 

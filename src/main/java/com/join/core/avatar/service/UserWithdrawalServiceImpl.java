@@ -18,6 +18,7 @@ public class UserWithdrawalServiceImpl implements UserWithdrawalService {
 
 	private final AvatarReader avatarReader;
 	private final List<WithdrawalAvailabilityChecker> withdrawalAvailabilityCheckers;
+	private final WithdrawProcessor withdrawProcessor;
 
 	@Override
 	public WithdrawalAvailabilityResponse canWithdrawal(Long avatarId) {
@@ -27,6 +28,21 @@ public class UserWithdrawalServiceImpl implements UserWithdrawalService {
 			if (!result.isCanWithdraw())
 				return result;
 		}
+		return WithdrawalAvailabilityResponse.available();
+	}
+
+	@Transactional
+	@Override
+	public WithdrawalAvailabilityResponse withdraw(Long avatarId) {
+		Avatar avatar = avatarReader.getAvatarById(avatarId);
+		for (var checker : withdrawalAvailabilityCheckers) {
+			var result = checker.check(avatar);
+			if (!result.isCanWithdraw())
+				return result;
+		}
+
+		withdrawProcessor.process(avatar);
+
 		return WithdrawalAvailabilityResponse.available();
 	}
 

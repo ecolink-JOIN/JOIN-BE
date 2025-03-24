@@ -9,4 +9,5 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 
     boolean existsAttendanceByAvatarIdAndMeetingId(Long avatarId, Long meetingId);
     Optional<Attendance> findAttendanceByAvatarIdAndMeetingId(Long avatarId, Long meetingId);
+    Optional<Attendance> findByMeetingIdAndAvatarId(Long meetingId, Long avatarId);
 }

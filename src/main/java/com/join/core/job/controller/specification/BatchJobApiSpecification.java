@@ -3,10 +3,16 @@ package com.join.core.job.controller.specification;
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
 import com.join.core.job.dto.request.BatchJobRequest;
+import com.join.core.job.dto.request.BatchJobUpdateRequest;
+import com.join.core.job.dto.response.BatchJobResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 public interface BatchJobApiSpecification {
 
@@ -17,6 +23,34 @@ public interface BatchJobApiSpecification {
     ApiResponse<Void> addBatchJob(
             @AuthenticationPrincipal UserPrincipal principal,
             BatchJobRequest batchJobRequest
+    );
+
+    @Tag(name = "${swagger.tag.batch-job}")
+    @Operation(summary = "자동 알림 변경 API - 인증 필수",
+            description = "자동 알림 변경 API - 인증 필수",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<Void> updateBatchJob(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable Long batchJobId,
+            @RequestBody BatchJobUpdateRequest batchJobUpdateRequest
+    );
+
+    @Tag(name = "${swagger.tag.batch-job}")
+    @Operation(summary = "자동 알림 조회 API - 인증 필수",
+            description = "자동 알림 조회 API - 인증 필수",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<List<BatchJobResponse>> getBatchJobs(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable String studyToken
+    );
+
+    @Tag(name = "${swagger.tag.batch-job}")
+    @Operation(summary = "자동 알림 삭제 API - 인증 필수",
+            description = "자동 알림 삭제 API - 인증 필수",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<Void> deleteBatchJob(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable Long batchJobId
     );
 
 }

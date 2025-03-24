@@ -48,7 +48,6 @@ public class Proof extends BaseTimeEntity {
     @NotNull
     private LocalDateTime provenDate;
 
-    @NotNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private ProofPhoto photo;
 
@@ -88,5 +87,16 @@ public class Proof extends BaseTimeEntity {
     public void reject() {
         checkStatus();
         this.status = ProofStatus.REJECTED;
+    }
+
+    public String getPhotoUrl() {
+        if (photo == null) {
+            return null;
+        }
+        return photo.getFile().getUrl();
+    }
+
+    public boolean isCompleted() {
+        return status.isCompleted();
     }
 }

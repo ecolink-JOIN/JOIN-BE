@@ -60,7 +60,7 @@ public enum ErrorCode {
 	/**
 	 * 주소 선택 관련 오류
 	 */
-	ADDRESS_SELECTION_REQUIRED(HttpStatus.BAD_REQUEST, "AD-001", "주소 선택이 누락되었습니다."),
+	ADDRESS_INPUT_REQUIRED(HttpStatus.BAD_REQUEST, "AD-001", "주소 입력이 누락되었습니다."),
 
 	/**
 	 * 카테고리 선택 관련 오류
@@ -74,6 +74,11 @@ public enum ErrorCode {
 	DUPLICATE_APPLICATION(HttpStatus.BAD_REQUEST, "S-002", "이미 지원한 스터디입니다."),
 	APPLICATION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "S-003", "주어진 식별자로 지원 정보를 찾을 수 없습니다."),
 	NOT_ACTIVE_STUDY(HttpStatus.BAD_REQUEST, "S-004", "진행 중인 스터디가 아닙니다."),
+
+	/**
+	 * 벌금 관련 오류
+	 */
+	FINE_INPUT_REQUIRED(HttpStatus.BAD_REQUEST, "F-001", "벌금 관련 입력이 누락되었습니다."),
 
 	/**
 	 * 회차 관련 오류
@@ -96,6 +101,8 @@ public enum ErrorCode {
 	 */
 	OUT_OF_ATTENDANCE_TIME(HttpStatus.BAD_REQUEST, "AT-001", "출석 시간이 아닙니다."),
 	ATTENDANCE_ALREADY_COMPLETED(HttpStatus.CONFLICT, "AT-003", "이미 출석이 완료되었습니다."),
+	ATTENDANCE_NOT_FOUND(HttpStatus.NOT_FOUND, "AT-004", "존재하지 않는 출석 내역입니다."),
+	ATTENDANCE_UPDATE_FORBIDDEN(HttpStatus.FORBIDDEN, "AT-005", "출석 수정 권한이 없습니다."),
 
 	/**
 	 * 인증 관련 오류
@@ -140,11 +147,17 @@ public enum ErrorCode {
 	TARGET_IS_NOT_MEMBER_OF_STUDY(HttpStatus.BAD_REQUEST, "BL-005", "차단하려는 상대가 스터디의 팀원이 아닙니다."),
 
 	/**
+	 * 스터디장 위임 관련 오류
+	 */
+	ALREADY_STUDY_LEADER(HttpStatus.BAD_REQUEST, "DG-001", "이미 스터디장인 사용자입니다."),
+
+	/**
 	 * 자동 알림 관련 오류
 	 */
 	BATCHJOB_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "BJ-001", "해당 시간에 이미 등록된 자동 알림이 있습니다."),
-
-	/**
+	BATCHJOB_NOT_FOUND(HttpStatus.BAD_REQUEST, "BJ-002", "변경할 자동 알림을 찾을 수 없습니다."),
+  
+  /**
 	 * 탈퇴 관련 오류
 	 */
 	WITHDRAW_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "W-001", "이미 등록된 탈퇴 요청이 있습니다.");

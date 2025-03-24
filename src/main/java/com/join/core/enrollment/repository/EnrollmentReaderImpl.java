@@ -46,6 +46,11 @@ public class EnrollmentReaderImpl implements EnrollmentReader {
     }
 
     @Override
+    public List<Enrollment> getByStudyId(Long studyId) {
+        return enrollmentRepository.findByStudyId(studyId);
+    }
+
+    @Override
     public void validateEnrollment(Long avatarId, String studyToken) {
         boolean exists = enrollmentRepository.existsByAvatarIdAndStudyStudyTokenAndStatusNot(avatarId, studyToken, EnrollmentStatus.PENDING);
         if (!exists) {

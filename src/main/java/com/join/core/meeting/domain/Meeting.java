@@ -106,4 +106,12 @@ public class Meeting {
             throw new BadRequestException(OUT_OF_PROOF_TIME);
         }
     }
+
+    public static Meeting autoCreate(LocalDate studyDate, LocalTime stTime, LocalTime endTime, Study study) {
+        return new Meeting(studyDate, stTime, endTime, study);
+    }
+
+    public void cancelMeeting() {
+        this.status = MeetingStatus.CANCELED;
+    }
 }

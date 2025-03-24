@@ -73,6 +73,8 @@ public class User extends BaseTimeEntity {
 
 	private String fcmToken;
 
+	private LocalDateTime withdrawnDate;
+
 	@NotNull
 	@OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
 	private Avatar avatar;
@@ -120,6 +122,11 @@ public class User extends BaseTimeEntity {
 	public void updatePushConsent(boolean consent, String fcmToken) {
 		if (consent && StringUtils.isEmpty(fcmToken)) throw new InvalidParamException(INVALID_PARAMETER, "updatePushConsent.fcmToken");
 		this.pushConsent = consent;
+	}
+
+	public void withdraw() {
+		this.status = Status.INACTIVE;
+		this.withdrawnDate = LocalDateTime.now();
 	}
 
 }

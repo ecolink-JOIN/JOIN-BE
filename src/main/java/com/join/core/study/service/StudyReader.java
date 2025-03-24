@@ -3,6 +3,7 @@ package com.join.core.study.service;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
+import com.join.core.study.repository.condition.SearchCondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,8 +17,9 @@ public interface StudyReader {
     List<Study> getStudiesByLeaderAvatarId(Long avatarId);
     List<Study> getJoinedStudiesByAvatarId(Long avatarId);
     List<Study> getInterestStudiesByAvatarId(Long avatarId);
-    Page<Study> getStudiesByTitleContaining(String keyword, Pageable pageable);
+    Page<Study> getStudiesByTitleAndConditions(SearchCondition condition, Pageable pageable);
     Study validateStudyCompletion(String studyToken);
     boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken);
     boolean isAvatarEnrolledInStudy(Long avatarId, String studyToken);
+    List<Study> getStudiesByAvatarId(Long avatarId);
 }

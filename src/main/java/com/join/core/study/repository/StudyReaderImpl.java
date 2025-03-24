@@ -4,15 +4,16 @@ import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.impl.EntityNotFoundException;
 import com.join.core.common.exception.impl.InvalidStateException;
 import com.join.core.enrollment.constant.StudyRole;
+import com.join.core.study.constant.StudyStatus;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
+import com.join.core.study.repository.condition.SearchCondition;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import com.join.core.study.constant.StudyStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -60,8 +61,8 @@ public class StudyReaderImpl implements StudyReader {
     }
 
     @Override
-    public Page<Study> getStudiesByTitleContaining(String keyword, Pageable pageable) {
-        return studyRepository.findAllByTitleContaining(keyword, pageable);
+    public Page<Study> getStudiesByTitleAndConditions(SearchCondition condition, Pageable pageable) {
+        return studyQueryRepository.searchByConditions(condition, pageable);
     }
 
     @Override
@@ -78,5 +79,8 @@ public class StudyReaderImpl implements StudyReader {
     @Override
     public boolean isAvatarEnrolledInStudy(Long avatarId, String studyToken) {
         return studyQueryRepository.existsByEnrollmentAvatarIdAndStudyToken(avatarId, studyToken);
+
+    public List<Study> getStudiesByAvatarId(Long avatarId) {
+        return studyQueryRepository.findByAvatarId(avatarId);
     }
 }

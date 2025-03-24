@@ -70,4 +70,14 @@ public class ProofReaderImpl implements ProofReader {
     public boolean isFullyApproved(Long avatarId, Long studyId) {
         return proofQueryRepository.allProofsHaveApprovedStatus(avatarId, studyId);
     }
+
+    @Override
+    public List<Proof> findByAvatarIdAndMeetingId(Long avatarId, Long meetingId) {
+        return proofRepository.findAllByAvatarIdAndMeetingId(avatarId, meetingId);
+    }
+
+    @Override
+    public boolean existedPendingProofByAvatarIdAndMeetingId(Long avatarId, Long meetingId) {
+        return proofRepository.existsByAvatarIdAndMeetingIdAndStatus(avatarId, meetingId, ProofStatus.PENDING);
+    }
 }

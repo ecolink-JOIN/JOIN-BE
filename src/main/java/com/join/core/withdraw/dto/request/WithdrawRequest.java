@@ -21,10 +21,6 @@ public class WithdrawRequest {
     @Schema(description = "탈퇴 유형", example = "APPROVAL_REQUIRED, SELF_WITHDRAW")
     private WithdrawType withdrawType;
 
-    @NotNull
-    @Schema(description = "스터디 토큰", example = "std_abc")
-    private String studyToken;
-
     @Size(min = 10, max = 150)
     @Schema(description = "탈퇴 사유", example = "스터디 활동을 원하지 않습니다.")
     private String reason;

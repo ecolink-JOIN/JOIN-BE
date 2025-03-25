@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 
 public interface WithdrawApiSpecification {
     @Tag(name = "${swagger.tag.withdraw}")
@@ -15,6 +16,7 @@ public interface WithdrawApiSpecification {
             security = {@SecurityRequirement(name = "session-token")})
     ApiResponse<Void> createWithdraw(
             @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable String studyToken,
             WithdrawRequest withdrawRequest
     );
 

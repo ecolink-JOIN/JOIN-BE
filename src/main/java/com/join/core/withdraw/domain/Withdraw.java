@@ -1,6 +1,7 @@
 package com.join.core.withdraw.domain;
 
 import com.join.core.avatar.domain.Avatar;
+import com.join.core.common.domain.BaseTimeEntity;
 import com.join.core.study.domain.Study;
 import com.join.core.withdraw.constant.WithdrawType;
 import jakarta.persistence.*;
@@ -12,7 +13,7 @@ import com.join.core.withdraw.constant.WithdrawStatus;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Withdraw {
+public class Withdraw extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

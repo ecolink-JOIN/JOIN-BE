@@ -17,3 +17,4 @@ swagger:
     report: '15. 신고'
     batch-job: '16. 자동 알림'
     delegate: '17. 스터디장 위임'
+    withdraw: '19. 스터디 탈퇴'

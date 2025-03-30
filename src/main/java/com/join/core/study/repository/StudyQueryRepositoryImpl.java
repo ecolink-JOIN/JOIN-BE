@@ -1,14 +1,15 @@
 package com.join.core.study.repository;
 
 import com.join.core.enrollment.constant.EnrollmentStatus;
-import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.study.constant.StudyStatus;
+import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
 import com.join.core.study.repository.condition.SearchCondition;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -120,6 +121,23 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                 .groupBy(study.id)
                 .having(enrollment.avatar.avatarToken.countDistinct().eq(2L))
                 .fetchFirst() != null;
+    }
+
+    @Override
+    public List<Study> getActiveStudiesBySubjectIdAndTargetId(Long subjectId, Long targetId) {
+        return queryFactory.selectFrom(study)
+            .leftJoin(enrollment).on(
+                enrollment.study.id.eq(study.id),
+                enrollment.status.eq(EnrollmentStatus.JOINED)
+            )
+            .where(
+                study.status.eq(StudyStatus.ACTIVE),
+                enrollment.avatar.id.eq(subjectId)
+                    .or(enrollment.avatar.id.eq(targetId))
+            )
+            .groupBy(study.id)
+            .having(enrollment.avatar.avatarToken.countDistinct().eq(2L))
+            .fetch();
     }
 
 

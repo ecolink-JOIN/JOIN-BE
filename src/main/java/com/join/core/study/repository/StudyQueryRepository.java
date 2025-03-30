@@ -23,6 +23,7 @@ public interface StudyQueryRepository {
     List<Study> findJoinedStudyByAvatarId(Long avatarId);
     List<Study> findBookmarkStudyByAvatarId(Long avatarId);
     boolean existsByEnrollmentAvatarIdAndStudyToken(Long avatarId, String studyToken);
+    List<Study> getActiveStudiesBySubjectIdAndTargetId(Long subjectId, Long targetId);
     Page<Study> searchByConditions(SearchCondition condition, Pageable pageable);
     List<Study> findByAvatarIdAndStatus(Long avatarId, StudyStatus status);
 }

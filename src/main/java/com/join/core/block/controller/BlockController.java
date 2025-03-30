@@ -1,5 +1,12 @@
 package com.join.core.block.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.block.controller.specification.BlockControllerSpecification;
 import com.join.core.block.dto.request.CreateBlockRequest;
@@ -9,14 +16,9 @@ import com.join.core.block.service.BlockService;
 import com.join.core.block.service.dto.CreateBlockParams;
 import com.join.core.block.service.dto.CreateOngoingStudyBlockParams;
 import com.join.core.common.response.ApiResponse;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
@@ -41,7 +43,7 @@ public class BlockController implements BlockControllerSpecification {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/block/study-member")
+    @PostMapping("/study-member")
     public ApiResponse<CreateBlockResponse> createBlockStudyEnrollment(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @RequestBody @Valid CreateOngoingStudyBlockRequest createOngoingStudyBlockRequest

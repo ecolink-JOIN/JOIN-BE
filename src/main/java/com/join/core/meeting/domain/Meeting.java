@@ -114,4 +114,12 @@ public class Meeting {
     public void cancelMeeting() {
         this.status = MeetingStatus.CANCELED;
     }
+
+    public boolean isAfterStudy(LocalDateTime now) {
+        if (studyDate.isBefore(now.toLocalDate())) {
+            return true;
+        }
+        return studyDate.equals(now.toLocalDate()) &&
+                endTime.isBefore(now.toLocalTime());
+    }
 }

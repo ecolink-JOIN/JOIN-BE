@@ -63,4 +63,9 @@ public class AttendanceReaderImpl implements AttendanceReader {
         return attendanceRepository.findByMeetingIdAndAvatarId(meetingId, avatarId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.APPLICATION_NOT_FOUND));
     }
+
+    @Override
+    public Optional<Attendance> findFirstByMeetingIdAndAvatarIdOrderByIdDesc(Long meetingId, Long avatarId) {
+        return attendanceRepository.findFirstByMeetingIdAndAvatarIdOrderByIdDesc(meetingId, avatarId);
+    }
 }

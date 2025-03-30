@@ -24,4 +24,6 @@ public interface AttendanceReader {
     List<Attendance> findByAvatarIdAndStudyIdForLeftStudy(Long avatarId, Long studyId);
 
     Attendance findByMeetingIdAndAvatarId(Long meetingId, Long avatarId);
+
+    Optional<Attendance> findFirstByMeetingIdAndAvatarIdOrderByIdDesc(Long meetingId, Long avatarId);
 }

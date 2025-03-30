@@ -32,4 +32,10 @@ public class TermReaderImpl implements TermReader {
 		return termRepository.findAllById(keys);
 	}
 
+	@Override
+	public List<TermInfo.Main> getValidTerms() {
+		List<Term> terms = termRepository.findValid();
+		return terms.stream().map(termInfoMapper::of).toList();
+	}
+
 }

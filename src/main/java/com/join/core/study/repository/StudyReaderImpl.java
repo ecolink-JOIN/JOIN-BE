@@ -86,4 +86,10 @@ public class StudyReaderImpl implements StudyReader {
     public List<Study> getStudiesByAvatarId(Long avatarId) {
         return studyQueryRepository.findByAvatarId(avatarId);
     }
+
+    @Override
+    public List<Study> getStudiesByAvatarIdAndStatus(Long avatarId, StudyStatus status) {
+        return studyQueryRepository.findByAvatarIdAndStatus(avatarId, status);
+    }
+
 }

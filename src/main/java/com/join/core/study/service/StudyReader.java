@@ -1,5 +1,6 @@
 package com.join.core.study.service;
 
+import com.join.core.study.constant.StudyStatus;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
@@ -22,4 +23,5 @@ public interface StudyReader {
     boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken);
     boolean isAvatarEnrolledInStudy(Long avatarId, String studyToken);
     List<Study> getStudiesByAvatarId(Long avatarId);
+    List<Study> getStudiesByAvatarIdAndStatus(Long avatarId, StudyStatus status);
 }

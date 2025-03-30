@@ -22,4 +22,8 @@ public enum ProofStatus {
     public boolean isCompleted() {
         return this != PENDING;
     }
+
+    public boolean isApproved() {
+        return this == APPROVED;
+    }
 }

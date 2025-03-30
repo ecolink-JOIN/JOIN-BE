@@ -16,6 +16,6 @@ swagger:
     my-page: '14. 마이페이지'
     report: '15. 신고'
     batch-job: '16. 자동 알림'
-    delegate: '17. 스터디장 위임'
+    enrollment-detail: '17. 스터디원 관리 상세'
     application: '18. 지원'
     withdraw: '19. 스터디 탈퇴'

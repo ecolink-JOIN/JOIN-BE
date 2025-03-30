@@ -3,6 +3,7 @@ package com.join.core.avatar.controller;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +27,13 @@ public class UserWithdrawalController implements UserWithdrawalControllerSpecifi
 	public ApiResponse<WithdrawalAvailabilityResponse> canWithdrawal(
 		@AuthenticationPrincipal UserPrincipal principal) {
 		return ApiResponse.ok(userWithdrawalService.canWithdrawal(principal.getAvatarId()));
+	}
+
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping
+	public ApiResponse<WithdrawalAvailabilityResponse> withdraw(
+		@AuthenticationPrincipal UserPrincipal principal) {
+		return ApiResponse.ok(userWithdrawalService.withdraw(principal.getAvatarId()));
 	}
 
 }

@@ -18,3 +18,4 @@ swagger:
     batch-job: '16. 자동 알림'
     delegate: '17. 스터디장 위임'
     application: '18. 지원'
+    withdraw: '19. 스터디 탈퇴'

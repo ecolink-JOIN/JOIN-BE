@@ -21,6 +21,7 @@ public class BatchJobService {
     private final BatchJobReader batchJobReader;
     private final BatchJobStore batchJobStore;
     private final StudyReader studyReader;
+    private final BatchJobDeleter batchJobDeleter;
 
     @Transactional
     public BatchJob createBatchJob(BatchJobRequest request, Long userId) {
@@ -54,8 +55,20 @@ public class BatchJobService {
         List<BatchJob> batchJobs = batchJobReader.getBatchJobsByStudyToken(studyToken);
 
         return batchJobs.stream()
-                .map(job -> new BatchJobResponse(job.getContent(), job.getDay(), job.getTime()))
+                .map(job -> new BatchJobResponse(job.getId(), job.getContent(), job.getDay(), job.getTime()))
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public void deleteBatchJob(Long batchJobId, Long userId) {
+        BatchJob batchJob = batchJobReader.getBatchJobById(batchJobId);
+
+        if (!batchJob.getStudy().isWriter(userId)) {
+            throw new BadRequestException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
+
+        batchJobDeleter.deleteBatchJob(batchJob);
+    }
+
 
 }

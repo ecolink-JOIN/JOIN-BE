@@ -77,6 +77,12 @@ public class StudyReaderImpl implements StudyReader {
     }
 
     @Override
+    public boolean isAvatarEnrolledInStudy(Long avatarId, String studyToken) {
+        return studyQueryRepository.existsByEnrollmentAvatarIdAndStudyToken(avatarId, studyToken);
+
+    }
+
+    @Override
     public List<Study> getStudiesByAvatarId(Long avatarId) {
         return studyQueryRepository.findByAvatarId(avatarId);
     }

@@ -21,6 +21,7 @@ public interface StudyReader {
     Page<Study> getStudiesByTitleAndConditions(SearchCondition condition, Pageable pageable);
     Study validateStudyCompletion(String studyToken);
     boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken);
+    boolean isAvatarEnrolledInStudy(Long avatarId, String studyToken);
     List<Study> getStudiesByAvatarId(Long avatarId);
     List<Study> getStudiesByAvatarIdAndStatus(Long avatarId, StudyStatus status);
 }

@@ -44,4 +44,13 @@ public interface BatchJobApiSpecification {
             @PathVariable String studyToken
     );
 
+    @Tag(name = "${swagger.tag.batch-job}")
+    @Operation(summary = "자동 알림 삭제 API - 인증 필수",
+            description = "자동 알림 삭제 API - 인증 필수",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<Void> deleteBatchJob(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable Long batchJobId
+    );
+
 }

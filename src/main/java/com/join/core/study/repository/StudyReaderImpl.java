@@ -83,7 +83,7 @@ public class StudyReaderImpl implements StudyReader {
     }
 
     @Override
-    public List<Study> getActiveStudyByTokens(Long subjectId, Long targetId) {
+    public List<Study> getActiveStudyBySubjectIdAndTargetId(Long subjectId, Long targetId) {
         return studyQueryRepository.getActiveStudiesBySubjectIdAndTargetId(subjectId, targetId);
     }
 

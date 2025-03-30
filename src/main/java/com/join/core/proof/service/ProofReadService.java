@@ -5,6 +5,7 @@ import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.LeaderForbiddenException;
 import com.join.core.common.exception.impl.BadRequestException;
+import com.join.core.enrollment.domain.Enrollment;
 import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.meeting.domain.Meeting;
 import com.join.core.meeting.domain.MeetingReader;
@@ -13,11 +14,14 @@ import com.join.core.proof.dto.response.CheckProofResponse;
 import com.join.core.proof.dto.response.ProofDetailResponse;
 import com.join.core.proof.dto.response.ProofResponse;
 import com.join.core.proof.dto.response.ProofStatusResponse;
+import com.join.core.proof.dto.response.ProofSubject;
+import com.join.core.proof.dto.response.ProofSubjectsResponse;
 import com.join.core.proof.dto.response.ProofsResponse;
 import com.join.core.proof.mapper.ProofMapper;
 import com.join.core.proof.service.dto.CheckProofParams;
 import com.join.core.proof.service.dto.GetProofsParams;
 import com.join.core.proof.service.dto.ProofDetailParams;
+import com.join.core.proof.service.dto.ProofSubjectParams;
 import com.join.core.study.domain.Study;
 import com.join.core.study.service.StudyReader;
 import lombok.RequiredArgsConstructor;
@@ -110,5 +114,42 @@ public class ProofReadService {
                 .map(proofMapper::toProofResponse)
                 .toList();
         return proofMapper.toProofsResponse(studyToken, target, proofResponse);
+    }
+
+    @Transactional(readOnly = true)
+    public ProofSubjectsResponse getProofSubjects(ProofSubjectParams params) {
+        Avatar avatar = avatarReader.getAvatarByAvatarToken(params.avatarToken());
+        Study study = studyReader.getStudyByToken(params.studyToken());
+        checkAuthorization(avatar.getId(), study.getId());
+
+        List<ProofSubject> subjects = createProofSubjects(study.getId());
+
+        return new ProofSubjectsResponse(study.getStudyToken(), subjects);
+    }
+
+    private List<ProofSubject> createProofSubjects(Long studyId) {
+        List<Enrollment> enrollments = enrollmentReader.findJoinedEnrollmentByStudyId(studyId);
+        List<Meeting> meetings = meetingReader.findMeetingsByStudyId(studyId);
+
+        return enrollments.stream()
+                .map(enrollment -> createProofSubject(enrollment, meetings))
+                .toList();
+    }
+
+    private ProofSubject createProofSubject(Enrollment enrollment, List<Meeting> meetings) {
+        Avatar enrolledAvatar = enrollment.getAvatar();
+        boolean isProofCompleted = isAllProofsCompleted(enrolledAvatar.getId(), meetings);
+
+        return new ProofSubject(
+                enrolledAvatar.getAvatarToken(),
+                enrolledAvatar.getNickname(),
+                enrolledAvatar.getPhoto().getFile().getUrl(),
+                isProofCompleted
+        );
+    }
+
+    private boolean isAllProofsCompleted(Long avatarId, List<Meeting> meetings) {
+        return meetings.stream()
+                .noneMatch(meeting -> proofReader.existedPendingProofByAvatarIdAndMeetingId(avatarId, meeting.getId()));
     }
 }

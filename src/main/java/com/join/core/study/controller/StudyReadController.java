@@ -7,11 +7,7 @@ import com.join.core.study.controller.specification.StudyReadApiSpecification;
 import com.join.core.study.dto.request.CustomStudyParameter;
 import com.join.core.study.dto.request.SearchParameter;
 import com.join.core.study.dto.request.StudyOrderByPopularityParameter;
-import com.join.core.study.dto.response.CustomStudyResponse;
-import com.join.core.study.dto.response.PopularStudyReadResponse;
-import com.join.core.study.dto.response.SearchResponse;
-import com.join.core.study.dto.response.StudyDetailResponse;
-import com.join.core.study.dto.response.StudyListForBlockResponse;
+import com.join.core.study.dto.response.*;
 import com.join.core.study.service.StudyReadService;
 import com.join.core.study.service.dto.CustomStudyCommand;
 import com.join.core.study.service.dto.SearchCommand;
@@ -109,5 +105,11 @@ public class StudyReadController implements StudyReadApiSpecification {
     @GetMapping("/block")
     public ApiResponse<Collection<StudyListForBlockResponse>> getStudiesForBlock(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return ApiResponse.ok(studyReadService.getStudiesForBlock(userPrincipal.getAvatarToken()));
+    }
+
+    @GetMapping("/{studyToken}/status")
+    @Override
+    public ApiResponse<StudyStatusResponse> getStudyStatus(@PathVariable("studyToken") String studyToken) {
+        return ApiResponse.ok(studyReadService.getStudyStatus(studyToken));
     }
 }

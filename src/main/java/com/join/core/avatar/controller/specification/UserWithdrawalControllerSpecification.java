@@ -18,4 +18,10 @@ public interface UserWithdrawalControllerSpecification {
 		security = {@SecurityRequirement(name = "session-token")})
 	ApiResponse<WithdrawalAvailabilityResponse> canWithdrawal(@AuthenticationPrincipal UserPrincipal principal);
 
+	@Tag(name = "${swagger.tag.sign-up}")
+	@Operation(summary = "회원탈퇴 API - 인증 필요",
+		description = "회원탈퇴 API - 인증 필요",
+		security = {@SecurityRequirement(name = "session-token")})
+	ApiResponse<WithdrawalAvailabilityResponse> withdraw(@AuthenticationPrincipal UserPrincipal principal);
+
 }

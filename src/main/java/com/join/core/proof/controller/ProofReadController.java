@@ -5,11 +5,13 @@ import com.join.core.common.response.ApiResponse;
 import com.join.core.proof.controller.specification.ProofReadControllerSpecification;
 import com.join.core.proof.dto.response.CheckProofResponse;
 import com.join.core.proof.dto.response.ProofDetailResponse;
+import com.join.core.proof.dto.response.ProofSubjectsResponse;
 import com.join.core.proof.dto.response.ProofsResponse;
 import com.join.core.proof.service.ProofReadService;
 import com.join.core.proof.service.dto.CheckProofParams;
 import com.join.core.proof.service.dto.GetProofsParams;
 import com.join.core.proof.service.dto.ProofDetailParams;
+import com.join.core.proof.service.dto.ProofSubjectParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -73,5 +75,20 @@ public class ProofReadController implements ProofReadControllerSpecification {
                 userPrincipal.getAvatarToken(),
                 targetAvatarToken
         )));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/proofs/subjects")
+    public ApiResponse<ProofSubjectsResponse> getProofsSubjects(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable String studyToken
+    ) {
+
+        return ApiResponse.ok(proofReadService.getProofSubjects(
+                new ProofSubjectParams(
+                        studyToken,
+                        userPrincipal.getAvatarToken()
+                )
+        ));
     }
 }

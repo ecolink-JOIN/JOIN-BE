@@ -4,6 +4,7 @@ import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
 import com.join.core.proof.dto.response.CheckProofResponse;
 import com.join.core.proof.dto.response.ProofDetailResponse;
+import com.join.core.proof.dto.response.ProofSubjectsResponse;
 import com.join.core.proof.dto.response.ProofsResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -42,5 +43,14 @@ public interface ProofReadControllerSpecification {
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @PathVariable String studyToken,
             @PathVariable String targetAvatarToken
+    );
+
+    @Tag(name = "${swagger.tag.proof}")
+    @Operation(summary = "인증 대상 조회 - 인증 필수",
+            description = "인증 대상 조회 - 팀장만 조회 가능",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<ProofSubjectsResponse> getProofsSubjects(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable String studyToken
     );
 }

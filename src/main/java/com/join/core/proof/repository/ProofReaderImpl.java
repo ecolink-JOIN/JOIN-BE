@@ -75,4 +75,9 @@ public class ProofReaderImpl implements ProofReader {
     public List<Proof> findByAvatarIdAndMeetingId(Long avatarId, Long meetingId) {
         return proofRepository.findAllByAvatarIdAndMeetingId(avatarId, meetingId);
     }
+
+    @Override
+    public boolean existedPendingProofByAvatarIdAndMeetingId(Long avatarId, Long meetingId) {
+        return proofRepository.existsByAvatarIdAndMeetingIdAndStatus(avatarId, meetingId, ProofStatus.PENDING);
+    }
 }

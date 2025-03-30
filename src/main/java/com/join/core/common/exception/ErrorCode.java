@@ -148,10 +148,25 @@ public enum ErrorCode {
 	TARGET_IS_NOT_MEMBER_OF_STUDY(HttpStatus.BAD_REQUEST, "BL-006", "차단하려는 상대가 스터디의 팀원이 아닙니다."),
 
 	/**
+	 * 스터디장 위임 관련 오류
+	 */
+	ALREADY_STUDY_LEADER(HttpStatus.BAD_REQUEST, "DG-001", "이미 스터디장인 사용자입니다."),
+
+	/**
 	 * 자동 알림 관련 오류
 	 */
 	BATCHJOB_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "BJ-001", "해당 시간에 이미 등록된 자동 알림이 있습니다."),
-	BATCHJOB_NOT_FOUND(HttpStatus.BAD_REQUEST, "BJ-002", "변경할 자동 알림을 찾을 수 없습니다.");
+	BATCHJOB_NOT_FOUND(HttpStatus.BAD_REQUEST, "BJ-002", "변경할 자동 알림을 찾을 수 없습니다."),
+
+	/**
+	 * 앱 공지사항 관련 오류
+	 */
+	NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "AN-001", "앱 공지사항을 찾을 수 없습니다."),
+  
+  /**
+	 * 탈퇴 관련 오류
+	 */
+	WITHDRAW_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "W-001", "이미 등록된 탈퇴 요청이 있습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

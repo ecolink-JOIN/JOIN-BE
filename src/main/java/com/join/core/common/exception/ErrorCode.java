@@ -156,6 +156,11 @@ public enum ErrorCode {
 	 */
 	BATCHJOB_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "BJ-001", "해당 시간에 이미 등록된 자동 알림이 있습니다."),
 	BATCHJOB_NOT_FOUND(HttpStatus.BAD_REQUEST, "BJ-002", "변경할 자동 알림을 찾을 수 없습니다."),
+
+	/**
+	 * 앱 공지사항 관련 오류
+	 */
+	NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "AN-001", "앱 공지사항을 찾을 수 없습니다."),
   
   /**
 	 * 탈퇴 관련 오류

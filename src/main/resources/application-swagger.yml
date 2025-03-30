@@ -17,3 +17,5 @@ swagger:
     report: '15. 신고'
     batch-job: '16. 자동 알림'
     enrollment: '17. 참여자 관리'
+    application: '18. 지원'
+    withdraw: '19. 스터디 탈퇴'

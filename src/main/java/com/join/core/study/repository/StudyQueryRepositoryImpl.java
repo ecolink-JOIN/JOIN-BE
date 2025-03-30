@@ -154,6 +154,19 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
     }
 
     @Override
+    public boolean existsByEnrollmentAvatarIdAndStudyToken(Long avatarId, String studyToken) {
+        return queryFactory
+                .selectOne()
+                .from(enrollment)
+                .join(enrollment.study, study)
+                .where(
+                        study.studyToken.eq(studyToken),
+                        enrollment.avatar.id.eq(avatarId),
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
+                )
+                .fetchFirst() != null;
+    }
+
     public List<Study> findByAvatarId(Long avatarId) {
         return queryFactory.selectFrom(study)
             .leftJoin(enrollment).on(enrollment.study.id.eq(study.id))
@@ -202,4 +215,17 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                 )
                 .fetchOne();
     }
+
+    @Override
+    public List<Study> findByAvatarIdAndStatus(Long avatarId, StudyStatus status) {
+        return queryFactory.selectFrom(study)
+                .leftJoin(enrollment).on(
+                        enrollment.study.id.eq(study.id),
+                        enrollment.avatar.id.eq(avatarId),
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
+                )
+                .where(study.status.eq(status))
+                .fetch();
+    }
+
 }

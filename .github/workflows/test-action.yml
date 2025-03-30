@@ -26,6 +26,10 @@ jobs:
           profile: local
           oauth-secret: ${{ secrets.OAUTH_SECRET }}
           s3-secret: ${{ secrets.S3_SECRET }}
+          fcm-secret: ${{ secrets.FCM_SECRET }}
+          fcm-key : ${{ secrets.FCM_KEY }}
+          fcm-key-path : ${{ secrets.FCM_KEY_PATH }}
+          fcm-key-file-name : ${{ secrets.FCM_KEY_FILE_NAME }}
 
       - name: Run MySQL image for test
         run: docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=join_db mysql:8.0.31

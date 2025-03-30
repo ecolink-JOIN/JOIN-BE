@@ -1,5 +1,6 @@
 package com.join.core.avatar.controller;
 
+import com.join.core.avatar.controller.specification.AvatarReadControllerSpecification;
 import com.join.core.avatar.dto.response.AvatarParticipationRateResponse;
 import com.join.core.avatar.service.AvatarReadService;
 import com.join.core.common.response.ApiResponse;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/avatars")
-public class AvatarReadController {
+public class AvatarReadController implements AvatarReadControllerSpecification {
 
     private final AvatarReadService avatarReadService;
 

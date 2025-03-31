@@ -5,4 +5,5 @@ import com.join.core.avatar.domain.Avatar;
 
 public interface WithdrawReader {
     void validateWithdrawNotExists(Avatar avatar, Study study);
+    Withdraw findByIdAndStudy(Long withdrawId, Study study);
 }

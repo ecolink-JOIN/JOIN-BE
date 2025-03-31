@@ -20,4 +20,14 @@ public interface WithdrawApiSpecification {
             WithdrawRequest withdrawRequest
     );
 
+    @Tag(name = "${swagger.tag.withdraw}")
+    @Operation(summary = "스터디 탈퇴 요청 승인 API - 인증 필수",
+            description = "스터디 탈퇴 요청 승인 API - 인증 필수",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<Void> approveWithdraw(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable String studyToken,
+            @PathVariable Long withdrawId
+    );
+
 }

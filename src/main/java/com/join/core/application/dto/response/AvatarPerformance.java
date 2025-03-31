@@ -16,4 +16,7 @@ public class AvatarPerformance {
 
     @Schema(description = "평점", example = "5.0")
     private double rating;
+
+    @Schema(description = "스터디 개수", example = "2")
+    private int studyCount;
 }

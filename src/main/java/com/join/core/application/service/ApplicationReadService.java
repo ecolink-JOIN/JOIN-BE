@@ -53,14 +53,13 @@ public class ApplicationReadService {
         List<Study> studies = studyReader.getStudiesByAvatarIdAndStatus(avatarId, status);
 
         if (studies.isEmpty()) {
-            return new AvatarPerformance(0.0, 0.0, 0.0);
+            return new AvatarPerformance(0.0, 0.0, 0.0, 0);
         }
 
         double attendanceRate = attendanceRateService.calculateIndividualAttendanceRate(avatarId);
         double proofRate = proofRateService.calculateIndividualProofRate(avatarId);
         double rating = avatarReader.getById(avatarId).getAverageEvaluation();
 
-        return new AvatarPerformance(attendanceRate, proofRate, rating);
+        return new AvatarPerformance(attendanceRate, proofRate, rating, studies.size());
     }
-
 }

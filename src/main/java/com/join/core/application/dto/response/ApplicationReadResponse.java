@@ -2,6 +2,7 @@ package com.join.core.application.dto.response;
 
 import com.join.core.application.domain.Application;
 import com.join.core.avatar.domain.Avatar;
+import com.join.core.file.domain.ImageFile;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +17,9 @@ public class ApplicationReadResponse {
     @Schema(description = "스터디원 닉네임", example = "감자")
     private String nickname;
 
+    @Schema(description = "사용자 프로필 이미지", example = "image url")
+    private ImageFile image;
+
     @Schema(description = "지원 상태", example = "승인 대기중")
     private String applicationStatus;
 
@@ -29,10 +33,12 @@ public class ApplicationReadResponse {
     private AvatarPerformance completedStudyStats;
 
     public static ApplicationReadResponse from(Application application, Avatar avatar,
-                                               AvatarPerformance activeStudyStats, AvatarPerformance completedStudyStats) {
+                                               AvatarPerformance activeStudyStats,
+                                               AvatarPerformance completedStudyStats) {
         return new ApplicationReadResponse(
                 application.getId(),
                 avatar.getNickname(),
+                avatar.getPhoto().getFile(),
                 application.getStatus().getStatusName(),
                 application.getIntroduction(),
                 activeStudyStats,

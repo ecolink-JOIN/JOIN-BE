@@ -32,6 +32,7 @@ public class WithdrawReaderImpl implements WithdrawReader {
         return withdrawRepository.findByIdAndStudy(withdrawId, study)
                 .filter(withdraw -> withdraw.getStatus() == WithdrawStatus.PENDING && withdraw.getWithdrawType() == WithdrawType.APPROVAL_REQUIRED)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.STUDY_WITHDRAW_NOT_FOUND));
+    }
 
     @Override
     public List<Withdraw> findWithdrawRequests(Study study) {

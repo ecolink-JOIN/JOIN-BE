@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface WithdrawReader {
     void validateWithdrawNotExists(Avatar avatar, Study study);
+    Withdraw findByIdAndStudy(Long withdrawId, Study study);
     List<Withdraw> findWithdrawRequests(Study study);
 }

@@ -114,6 +114,7 @@ public enum ErrorCode {
 	INVALID_PROOF_STATUS(HttpStatus.INTERNAL_SERVER_ERROR, "PR-005", "인증 상태를 조회하는 과정에서 오류가 발생하였습니다."),
 	INVALID_PROOF_ID(HttpStatus.BAD_REQUEST, "PR-006", "존재하지 않는 인증 정보입니다,"),
 	ALREADY_CHECK_PROOF(HttpStatus.CONFLICT, "PR-007", "이미 수락 또는 반려된 인증입니다."),
+	PROOF_NOT_APPROVED(HttpStatus.BAD_REQUEST, "PR-008", "승인 미완료 상태인 인증이 있습니다."),
 
 	/**
 	* 스터디 참여자 관련 오류
@@ -164,10 +165,11 @@ public enum ErrorCode {
 	 */
 	NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "AN-001", "앱 공지사항을 찾을 수 없습니다."),
   
-  /**
-	 * 탈퇴 관련 오류
+    /**
+	 * 스터디 탈퇴 관련 오류
 	 */
-	WITHDRAW_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "W-001", "이미 등록된 탈퇴 요청이 있습니다.");
+    STUDY_WITHDRAW_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "SW-001", "이미 등록된 탈퇴 요청이 있습니다."),
+	STUDY_WITHDRAW_NOT_FOUND(HttpStatus.BAD_REQUEST, "SW-002", "승인할 스터디 탈퇴 요청을 찾을 수 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

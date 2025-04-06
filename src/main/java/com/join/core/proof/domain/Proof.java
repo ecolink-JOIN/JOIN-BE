@@ -99,4 +99,8 @@ public class Proof extends BaseTimeEntity {
     public boolean isCompleted() {
         return status.isCompleted();
     }
+
+    public boolean isApproved() {
+        return status.isApproved();
+    }
 }

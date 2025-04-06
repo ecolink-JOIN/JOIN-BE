@@ -22,6 +22,7 @@ public interface StudyReader {
     Study validateStudyCompletion(String studyToken);
     boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken);
     boolean isAvatarEnrolledInStudy(Long avatarId, String studyToken);
+    List<Study> getActiveStudyBySubjectIdAndTargetId(Long subjectId, Long targetId);
     List<Study> getStudiesByAvatarId(Long avatarId);
     List<Study> getStudiesByAvatarIdAndStatus(Long avatarId, StudyStatus status);
 }

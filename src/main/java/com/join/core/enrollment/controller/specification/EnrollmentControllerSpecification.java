@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public interface EnrollmentControllerSpecification {
 
-    @Tag(name = "${swagger.tag.enrollment}")
+    @Tag(name = "${swagger.tag.enrollment-detail}")
     @Operation(summary = "스터디장 위임 - 인증 필수",
             description = "스터디장 위임 - 팀장만 사용 가능 / target token에 팀장의 토큰 입력시 예외 발생",
             security = {@SecurityRequirement(name = "session-token")})
@@ -23,7 +23,7 @@ public interface EnrollmentControllerSpecification {
             @RequestBody DelegateLeaderRequest request
     );
 
-    @Tag(name = "${swagger.tag.enrollment}")
+    @Tag(name = "${swagger.tag.enrollment-detail}")
     @Operation(summary = "팀원 강제 탈퇴 - 인증 필수",
             description = "강제 탈퇴 - 팀장만 사용 가능",
             security = {@SecurityRequirement(name = "session-token")})

@@ -1,10 +1,12 @@
 package com.join.core.enrollment.domain;
 
+import java.time.LocalDateTime;
+
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.common.domain.BaseTimeEntity;
 import com.join.core.common.exception.ErrorCode;
-import com.join.core.common.exception.LeaderForbiddenException;
 import com.join.core.common.exception.impl.BadRequestException;
+import com.join.core.common.exception.LeaderForbiddenException;
 import com.join.core.enrollment.constant.EnrollmentStatus;
 import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.enrollment.exception.AlreadyNotJoinedStudyException;
@@ -23,8 +25,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -73,7 +73,14 @@ public class Enrollment extends BaseTimeEntity {
     }
 
     public void withdraw() {
+        checkRole();
         this.status = EnrollmentStatus.LEFT;
+    }
+
+    private void checkRole() {
+        if (this.role.equals(StudyRole.LEADER)) {
+            throw new BadRequestException(ErrorCode.STUDY_LEADER_CAN_NOT_WITDRAW);
+        }
     }
 
     public void delegateLeader() {

@@ -9,8 +9,8 @@ import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.common.exception.LeaderForbiddenException;
 import com.join.core.enrollment.constant.EnrollmentStatus;
 import com.join.core.enrollment.constant.StudyRole;
+import com.join.core.enrollment.exception.AlreadyNotJoinedStudyException;
 import com.join.core.study.domain.Study;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -95,5 +95,12 @@ public class Enrollment extends BaseTimeEntity {
             throw new BadRequestException(ErrorCode.ALREADY_STUDY_LEADER);
         }
         this.role = StudyRole.LEADER;
+    }
+
+    public void forcedOut() {
+        if (!status.equals(EnrollmentStatus.JOINED)) {
+            throw new AlreadyNotJoinedStudyException();
+        }
+        this.status = EnrollmentStatus.FORCED_OUT;
     }
 }

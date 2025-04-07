@@ -80,4 +80,9 @@ public class ProofReaderImpl implements ProofReader {
     public boolean existedPendingProofByAvatarIdAndMeetingId(Long avatarId, Long meetingId) {
         return proofRepository.existsByAvatarIdAndMeetingIdAndStatus(avatarId, meetingId, ProofStatus.PENDING);
     }
+
+    @Override
+    public boolean existedPendingProofByAvatarIdAndStudyId(Long avatarId, Long studyId) {
+        return proofQueryRepository.existedPendingProofByAvatarIdAndStudyId(avatarId, studyId);
+    }
 }

@@ -122,6 +122,8 @@ public enum ErrorCode {
 	NOT_MEMBER_OF_STUDY(HttpStatus.FORBIDDEN, "EN-001", "스터디에 참여중인 사용자가 아닙니다."),
     LEADER_ONLY_ACCESS(HttpStatus.FORBIDDEN, "EN-002", "해당 기능은 스터디 리더만 사용할 수 있습니다."),
 	INVALID_MEMBER(HttpStatus.BAD_REQUEST, "EN-003", "존재하지 않는 팀원입니다."),
+	ALREADY_NOT_JOINED(HttpStatus.BAD_REQUEST, "EN- 003", "이미 참여하지 않는 스터디입니다."),
+	UNAPPROVED_REMAINING(HttpStatus.BAD_REQUEST, "EN-004", "승인되지 않은 인증 내역이 존재합니다."),
 
 	/**
 	* 북마크 관련 오류

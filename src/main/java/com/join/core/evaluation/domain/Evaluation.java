@@ -27,6 +27,12 @@ public class Evaluation extends BaseTimeEntity {
     @NotNull
     private int effect;
 
+    @Column(nullable = false)
+    private double leaderScore;
+
+    @Column(nullable = false)
+    private double memberScore;
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ratee_id")
@@ -41,5 +47,21 @@ public class Evaluation extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id")
     private Study study;
+
+    public Evaluation(int sincerity, int familiarity, int effect, Avatar ratee, Avatar rater, Study study) {
+        this.sincerity = sincerity;
+        this.familiarity = familiarity;
+        this.effect = effect;
+        this.ratee = ratee;
+        this.rater = rater;
+        this.study = study;
+        this.leaderScore = 0;
+        this.memberScore = 0;
+    }
+
+    public void updateScores(double leaderScore, double memberScore) {
+        this.leaderScore = leaderScore;
+        this.memberScore = memberScore;
+    }
 
 }

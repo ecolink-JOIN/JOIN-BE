@@ -4,11 +4,13 @@ import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
 import com.join.core.proof.controller.specification.ProofControllerSpecification;
 import com.join.core.proof.dto.request.CreateProofRequest;
+import com.join.core.proof.dto.request.UpdateProofRequest;
 import com.join.core.proof.dto.response.CreateProofResponse;
 import com.join.core.proof.service.ProofService;
-import com.join.core.proof.service.dto.ApproveCommand;
+import com.join.core.proof.service.dto.ApproveParams;
 import com.join.core.proof.service.dto.CreateProofCommand;
 import com.join.core.proof.service.dto.RejectCommand;
+import com.join.core.proof.service.dto.UpdateProofParams;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -55,7 +57,7 @@ public class ProofController implements ProofControllerSpecification {
             @PathVariable Integer meetingNo,
             @PathVariable Long proofId
     ) {
-        proofService.approve(new ApproveCommand(
+        proofService.approve(new ApproveParams(
                 userPrincipal.getAvatarId(),
                 studyToken,
                 meetingNo,
@@ -78,6 +80,25 @@ public class ProofController implements ProofControllerSpecification {
                 meetingNo,
                 proofId
         ));
+        return ApiResponse.noContent();
+    }
+
+    @PostMapping("/uncertified")
+    public ApiResponse<Void> updateProof(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable String studyToken,
+            @PathVariable Integer meetingNo,
+            @RequestBody UpdateProofRequest request
+    ) {
+        proofService.update(
+                new UpdateProofParams(
+                        userPrincipal.getAvatarToken(),
+                        request.targetToken(),
+                        studyToken,
+                        meetingNo,
+                        request.provenTime()
+                )
+        );
         return ApiResponse.noContent();
     }
 }

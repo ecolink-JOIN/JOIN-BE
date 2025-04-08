@@ -14,7 +14,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.join.core.auth.constant.UserType;
 import com.join.core.avatar.domain.Avatar;
-import com.join.core.avatar.domain.ProfilePhoto;
 import com.join.core.common.domain.BaseTimeEntity;
 import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.common.util.TokenGenerator;
@@ -70,6 +69,13 @@ public class User extends BaseTimeEntity {
 	private boolean termsAgreed;
 
 	@NotNull
+	private boolean pushConsent;
+
+	private String fcmToken;
+
+	private LocalDateTime withdrawnDate;
+
+	@NotNull
 	@OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
 	private Avatar avatar;
 
@@ -79,14 +85,15 @@ public class User extends BaseTimeEntity {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<TermAgreeHistory> termAgreeHistoryList = new ArrayList<>();
 
-
 	public boolean isUserOf(UserType providerType) {
 		return providerType.equals(this.platform);
 	}
 
 	public User(String email, UserType platform) {
-		if (StringUtils.isEmpty(email)) throw new InvalidParamException(INVALID_PARAMETER, "User.email");
-		if (platform == null) throw new InvalidParamException(INVALID_PARAMETER, "User.platform");
+		if (StringUtils.isEmpty(email))
+			throw new InvalidParamException(INVALID_PARAMETER, "User.email");
+		if (platform == null)
+			throw new InvalidParamException(INVALID_PARAMETER, "User.platform");
 
 		this.email = email;
 		this.platform = platform;
@@ -94,6 +101,7 @@ public class User extends BaseTimeEntity {
 		this.singUpDate = LocalDateTime.now();
 		this.status = Status.PENDING;
 		this.termsAgreed = false;
+		this.pushConsent = false;
 		this.avatar = new Avatar(this);
 	}
 
@@ -106,9 +114,19 @@ public class User extends BaseTimeEntity {
 	}
 
 	public void agree(Term term, TermAgreeHistory.AcceptStatus status) {
-		if(ObjectUtils.isEmpty(term))
+		if (ObjectUtils.isEmpty(term))
 			throw new InvalidParamException(INVALID_PARAMETER, "agree.term");
 		this.termAgreeHistoryList.add(new TermAgreeHistory(this, term, status));
+	}
+
+	public void updatePushConsent(boolean consent, String fcmToken) {
+		if (consent && StringUtils.isEmpty(fcmToken)) throw new InvalidParamException(INVALID_PARAMETER, "updatePushConsent.fcmToken");
+		this.pushConsent = consent;
+	}
+
+	public void withdraw() {
+		this.status = Status.INACTIVE;
+		this.withdrawnDate = LocalDateTime.now();
 	}
 
 }

@@ -1,10 +1,14 @@
 package com.join.core.attendance.service;
 
+import com.join.core.attendance.constant.AttendanceStatus;
+import com.join.core.attendance.domain.Attendance;
 import com.join.core.attendance.mapper.AttendanceMapper;
-import com.join.core.attendance.service.command.CreateAttendanceCommand;
+import com.join.core.attendance.service.dto.CreateAttendanceParams;
+import com.join.core.attendance.service.dto.UpdateAttendanceParams;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.common.exception.ErrorCode;
+import com.join.core.common.exception.LeaderForbiddenException;
 import com.join.core.common.exception.impl.InvalidSelectionException;
 import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.meeting.domain.Meeting;
@@ -30,15 +34,15 @@ public class AttendanceService {
     private final AttendanceMapper attendanceMapper;
 
     @Transactional
-    public void createAttendance(CreateAttendanceCommand command) {
-        Avatar avatar = avatarReader.getAvatarById(command.avatarId());
-        Study study = studyReader.getStudyByToken(command.studyToken());
-        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), command.meetingNo());
+    public void createAttendance(CreateAttendanceParams params) {
+        Avatar avatar = avatarReader.getAvatarById(params.avatarId());
+        Study study = studyReader.getStudyByToken(params.studyToken());
+        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), params.meetingNo());
 
         checkMember(avatar.getId(), study.getId());
         checkDuplicated(avatar.getId(), meeting.getId());
-        checkMeetingTime(meeting, command.now());
-        attendanceSaver.save(attendanceMapper.toEntity(meeting, avatar));
+        AttendanceStatus attendanceStatus = checkMeetingTime(meeting, params.now());
+        attendanceSaver.save(attendanceMapper.toEntity(attendanceStatus, meeting, avatar));
     }
 
     private void checkMember(Long avatarId, Long studyId) {
@@ -53,9 +57,26 @@ public class AttendanceService {
         }
     }
 
-    private void checkMeetingTime(Meeting meeting, LocalDateTime now) {
-        if (!meeting.isWithinMeetingTime(now)) {
+    private AttendanceStatus checkMeetingTime(Meeting meeting, LocalDateTime now) {
+        if (!meeting.isAfterMeetingTime(now)) {
             throw new InvalidSelectionException(ErrorCode.OUT_OF_ATTENDANCE_TIME);
         }
+        if (meeting.isLate(now)) {
+            return AttendanceStatus.LATENESS;
+        }
+        return AttendanceStatus.PRESENT;
+    }
+
+    @Transactional
+    public void updateAttendance(UpdateAttendanceParams params) {
+        Study study = studyReader.getStudyByToken(params.studyToken());
+        Meeting meeting = meetingReader.findByStudyIdAndMeetingNo(study.getId(), params.meetingNo());
+        Avatar avatar = avatarReader.getAvatarByAvatarToken(params.avatarToken());
+        if (enrollmentReader.getLeaderByStudyId(study.getId()).isSameAvatar(avatar.getId())) {
+            throw new LeaderForbiddenException(ErrorCode.ATTENDANCE_UPDATE_FORBIDDEN);
+        }
+        Avatar target = avatarReader.getAvatarByAvatarToken(params.targetAvatarToken());
+        Attendance attendance = attendanceReader.findByMeetingIdAndAvatarId(meeting.getId(), target.getId());
+        attendance.updateStatus(params.status());
     }
 }

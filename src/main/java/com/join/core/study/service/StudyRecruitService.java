@@ -7,9 +7,13 @@ import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.category.domain.Category;
 import com.join.core.category.service.CategoryReader;
 import com.join.core.common.exception.ErrorCode;
+import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.common.exception.impl.InvalidParamException;
 import com.join.core.common.exception.impl.NoPermissionException;
+import com.join.core.meeting.domain.MeetingAutoService;
+import com.join.core.rule.domain.Rule;
 import com.join.core.schedule.domain.StudySchedule;
+import com.join.core.study.constant.StudyForm;
 import com.join.core.study.domain.Study;
 import com.join.core.study.dto.request.StudyReRecruitRequest;
 import com.join.core.study.dto.request.StudyRecruitRequest;
@@ -37,6 +41,7 @@ public class StudyRecruitService {
     private final CategoryReader categoryReader;
     private final StudyReader studyReader;
     private final EnrollmentService enrollmentService;
+    private final MeetingAutoService meetingAutoService;
 
     @Transactional
     public void createStudy(Long avatarId, StudyRecruitRequest recruitRequest) {
@@ -49,8 +54,15 @@ public class StudyRecruitService {
             throw new InvalidParamException(INVALID_PARAMETER, "시작일보다 종료일이 이후여야 합니다.");
         }
 
+        Address address = null;
+        if (recruitRequest.getForm() == StudyForm.OFFLINE) {
+            if (recruitRequest.getProvince() == null || recruitRequest.getCity() == null) {
+                throw new BadRequestException(ErrorCode.ADDRESS_INPUT_REQUIRED);
+            }
+            address = addressReader.getAddressByLocation(recruitRequest.getProvince(), recruitRequest.getCity());
+        }
+
         Avatar writer = avatarReader.getAvatarById(avatarId);
-        Address address = addressReader.getAddressByLocation(recruitRequest.getProvince(), recruitRequest.getCity());
         Category category = categoryReader.getCategoryByName(recruitRequest.getCategoryName());
 
         Study study = new Study(recruitRequest, writer, address, category);
@@ -62,7 +74,18 @@ public class StudyRecruitService {
             study.addSchedules(studySchedules);
         }
 
+        if (recruitRequest.getRules() != null) {
+            List<Rule> rules = recruitRequest.getRules().stream()
+                    .map(ruleRequest -> new Rule(ruleRequest.getType()))
+                    .toList();
+            study.addRules(rules);
+        }
+
         studyStore.store(study);
+
+        if (study.isRegular()) {
+            meetingAutoService.createRegularMeetings(study);
+        }
 
         EnrollmentCreateRequest enrollmentRequest = new EnrollmentCreateRequest(
                 study.getId(),

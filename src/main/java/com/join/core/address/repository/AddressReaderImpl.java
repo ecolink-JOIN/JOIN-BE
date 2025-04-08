@@ -2,8 +2,6 @@ package com.join.core.address.repository;
 
 import com.join.core.address.domain.Address;
 import com.join.core.address.service.AddressReader;
-import com.join.core.common.exception.ErrorCode;
-import com.join.core.common.exception.impl.InvalidSelectionException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +16,7 @@ public class AddressReaderImpl implements AddressReader {
     @Override
     public Address getAddressByLocation(String province, String city) {
         return addressRepository.findByProvinceAndCity(province, city)
-                .orElseThrow(() -> new InvalidSelectionException(ErrorCode.ADDRESS_SELECTION_REQUIRED));
+                .orElseGet(() -> addressRepository.save(new Address(province, city)));
     }
 
 }

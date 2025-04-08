@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,14 +18,18 @@ public class Rule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private RuleType type;
 
+    @Setter
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id", nullable = false)
     private Study study;
+
+    public Rule(RuleType type) {
+        this.type = type;
+    }
 
 }
 

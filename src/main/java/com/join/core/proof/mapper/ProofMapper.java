@@ -3,11 +3,18 @@ package com.join.core.proof.mapper;
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.meeting.domain.Meeting;
 import com.join.core.proof.constant.ProofStatus;
+import com.join.core.proof.constant.ProofType;
 import com.join.core.proof.domain.Proof;
 import com.join.core.proof.domain.ProofPhoto;
+import com.join.core.proof.dto.response.AvatarResponse;
 import com.join.core.proof.dto.response.CreateProofResponse;
+import com.join.core.proof.dto.response.ProofResponse;
+import com.join.core.proof.dto.response.ProofsResponse;
 import com.join.core.proof.service.dto.CreateProofCommand;
+import com.join.core.proof.service.dto.UpdateProofParams;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ProofMapper {
@@ -19,7 +26,7 @@ public class ProofMapper {
                 .avatar(avatar)
                 .meeting(meeting)
                 .photo(photo)
-                .proofStatus(ProofStatus.PENDING)
+                .status(ProofStatus.PENDING)
                 .build();
     }
 
@@ -30,5 +37,32 @@ public class ProofMapper {
                 .proofPhotoUrl(proof.getPhoto().getFile().getUrl())
                 .provenDate(proof.getProvenDate())
                 .build();
+    }
+
+    public Proof toEntity(UpdateProofParams param, Avatar avatar, Meeting meeting) {
+        return Proof.builder()
+                .type(ProofType.PHOTO)
+                .provenDate(param.provenTime())
+                .avatar(avatar)
+                .meeting(meeting)
+                .status(ProofStatus.APPROVED)
+                .build();
+    }
+
+    public ProofResponse toProofResponse(Proof proof) {
+        return new ProofResponse(
+                proof.getMeeting().getMeetingNo(),
+                proof.getId(),
+                proof.isCompleted(),
+                proof.getProvenDate()
+        );
+    }
+
+    public ProofsResponse toProofsResponse(String studyToken, Avatar target, List<ProofResponse> proofs) {
+        return new ProofsResponse(
+                studyToken,
+                new AvatarResponse(target.getAvatarToken(), target.getNickname(), target.getPhoto().getFile().getUrl()),
+                proofs
+        );
     }
 }

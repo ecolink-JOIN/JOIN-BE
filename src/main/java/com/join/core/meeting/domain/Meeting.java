@@ -81,14 +81,19 @@ public class Meeting {
         this.meetingNo = meetingNo;
     }
 
-    public boolean isWithinMeetingTime(LocalDateTime now) {
+    public boolean isAfterMeetingTime(LocalDateTime now) {
         if (!studyDate.isEqual(now.toLocalDate())) {
             return false;
         }
 
         LocalTime currentTime = now.toLocalTime();
         LocalTime meetingStart = stTime.minusMinutes(10);
-        return currentTime.isAfter(meetingStart) && currentTime.isBefore(endTime);
+        return currentTime.isAfter(meetingStart);
+    }
+
+    public boolean isLate(LocalDateTime now) {
+        LocalTime currentTime = now.toLocalTime();
+        return currentTime.isAfter(stTime);
     }
 
     public void checkProofTime(LocalDateTime provenDate) {
@@ -100,5 +105,21 @@ public class Meeting {
                 !currentTime.isBefore(proofEndTime)) {
             throw new BadRequestException(OUT_OF_PROOF_TIME);
         }
+    }
+
+    public static Meeting autoCreate(LocalDate studyDate, LocalTime stTime, LocalTime endTime, Study study) {
+        return new Meeting(studyDate, stTime, endTime, study);
+    }
+
+    public void cancelMeeting() {
+        this.status = MeetingStatus.CANCELED;
+    }
+
+    public boolean isAfterStudy(LocalDateTime now) {
+        if (studyDate.isBefore(now.toLocalDate())) {
+            return true;
+        }
+        return studyDate.equals(now.toLocalDate()) &&
+                endTime.isBefore(now.toLocalTime());
     }
 }

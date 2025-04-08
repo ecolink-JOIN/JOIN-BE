@@ -22,8 +22,8 @@ public class NotificationService {
     private final AvatarRepository avatarRepository;
 
     @Transactional
-    public void postNotice(Long studyId, NotificationRequest request, Long avatarId) {
-        Study study = studyRepository.findById(studyId)
+    public void postNotice(String studyToken, NotificationRequest request, Long avatarId) {
+        Study study = studyRepository.findByStudyToken(studyToken)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.STUDY_NOT_FOUND));
 
         Avatar writer = avatarRepository.findById(avatarId)

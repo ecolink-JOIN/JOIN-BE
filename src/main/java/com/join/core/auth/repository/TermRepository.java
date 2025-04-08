@@ -15,4 +15,9 @@ public interface TermRepository extends JpaRepository<Term, Term.Key> {
 		   + " where CURRENT_DATE between t.startDate and t.endDate"
 		   + " and ta is null")
 	List<Term> findRequiredConsentWith(@Param("userId") Long userId);
+
+	@Query("select t from Term t"
+		   + " where CURRENT_DATE between t.startDate and t.endDate")
+	List<Term> findValid();
+
 }

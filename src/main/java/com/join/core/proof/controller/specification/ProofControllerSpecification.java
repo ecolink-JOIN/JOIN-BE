@@ -3,6 +3,7 @@ package com.join.core.proof.controller.specification;
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
 import com.join.core.proof.dto.request.CreateProofRequest;
+import com.join.core.proof.dto.request.UpdateProofRequest;
 import com.join.core.proof.dto.response.CreateProofResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -45,5 +46,16 @@ public interface ProofControllerSpecification {
             @PathVariable String studyToken,
             @PathVariable Integer meetingNo,
             @PathVariable Long proofId
+    );
+
+    @Tag(name = "${swagger.tag.proof}")
+    @Operation(summary = "인증 수정",
+            description = "인증 수정 - 스터디 리더만 수정 가능",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<Void> updateProof(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable String studyToken,
+            @PathVariable Integer meetingNo,
+            @RequestBody UpdateProofRequest request
     );
 }

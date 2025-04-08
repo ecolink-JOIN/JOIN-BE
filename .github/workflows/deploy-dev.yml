@@ -51,7 +51,7 @@ jobs:
           author_name: 'Deployment Fail Notification'
           text: '서버 배포에 실패했습니다.'
           fields: repo,message,commit,author,ref,workflow,job,took,pullRequest
-          mention: 'U067CTV6REE,U06BYPA2RGR'
+          mention: 'U067CTV6REE,U06BYPA2RGR,U081M9VG1SN,U082A3WSLN4'
           if_mention: failure
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BACKEND_WEBHOOK_URL }} # required
@@ -110,7 +110,7 @@ jobs:
           author_name: 'Deployment Fail Notification'
           text: '서버 배포에 실패했습니다.'
           fields: repo,message,commit,author,ref,workflow,job,took,pullRequest
-          mention: 'U067CTV6REE,U06BYPA2RGR'
+          mention: 'U067CTV6REE,U06BYPA2RGR,U081M9VG1SN,U082A3WSLN4'
           if_mention: failure
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BACKEND_WEBHOOK_URL }} # required

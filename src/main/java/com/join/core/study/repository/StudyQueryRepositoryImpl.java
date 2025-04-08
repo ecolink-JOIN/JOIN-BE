@@ -1,11 +1,15 @@
 package com.join.core.study.repository;
 
 import com.join.core.enrollment.constant.EnrollmentStatus;
+import com.join.core.study.constant.StudyStatus;
+import com.join.core.enrollment.constant.StudyRole;
 import com.join.core.study.domain.Study;
 import com.join.core.study.repository.condition.CustomStudyCondition;
 import com.join.core.study.repository.condition.EssentialStudyCondition;
+import com.join.core.study.repository.condition.SearchCondition;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,11 +19,12 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.join.core.address.domain.QAddress.address;
 import static com.join.core.bookmark.domain.QBookmark.bookmark;
 import static com.join.core.enrollment.domain.QEnrollment.enrollment;
 import static com.join.core.history.domain.QViewHistory.viewHistory;
 import static com.join.core.schedule.domain.QStudySchedule.studySchedule;
-import static com.join.core.study.domain.QStudy.*;
+import static com.join.core.study.domain.QStudy.study;
 
 @RequiredArgsConstructor
 @Repository
@@ -100,4 +105,145 @@ public class StudyQueryRepositoryImpl implements StudyQueryRepository {
                 .limit(20)
                 .fetch();
     }
+
+    @Override
+    public boolean existsByEnrollmentsAvatarToken(String subjectToken, String targetToken) {
+        return queryFactory.selectFrom(study)
+                .leftJoin(enrollment).on(
+                        enrollment.study.id.eq(study.id),
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
+                )
+                .where(
+                        study.status.eq(StudyStatus.ACTIVE),
+                        enrollment.avatar.avatarToken.eq(subjectToken)
+                                .or(enrollment.avatar.avatarToken.eq(targetToken))
+                )
+                .groupBy(study.id)
+                .having(enrollment.avatar.avatarToken.countDistinct().eq(2L))
+                .fetchFirst() != null;
+    }
+
+    @Override
+    public List<Study> getActiveStudiesBySubjectIdAndTargetId(Long subjectId, Long targetId) {
+        return queryFactory.selectFrom(study)
+            .leftJoin(enrollment).on(
+                enrollment.study.id.eq(study.id),
+                enrollment.status.eq(EnrollmentStatus.JOINED)
+            )
+            .where(
+                study.status.eq(StudyStatus.ACTIVE),
+                enrollment.avatar.id.eq(subjectId)
+                    .or(enrollment.avatar.id.eq(targetId))
+            )
+            .groupBy(study.id)
+            .having(enrollment.avatar.avatarToken.countDistinct().eq(2L))
+            .fetch();
+    }
+
+
+    @Override
+    public List<Study> findAllByAvatarIdAndRole(Long avatarId, StudyRole status) {
+        return queryFactory.selectFrom(study)
+                .leftJoin(enrollment).on(
+                        enrollment.avatar.id.eq(avatarId),
+                        enrollment.role.eq(status)
+                )
+                .fetch();
+    }
+
+    @Override
+    public List<Study> findJoinedStudyByAvatarId(Long avatarId) {
+        return queryFactory.selectFrom(study)
+                .leftJoin(enrollment).on(
+                        enrollment.avatar.id.eq(avatarId),
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
+                )
+                .fetch();
+    }
+
+    @Override
+    public List<Study> findBookmarkStudyByAvatarId(Long avatarId) {
+        return queryFactory.selectFrom(study)
+                .join(bookmark).on(
+                        bookmark.avatar.id.eq(avatarId)
+                )
+                .orderBy(bookmark.updatedDate.desc())
+                .fetch();
+    }
+
+    @Override
+    public boolean existsByEnrollmentAvatarIdAndStudyToken(Long avatarId, String studyToken) {
+        return queryFactory
+                .selectOne()
+                .from(enrollment)
+                .join(enrollment.study, study)
+                .where(
+                        study.studyToken.eq(studyToken),
+                        enrollment.avatar.id.eq(avatarId),
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
+                )
+                .fetchFirst() != null;
+    }
+
+    public List<Study> findByAvatarId(Long avatarId) {
+        return queryFactory.selectFrom(study)
+            .leftJoin(enrollment).on(enrollment.study.id.eq(study.id))
+            .where(
+                    enrollment.avatar.id.eq(avatarId),
+                    enrollment.status.eq(EnrollmentStatus.JOINED)
+            )
+            .fetch();
+    }
+
+    @Override
+    public Page<Study> searchByConditions(SearchCondition condition, Pageable pageable) {
+        List<Study> content = getSearchStudy(condition, pageable);
+        Long count = countSearchStudy(condition);
+        return new PageImpl<>(content, pageable, count);
+
+    }
+
+    private List<Study> getSearchStudy(SearchCondition condition, Pageable pageable) {
+        return queryFactory.selectFrom(study)
+                .leftJoin(studySchedule).on(
+                        studySchedule.study.id.eq(study.id)
+                )
+                .innerJoin(address).on(address.id.eq(study.address.id))
+                .where(
+                        condition.toBooleanBuilder()
+                )
+                .groupBy(study.id, studySchedule.id)
+                .having(condition.getHavingClause())
+                .orderBy(
+                        study.title.asc()
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+    }
+
+    private Long countSearchStudy(SearchCondition condition) {
+        return queryFactory.select(study.id.count().coalesce(0L))
+                .from(study)
+                .leftJoin(studySchedule).on(studySchedule.study.id.eq(study.id))
+                .join(address).on(address.id.eq(study.address.id))
+                .where(
+                        condition.toBooleanBuilder(),
+                        condition.getWhereClause()
+                )
+                .fetchOne();
+    }
+
+    @Override
+    public List<Study> findByAvatarIdAndStatus(Long avatarId, StudyStatus status) {
+        return queryFactory.selectFrom(study)
+                .leftJoin(enrollment).on(
+                        enrollment.study.id.eq(study.id),
+                        enrollment.avatar.id.eq(avatarId),
+                        enrollment.status.eq(EnrollmentStatus.JOINED)
+                )
+                .where(study.status.eq(status))
+                .fetch();
+    }
+
 }

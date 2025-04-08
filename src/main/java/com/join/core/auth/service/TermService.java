@@ -30,4 +30,8 @@ public class TermService {
 		termAgreeHistoryStore.store(user, command);
 	}
 
+	public List<TermInfo.Main> getValidTerms() {
+		return termReader.getValidTerms();
+	}
+
 }

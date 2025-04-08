@@ -12,4 +12,5 @@ public interface TermReader {
 
 	List<Term> getTerms(Collection<Term.Key> keys);
 
+	List<TermInfo.Main> getValidTerms();
 }

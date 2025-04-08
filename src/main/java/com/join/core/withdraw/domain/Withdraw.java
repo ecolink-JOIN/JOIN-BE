@@ -46,4 +46,8 @@ public class Withdraw extends BaseTimeEntity {
         }
     }
 
+    public void approveWithdraw() {
+        this.status = WithdrawStatus.APPROVED;
+    }
+
 }

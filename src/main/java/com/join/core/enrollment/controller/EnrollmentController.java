@@ -4,8 +4,10 @@ import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
 import com.join.core.enrollment.controller.specification.EnrollmentControllerSpecification;
 import com.join.core.enrollment.dto.request.DelegateLeaderRequest;
+import com.join.core.enrollment.dto.request.ForcedOutRequest;
 import com.join.core.enrollment.service.EnrollmentService;
 import com.join.core.enrollment.service.dto.DelegateLeaderParams;
+import com.join.core.enrollment.service.dto.ForcedOutParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,6 +35,23 @@ public class EnrollmentController implements EnrollmentControllerSpecification {
                 new DelegateLeaderParams(
                         principal.getAvatarToken(),
                         studyToken,
+                        request.targetToken()
+                )
+        );
+        return ApiResponse.ok();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/forced-out")
+    public ApiResponse<Void> forcedOut(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable String studyToken,
+            @RequestBody ForcedOutRequest request
+    ) {
+        enrollmentService.forcedOut(
+                new ForcedOutParams(
+                        studyToken,
+                        principal.getAvatarToken(),
                         request.targetToken()
                 )
         );

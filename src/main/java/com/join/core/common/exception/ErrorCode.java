@@ -115,15 +115,18 @@ public enum ErrorCode {
 	INVALID_PROOF_STATUS(HttpStatus.INTERNAL_SERVER_ERROR, "PR-005", "인증 상태를 조회하는 과정에서 오류가 발생하였습니다."),
 	INVALID_PROOF_ID(HttpStatus.BAD_REQUEST, "PR-006", "존재하지 않는 인증 정보입니다,"),
 	ALREADY_CHECK_PROOF(HttpStatus.CONFLICT, "PR-007", "이미 수락 또는 반려된 인증입니다."),
+	PROOF_NOT_APPROVED(HttpStatus.BAD_REQUEST, "PR-008", "승인 미완료 상태인 인증이 있습니다."),
 
 	/**
 	* 스터디 참여자 관련 오류
 	*/
 	NOT_MEMBER_OF_STUDY(HttpStatus.FORBIDDEN, "EN-001", "스터디에 참여중인 사용자가 아닙니다."),
-    LEADER_ONLY_ACCESS(HttpStatus.FORBIDDEN, "EN-002", "해당 기능은 스터디 리더만 사용할 수 있습니다."),
+  LEADER_ONLY_ACCESS(HttpStatus.FORBIDDEN, "EN-002", "해당 기능은 스터디 리더만 사용할 수 있습니다."),
 	INVALID_MEMBER(HttpStatus.BAD_REQUEST, "EN-003", "존재하지 않는 팀원입니다."),
 	MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "EN-004", "스터디에 참여중인 스터디원이 없습니다."),
-
+	ALREADY_NOT_JOINED(HttpStatus.BAD_REQUEST, "EN-005", "이미 참여하지 않는 스터디입니다."),
+	UNAPPROVED_REMAINING(HttpStatus.BAD_REQUEST, "EN-006", "승인되지 않은 인증 내역이 존재합니다."),
+  
 	/**
 	* 북마크 관련 오류
 	*/
@@ -166,10 +169,11 @@ public enum ErrorCode {
 	 */
 	NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "AN-001", "앱 공지사항을 찾을 수 없습니다."),
   
-    /**
-	 * 탈퇴 관련 오류
+  /**
+	 * 스터디 탈퇴 관련 오류
 	 */
-	WITHDRAW_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "W-001", "이미 등록된 탈퇴 요청이 있습니다.");
+    STUDY_WITHDRAW_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "SW-001", "이미 등록된 탈퇴 요청이 있습니다."),
+	STUDY_WITHDRAW_NOT_FOUND(HttpStatus.BAD_REQUEST, "SW-002", "승인할 스터디 탈퇴 요청을 찾을 수 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

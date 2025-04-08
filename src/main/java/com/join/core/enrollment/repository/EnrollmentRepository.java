@@ -1,10 +1,5 @@
 package com.join.core.enrollment.repository;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.join.core.enrollment.constant.EnrollmentStatus;
 import com.join.core.enrollment.domain.Enrollment;
 

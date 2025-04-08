@@ -79,6 +79,7 @@ public enum ErrorCode {
 	 * 벌금 관련 오류
 	 */
 	FINE_INPUT_REQUIRED(HttpStatus.BAD_REQUEST, "F-001", "벌금 관련 입력이 누락되었습니다."),
+	FINE_NOT_FOUND(HttpStatus.BAD_REQUEST, "F-002", "부과된 벌금이 없습니다."),
 
 	/**
 	 * 회차 관련 오류
@@ -121,6 +122,7 @@ public enum ErrorCode {
 	NOT_MEMBER_OF_STUDY(HttpStatus.FORBIDDEN, "EN-001", "스터디에 참여중인 사용자가 아닙니다."),
     LEADER_ONLY_ACCESS(HttpStatus.FORBIDDEN, "EN-002", "해당 기능은 스터디 리더만 사용할 수 있습니다."),
 	INVALID_MEMBER(HttpStatus.BAD_REQUEST, "EN-003", "존재하지 않는 팀원입니다."),
+	MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "EN-004", "스터디에 참여중인 스터디원이 없습니다."),
 
 	/**
 	* 북마크 관련 오류
@@ -164,7 +166,7 @@ public enum ErrorCode {
 	 */
 	NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "AN-001", "앱 공지사항을 찾을 수 없습니다."),
   
-  /**
+    /**
 	 * 탈퇴 관련 오류
 	 */
 	WITHDRAW_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "W-001", "이미 등록된 탈퇴 요청이 있습니다.");

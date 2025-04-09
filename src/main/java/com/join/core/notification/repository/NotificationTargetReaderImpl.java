@@ -30,6 +30,7 @@ public class NotificationTargetReaderImpl implements NotificationReader {
                     Notification n = nt.getNotification();
                     return NotificationResponse.builder()
                             .notificationId(n.getId())
+                            .title(n.getTitle())
                             .content(n.getContent())
                             .type(n.getNotificationType())
                             .createdAt(n.getCreatedDate())

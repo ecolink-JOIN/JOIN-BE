@@ -9,6 +9,7 @@ import com.join.core.common.exception.ErrorCode;
 import com.join.core.common.exception.LeaderForbiddenException;
 import com.join.core.common.exception.impl.BadRequestException;
 import com.join.core.enrollment.dto.response.MeetingAttendanceStatus;
+import com.join.core.enrollment.dto.response.ParticipationResponse;
 import com.join.core.enrollment.dto.response.ProofAndAttendanceStatusResponse;
 import com.join.core.enrollment.service.dto.ParticipationDetailsParams;
 import com.join.core.meeting.domain.Meeting;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -34,7 +36,6 @@ public class EnrollmentReadService {
     private final MeetingReader meetingReader;
     private final ProofReader proofReader;
     private final AttendanceReader attendanceReader;
-
 
     @Transactional(readOnly = true)
     public ProofAndAttendanceStatusResponse getMemberParticipationDetails(ParticipationDetailsParams params) {
@@ -99,4 +100,14 @@ public class EnrollmentReadService {
                 .map(Proof::isApproved)
                 .orElse(false);
     }
+
+    @Transactional(readOnly = true)
+    public List<ParticipationResponse> getStudyMemberList(String studyToken) {
+        Study study = studyReader.getStudyByToken(studyToken);
+
+        return Optional.ofNullable(enrollmentReader.getParticipationDetailsByStudy(study.getId()))
+                .filter(list -> !list.isEmpty())
+                .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
+    }
+
 }

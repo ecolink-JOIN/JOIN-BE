@@ -3,6 +3,7 @@ package com.join.core.enrollment.controller;
 import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.response.ApiResponse;
 import com.join.core.enrollment.controller.specification.EnrollmentReaderControllerSpecification;
+import com.join.core.enrollment.dto.response.ParticipationResponse;
 import com.join.core.enrollment.dto.response.ProofAndAttendanceStatusResponse;
 import com.join.core.enrollment.service.EnrollmentReadService;
 import com.join.core.enrollment.service.dto.ParticipationDetailsParams;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -36,4 +39,14 @@ public class EnrollmentReaderController implements EnrollmentReaderControllerSpe
                 )
         ));
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/members")
+    public ApiResponse<List<ParticipationResponse>> getMemberList(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable String studyToken
+    ) {
+        return ApiResponse.ok(enrollmentReadService.getStudyMemberList(studyToken));
+    }
+
 }

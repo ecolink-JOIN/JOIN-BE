@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.join.core.avatar.domain.Avatar;
 import com.join.core.enrollment.domain.Enrollment;
+import com.join.core.enrollment.dto.response.ParticipationResponse;
 
 public interface EnrollmentReader {
 
@@ -14,5 +15,6 @@ public interface EnrollmentReader {
     void validateEnrollment(Long avatarId, String studyToken);
     Enrollment getEnrollmentByAvatarIdAndStudyId(Long avatarId, Long studyId);
     List<Enrollment> getByStudyId(Long studyId);
+    List<ParticipationResponse> getParticipationDetailsByStudy(Long studyId);
     List<Avatar> getJoinedAvatarsByStudyId(Long studyId);
 }

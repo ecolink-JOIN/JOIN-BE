@@ -19,6 +19,8 @@ public class Notification extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String title;
+
     @NotNull
     private String content;
 

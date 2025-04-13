@@ -89,7 +89,7 @@ public enum ErrorCode {
 	/**
 	 * 공지 관련 오류
 	 */
-	NOT_LEADER_OF_STUDY(HttpStatus.FORBIDDEN, "L-003", "스터디 공지를 작성할 수 있는 권한이 없습니다."),
+	NOT_LEADER_OF_STUDY(HttpStatus.FORBIDDEN, "SN-001", "스터디 공지를 작성할 수 있는 권한이 없습니다."),
 
 	/**
 	 * 권한 관련 오류
@@ -173,7 +173,12 @@ public enum ErrorCode {
 	 * 스터디 탈퇴 관련 오류
 	 */
     STUDY_WITHDRAW_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "SW-001", "이미 등록된 탈퇴 요청이 있습니다."),
-	STUDY_WITHDRAW_NOT_FOUND(HttpStatus.BAD_REQUEST, "SW-002", "승인할 스터디 탈퇴 요청을 찾을 수 없습니다.");
+	STUDY_WITHDRAW_NOT_FOUND(HttpStatus.BAD_REQUEST, "SW-002", "승인할 스터디 탈퇴 요청을 찾을 수 없습니다."),
+
+	/**
+	 * 알림 관련 오류
+	 */
+	NOTIFICATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "NT-001", "알림 내역이 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

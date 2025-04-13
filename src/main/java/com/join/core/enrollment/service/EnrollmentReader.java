@@ -16,4 +16,5 @@ public interface EnrollmentReader {
     Enrollment getEnrollmentByAvatarIdAndStudyId(Long avatarId, Long studyId);
     List<Enrollment> getByStudyId(Long studyId);
     List<ParticipationResponse> getParticipationDetailsByStudy(Long studyId);
+    List<Avatar> getJoinedAvatarsByStudyId(Long studyId);
 }

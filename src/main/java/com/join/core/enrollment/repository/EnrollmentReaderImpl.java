@@ -64,6 +64,14 @@ public class EnrollmentReaderImpl implements EnrollmentReader {
             throw new InvalidParamException(ErrorCode.INVALID_PARAMETER, "스터디 참여자가 아닙니다.");
         }
     }
+  
+    @Override
+    public List<Avatar> getJoinedAvatarsByStudyId(Long studyId) {
+        return enrollmentRepository.findEnrollmentByStudyIdAndStatus(studyId, EnrollmentStatus.JOINED)
+                .stream()
+                .map(Enrollment::getAvatar)
+                .toList();
+    }
 
     @Override
     public List<ParticipationResponse> getParticipationDetailsByStudy(Long studyId) {
@@ -85,5 +93,5 @@ public class EnrollmentReaderImpl implements EnrollmentReader {
                 })
                 .toList();
     }
-
+    
 }

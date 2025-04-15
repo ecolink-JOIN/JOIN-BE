@@ -17,7 +17,7 @@ public interface ProofControllerSpecification {
 
     @Tag(name = "${swagger.tag.proof}")
     @Operation(summary = "회차 인증 - 인증 필수",
-            description = "회차 인증 - 인증 필수",
+            description = "회차 인증 - 인증 이미지 저장 로직을 통해 url을 반환받은 후 proofPhotoUrl에 추가",
             security = {@SecurityRequirement(name = "session-token")})
     ApiResponse<CreateProofResponse> createProof(
             @AuthenticationPrincipal UserPrincipal userPrincipal,

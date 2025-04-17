@@ -1,4 +1,4 @@
-package com.join.core.fcm.config;
+package com.join.core.push.config;
 
 import java.io.FileInputStream;
 import java.io.IOException;

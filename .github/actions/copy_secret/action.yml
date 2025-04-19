@@ -10,6 +10,18 @@ inputs:
   s3-secret:
     description: 's3 secret file'
     required: true
+  fcm-secret:
+    description: 'fcm secret file'
+    required: true
+  fcm-key:
+    description: 'fcm key file'
+    required: true
+  fcm-key-path:
+    description: 'fcm key file path'
+    required: true
+  fcm-key-file-name:
+    description: 'fcm key file name'
+    required: true
   dev-db-secret:
     description: 'development db secret file'
   prod-db-secret:
@@ -24,11 +36,20 @@ runs:
         OAUTH_SECRET_DIR_FILE_NAME: application-oauth.yml
         S3_SECRET: ${{ inputs.s3-secret }}
         S3_SECRET_DIR_FILE_NAME: application-s3.yml
+        FCM_SECRET: ${{ inputs.fcm-secret }}
+        FCM_SECRET_DIR_FILE_NAME: application-fcm.yml
+        FCM_KEY: ${{ inputs.fcm-key }}
+        FCM_KEY_DIR: ${{ inputs.fcm-key-path }}
+        FCM_KEY_FILE_NAME: ${{ inputs.fcm-key-file-name }}
+
         SECRET_DIR: src/main/resources
       shell: bash
       run: |
         echo $OAUTH_SECRET | base64 --decode > $SECRET_DIR/$OAUTH_SECRET_DIR_FILE_NAME
         echo $S3_SECRET | base64 --decode > $SECRET_DIR/$S3_SECRET_DIR_FILE_NAME
+        echo $FCM_SECRET | base64 --decode > $SECRET_DIR/$FCM_SECRET_DIR_FILE_NAME
+        mkdir $SECRET_DIR/$FCM_KEY_DIR
+        echo $FCM_KEY | base64 --decode > $SECRET_DIR/$FCM_KEY_DIR/$FCM_KEY_FILE_NAME
 
     - name: Copy Dev DB Secrets
       if: inputs.profile == 'dev'

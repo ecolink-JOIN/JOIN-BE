@@ -40,6 +40,8 @@ out/
 application-dev-db.yml
 application-s3.yml
 application-oauth.yml
+application-fcm.yml
+**/src/main/resources/secret
 
 ### system ###
 .DS_Store

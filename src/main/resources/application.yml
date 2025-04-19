@@ -2,9 +2,9 @@ spring:
   profiles:
     group:
       "default": "local"
-      "local": "oauth, s3, swagger"
-      "dev": "oauth, s3, dev-db, swagger"
-      "prod": "prod, oauth, s3, prod-db"
+      "local": "oauth, s3, swagger, fcm"
+      "dev": "oauth, s3, dev-db, swagger, fcm"
+      "prod": "prod, oauth, s3, prod-db, fcm"
 
   jpa:
     properties:

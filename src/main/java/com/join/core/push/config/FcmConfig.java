@@ -1,7 +1,7 @@
 package com.join.core.push.config;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +25,7 @@ public class FcmConfig {
 	@Bean
 	public FirebaseMessaging firebaseMessaging() throws IOException {
 		ClassPathResource resource = new ClassPathResource(fcmKeyPath);
-		FileInputStream refreshToken = new FileInputStream(resource.getFile());
+		InputStream refreshToken = resource.getInputStream();
 
 		FirebaseOptions options = FirebaseOptions.builder()
 			.setCredentials(GoogleCredentials.fromStream(refreshToken))

@@ -1,5 +1,6 @@
 package com.join.core.searchhistory.mapper;
 
+import com.join.core.avatar.domain.Avatar;
 import com.join.core.searchhistory.domain.SearchHistory;
 import com.join.core.searchhistory.dto.response.RecentSearchResponse;
 import org.springframework.stereotype.Component;
@@ -13,5 +14,12 @@ public class SearchHistoryMapper {
                 searchHistory.getKeyword(),
                 searchHistory.getCreatedDate()
         );
+    }
+
+    public SearchHistory mapToSearchHistory(Avatar avatar, String keyword) {
+        return SearchHistory.builder()
+                .avatar(avatar)
+                .keyword(keyword)
+                .build();
     }
 }

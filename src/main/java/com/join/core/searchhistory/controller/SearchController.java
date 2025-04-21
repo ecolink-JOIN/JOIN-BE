@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/search")
+@RequestMapping("${api.prefix}/study/search")
 public class SearchController implements SearchApiSpecification {
 
     private final SearchHistorySaveService searchHistorySaveService;

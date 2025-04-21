@@ -19,3 +19,4 @@ swagger:
     enrollment-detail: '17. 스터디원 관리 상세'
     application: '18. 지원'
     withdraw: '19. 스터디 탈퇴'
+    search: '20. 검색'

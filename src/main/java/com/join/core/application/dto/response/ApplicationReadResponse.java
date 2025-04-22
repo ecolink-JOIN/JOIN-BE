@@ -18,7 +18,7 @@ public class ApplicationReadResponse {
     private String nickname;
 
     @Schema(description = "사용자 프로필 이미지", example = "image url")
-    private ImageFile image;
+    private ImageFile profileImage;
 
     @Schema(description = "지원 상태", example = "승인 대기중")
     private String applicationStatus;

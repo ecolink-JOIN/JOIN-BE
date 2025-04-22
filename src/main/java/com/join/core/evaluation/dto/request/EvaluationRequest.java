@@ -23,8 +23,8 @@ public class EvaluationRequest {
     private String studyToken;
 
     @NotNull
-    @Schema(description = "평가대상자 ID", example = "2")
-    private Long rateeId;
+    @Schema(description = "평가대상자 토큰", example = "avt_abc")
+    private String rateeToken;
 
     @NotNull
     @Min(1)

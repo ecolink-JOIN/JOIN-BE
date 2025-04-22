@@ -24,7 +24,7 @@ public class EvaluationService {
     @Transactional
     public void evaluate(EvaluationRequest request, Long raterId) {
         Study study = studyReader.validateStudyCompletion(request.getStudyToken());
-        Avatar ratee = avatarReader.getAvatarById(request.getRateeId());
+        Avatar ratee = avatarReader.getAvatarByAvatarToken(request.getRateeToken());
 
         Avatar rater = avatarReader.getAvatarById(raterId);
 

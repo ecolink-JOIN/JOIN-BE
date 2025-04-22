@@ -46,6 +46,8 @@ public class WithdrawController implements WithdrawApiSpecification {
         return ApiResponse.ok();
     }
 
+    @Override
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{studyToken}/withdraw/request")
     public ApiResponse<List<WithdrawResponse>> getWithdrawRequests(
             @AuthenticationPrincipal UserPrincipal principal,

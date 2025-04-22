@@ -116,4 +116,16 @@ public class StudyRecruitService {
         studyStore.store(study);
     }
 
+    @Transactional
+    public void toggleRecruitStatus(Long avatarId, String studyToken) {
+        Study study = studyReader.getStudyByToken(studyToken);
+
+        if (!study.getWriter().getId().equals(avatarId)) {
+            throw new NoPermissionException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
+
+        study.toggleRecruitStatus();
+        studyStore.store(study);
+    }
+
 }

@@ -291,4 +291,13 @@ public class Study {
     public boolean isActive() {
         return status == StudyStatus.ACTIVE;
     }
+
+    public void toggleRecruitStatus() {
+        if (this.status == StudyStatus.RECRUITING) {
+            this.status = StudyStatus.READY;
+        } else if (this.status == StudyStatus.READY) {
+            this.status = StudyStatus.RECRUITING;
+        }
+    }
+
 }

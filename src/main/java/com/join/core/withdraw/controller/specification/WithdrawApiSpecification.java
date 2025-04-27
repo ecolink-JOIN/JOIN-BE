@@ -33,6 +33,7 @@ public interface WithdrawApiSpecification {
             @PathVariable Long withdrawId
     );
 
+    @Tag(name = "${swagger.tag.withdraw}")
     @Operation(summary = "스터디 탈퇴 요청 조회 API - 인증 필수",
             description = "스터디 탈퇴 요청 조회 API - 인증 필수",
             security = {@SecurityRequirement(name = "session-token")})

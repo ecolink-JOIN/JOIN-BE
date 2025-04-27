@@ -61,4 +61,16 @@ public class StudyController {
         return ApiResponse.ok();
     }
 
+    @Tag(name = "${swagger.tag.study}")
+    @Operation(summary = "스터디 모집 상태 변경 - 인증 필수",
+            description = "스터디 모집 상태 변경 - 스터디 모집중(RECRUITING) ↔ 모집완료(READY) 전환",
+            security = {@SecurityRequirement(name = "session-token")})
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/{studyToken}/recruitment")
+    public ApiResponse<Void> toggleRecruitStatus(@AuthenticationPrincipal UserPrincipal principal,
+                                                 @PathVariable String studyToken) {
+        studyRecruitService.toggleRecruitStatus(principal.getAvatarId(), studyToken);
+        return ApiResponse.ok();
+    }
+
 }

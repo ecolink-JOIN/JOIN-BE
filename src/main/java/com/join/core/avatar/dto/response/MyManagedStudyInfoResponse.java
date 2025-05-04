@@ -12,7 +12,7 @@ public record MyManagedStudyInfoResponse(
         String studyToken,
         @Schema(description = "스터디 이름", example = "직장인 영어 회화 스터디")
         String name,
-        @Schema(description = "모집 상태", example = "RECRUITING, READY, ACTIVE, COMPLETED 중 하나(모집중, 모집완료, 활동중, 활동완료)")
+        @Schema(description = "모집 상태", example = "RECRUITING, READY, ACTIVE_RECRUITING, ACTIVE, COMPLETED 중 하나(시작 전 모집 중, 시작 전 준비 완료, 진행중 + 모집O, 진행중 + 모집X, 활동 종료)")
         StudyStatus status,
         @Schema(description = "평균 출결률", example = "56.25")
         double teamAverageAttendanceRate,

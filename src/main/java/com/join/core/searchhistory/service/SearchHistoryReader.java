@@ -7,4 +7,5 @@ import java.util.Collection;
 public interface SearchHistoryReader {
 
     Collection<SearchHistory> findByAvatarId(Long avatarId);
+    boolean existsByAvatarIdAndKeyword(Long avatarId, String keyword);
 }

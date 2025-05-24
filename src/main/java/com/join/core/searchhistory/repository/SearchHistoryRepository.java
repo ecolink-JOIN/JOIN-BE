@@ -8,4 +8,5 @@ import java.util.Collection;
 public interface SearchHistoryRepository extends JpaRepository<SearchHistory, Long> {
 
     Collection<SearchHistory> findTop10ByAvatarIdOrderByIdDesc(Long avatarId);
+    boolean existsByAvatarIdAndKeyword(Long avatarId, String keyword);
 }

@@ -4,9 +4,11 @@ import com.join.core.auth.domain.UserPrincipal;
 import com.join.core.common.dto.PageParameterRequest;
 import com.join.core.common.response.ApiResponse;
 import com.join.core.study.dto.request.CustomStudyParameter;
-import com.join.core.study.dto.request.SearchParameter;
 import com.join.core.study.dto.request.StudyOrderByPopularityParameter;
-import com.join.core.study.dto.response.*;
+import com.join.core.study.dto.response.CustomStudyResponse;
+import com.join.core.study.dto.response.PopularStudyReadResponse;
+import com.join.core.study.dto.response.StudyListForBlockResponse;
+import com.join.core.study.dto.response.StudyStatusResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,15 +35,6 @@ public interface StudyReadApiSpecification {
     ApiResponse<Collection<CustomStudyResponse>> recommendStudies(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             CustomStudyParameter customStudyParameter
-    );
-
-    @Tag(name = "${swagger.tag.study}")
-    @Operation(summary = "스터디 검색",
-            description = "입력한 키워드가 제목에 포함된 스터디 목록을 반환")
-    ApiResponse<Page<SearchResponse>> searchStudy(
-            @AuthenticationPrincipal UserPrincipal userPrincipal,
-            SearchParameter searchParameter,
-            PageParameterRequest pageParameterRequest
     );
 
     @Tag(name = "${swagger.tag.block}")

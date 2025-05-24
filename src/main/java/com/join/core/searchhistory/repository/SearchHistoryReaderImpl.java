@@ -17,4 +17,9 @@ public class SearchHistoryReaderImpl implements SearchHistoryReader {
     public Collection<SearchHistory> findByAvatarId(Long avatarId) {
         return searchHistoryRepository.findTop10ByAvatarIdOrderByIdDesc(avatarId);
     }
+
+    @Override
+    public boolean existsByAvatarIdAndKeyword(Long avatarId, String keyword) {
+        return searchHistoryRepository.existsByAvatarIdAndKeyword(avatarId, keyword);
+    }
 }

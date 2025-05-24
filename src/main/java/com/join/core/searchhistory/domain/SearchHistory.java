@@ -32,8 +32,9 @@ public class SearchHistory extends BaseTimeEntity {
     private Avatar avatar;
 
     @Builder
-    public SearchHistory(Long id, Avatar avatar) {
+    public SearchHistory(Long id, Avatar avatar, String keyword) {
         this.id = id;
         this.avatar = avatar;
+        this.keyword = keyword;
     }
 }

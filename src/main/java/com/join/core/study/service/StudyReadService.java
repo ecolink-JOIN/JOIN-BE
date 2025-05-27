@@ -7,6 +7,8 @@ import com.join.core.avatar.domain.AvatarReader;
 import com.join.core.bookmark.domain.BookmarkReader;
 import com.join.core.category.domain.Category;
 import com.join.core.category.service.CategoryReader;
+import com.join.core.common.exception.ErrorCode;
+import com.join.core.common.exception.impl.NoPermissionException;
 import com.join.core.enrollment.service.EnrollmentReader;
 import com.join.core.evaluation.domain.EvaluationReader;
 import com.join.core.evaluation.dto.response.EvaluationScore;
@@ -154,4 +156,17 @@ public class StudyReadService {
                     return StudyMemberAchievementDto.of(avatar, attendanceRate, proofRate, isFullyApproved);
                 }).toList();
     }
+
+    @Transactional(readOnly = true)
+    public RecruitFormResponse getRecruitForm(String studyToken, String avatarToken) {
+        Study study = studyReader.getStudyByToken(studyToken);
+        Avatar writer = study.getWriter();
+
+        if (!writer.getAvatarToken().equals(avatarToken)) {
+            throw new NoPermissionException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
+
+        return RecruitFormResponse.from(study);
+    }
+
 }

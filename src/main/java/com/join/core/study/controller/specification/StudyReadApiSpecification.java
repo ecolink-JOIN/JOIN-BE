@@ -5,10 +5,7 @@ import com.join.core.common.dto.PageParameterRequest;
 import com.join.core.common.response.ApiResponse;
 import com.join.core.study.dto.request.CustomStudyParameter;
 import com.join.core.study.dto.request.StudyOrderByPopularityParameter;
-import com.join.core.study.dto.response.CustomStudyResponse;
-import com.join.core.study.dto.response.PopularStudyReadResponse;
-import com.join.core.study.dto.response.StudyListForBlockResponse;
-import com.join.core.study.dto.response.StudyStatusResponse;
+import com.join.core.study.dto.response.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,4 +44,12 @@ public interface StudyReadApiSpecification {
     @Operation(summary = "스터디 현황 조회",
             description = "스터디 현황 조회")
     ApiResponse<StudyStatusResponse> getStudyStatus(@PathVariable String studyToken);
+
+    @Tag(name = "${swagger.tag.study}")
+    @Operation(summary = "스터디 모집 입력값 조회",
+            description = "스터디 모집 입력값 조회",
+            security = {@SecurityRequirement(name = "session-token")})
+    ApiResponse<RecruitFormResponse> getRecruitFrom(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable String studyToken);
 }

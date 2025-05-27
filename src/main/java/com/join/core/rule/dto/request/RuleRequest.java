@@ -12,4 +12,11 @@ public class RuleRequest {
     @Schema(description = "스터디 규칙 유형(중복 선택)", example = "FINE, EXPULSION, PHOTO_PROOF, TIMER_PROOF")
     private RuleType type;
 
+    public RuleRequest(RuleType type) {
+        this.type = type;
+    }
+
+    public static RuleRequest of(RuleType type) {
+        return new RuleRequest(type);
+    }
 }

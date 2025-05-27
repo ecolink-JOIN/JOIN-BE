@@ -25,6 +25,16 @@ public class StudyScheduleRequest {
     @NotNull
     private LocalTime endTime;
 
+    public StudyScheduleRequest(DayType weekOfDay, LocalTime stTime, LocalTime endTime) {
+        this.weekOfDay = weekOfDay;
+        this.stTime = stTime;
+        this.endTime = endTime;
+    }
+
+    public static StudyScheduleRequest of(DayType weekOfDay, LocalTime stTime, LocalTime endTime) {
+        return new StudyScheduleRequest(weekOfDay, stTime, endTime);
+    }
+
     public StudySchedule toStudySchedule() {
         return new StudySchedule(weekOfDay, stTime, endTime);
     }
